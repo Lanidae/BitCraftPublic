@@ -2,7 +2,7 @@ use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
 use entities::resource_clump::SmallHexTile;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::building_desc;
 use crate::game::coordinates::FloatHexTile;
@@ -13,7 +13,7 @@ use crate::{
         entities,
         game_state::{self, game_state_filters},
     },
-    messages::{action_request::PlayerSetHomeRequest, components::*, static_data::BuildingCategory},
+    messages::{action_request::PlayerSetHomeRequest, components::*, events::*, static_data::BuildingCategory},
     unwrap_or_err,
 };
 
@@ -26,7 +26,11 @@ pub fn event_delay(_actor_id: u64, _request: &PlayerSetHomeRequest) -> Duration 
 pub fn set_home(ctx: &ReducerContext, request: PlayerSetHomeRequest) -> Result<(), String> {
     let actor_id = game_state::actor_id(&ctx, true)?;
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
-    reduce(ctx, actor_id, request.target_entity_id)
+    let result = reduce(ctx, actor_id, request.target_entity_id);
+    if result.is_ok() {
+        ctx.db.set_home_event().insert(SetHomeEvent { actor_id, request });
+    }
+    result
 }
 
 pub fn reduce(ctx: &ReducerContext, actor_id: u64, target_entity_id: u64) -> Result<(), String> {

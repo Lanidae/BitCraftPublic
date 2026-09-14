@@ -7,7 +7,7 @@ use crate::{
     parameters_desc,
 };
 
-#[spacetimedb::table(name = day_night_loop_timer, scheduled(day_night_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = day_night_loop_timer, scheduled(day_night_agent_loop, at = scheduled_at))]
 pub struct DayNightLoopTimer {
     #[primary_key]
     #[auto_inc]

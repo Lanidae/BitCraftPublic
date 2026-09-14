@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_migrate_action_state(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

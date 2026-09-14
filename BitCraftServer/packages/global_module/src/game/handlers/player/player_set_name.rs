@@ -36,7 +36,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64, username: String) -> Result<
     validate_username(ctx, entity_id, &username)?;
 
     let lowercase_name = username.to_lowercase();
-    if !has_role(ctx, &ctx.sender, Role::Partner) {
+    if !has_role(ctx, &ctx.sender(), Role::Partner) {
         if lowercase_name.contains("clockwork") || lowercase_name.contains("spacetime") || lowercase_name.contains("bitcraft") {
             return Err("This name is unavailable".into());
         }

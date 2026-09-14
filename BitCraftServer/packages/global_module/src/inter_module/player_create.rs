@@ -8,7 +8,7 @@ use crate::messages::{
 use super::send_inter_module_message;
 
 pub fn send_message(ctx: &ReducerContext, region_id: u8) -> Result<(), String> {
-    let msg = PlayerCreateMsg { identity: ctx.sender };
+    let msg = PlayerCreateMsg { identity: ctx.sender() };
 
     send_inter_module_message(
         ctx,

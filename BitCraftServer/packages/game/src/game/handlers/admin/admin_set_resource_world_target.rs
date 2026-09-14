@@ -8,7 +8,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_set_resource_world_target(ctx: &ReducerContext, resource_id: i32, world_target: i32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

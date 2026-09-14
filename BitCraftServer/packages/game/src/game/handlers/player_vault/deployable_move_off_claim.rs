@@ -1,11 +1,12 @@
 use bitcraft_macro::feature_gate;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
     game::{game_state, reducer_helpers::deployable_helpers::expel_passengers, terrain_chunk::TerrainChunkCache},
     messages::components::*,
     unwrap_or_err, OffsetCoordinatesFloat, SmallHexTile,
 };
+use crate::messages::events::*;
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -95,6 +96,10 @@ pub fn deployable_move_off_claim(ctx: &ReducerContext, deployable_entity_id: u64
     }
 
     ctx.db.mobile_entity_state().entity_id().update(new_location);
+    ctx.db.deployable_disembark_event().insert(DeployableDisembarkEvent {
+        actor_id,
+        deployable_entity_id,
+    });
 
     Ok(())
 }

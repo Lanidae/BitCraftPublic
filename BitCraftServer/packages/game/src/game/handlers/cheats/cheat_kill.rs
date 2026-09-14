@@ -3,7 +3,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_kill(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatKill) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatKill) {
         return Err("Unauthorized.".into());
     }
 

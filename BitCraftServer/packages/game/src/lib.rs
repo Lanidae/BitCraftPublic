@@ -36,11 +36,14 @@ use messages::generic::{
 };
 use messages::world_gen::{WorldGenGeneratedBuilding, WorldGenGeneratedResourceDeposit};
 use region_coordinates::RegionCoordinates;
-use spacetimedb::{log, ReducerContext, Table};
+use spacetimedb::{log, CaseConversionPolicy, ReducerContext, Table};
 
 use crate::game::location_cache::*;
 use crate::messages::components::*;
 use crate::messages::static_data::*;
+
+#[spacetimedb::settings]
+const CASE_CONVERSION_POLICY: CaseConversionPolicy = CaseConversionPolicy::None;
 
 #[spacetimedb::reducer(init)]
 pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
@@ -61,7 +64,7 @@ pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
         .identity_role()
         .try_insert(IdentityRole {
             role: Role::Admin,
-            identity: ctx.sender,
+            identity: ctx.sender(),
         })
         .is_err()
     {
@@ -72,7 +75,7 @@ pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
         .identity_role()
         .try_insert(IdentityRole {
             role: Role::Admin,
-            identity: ctx.identity(),
+            identity: ctx.database_identity(),
         })
         .is_err()
     {
@@ -133,7 +136,7 @@ pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
 pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
     record_active_connection(ctx);
 
-    if let Some(developer) = ctx.db.developer().identity().find(ctx.sender) {
+    if let Some(developer) = ctx.db.developer().identity().find(ctx.sender()) {
         log::info!(
             "Developer identity connected for developer: {}, service: {}",
             developer.developer_name,
@@ -142,16 +145,16 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
         return Ok(());
     }
 
-    if has_role(ctx, &ctx.sender, Role::SkipQueue) {
+    if has_role(ctx, &ctx.sender(), Role::SkipQueue) {
         return Ok(());
     }
 
-    if ctx.db.blocked_identity().identity().find(ctx.sender).is_some() || !is_authenticated(ctx, &ctx.sender) {
-        log::info!("Blocking identity {}", ctx.sender.to_hex());
+    if ctx.db.blocked_identity().identity().find(ctx.sender()).is_some() || !is_authenticated(ctx, &ctx.sender()) {
+        log::info!("Blocking identity {}", ctx.sender().to_hex());
         return Err("Unauthorized".into());
     }
 
-    if ctx.db.user_state().identity().find(ctx.sender).is_some() {
+    if ctx.db.user_state().identity().find(ctx.sender()).is_some() {
         // Reconnecting while signed in keeps the session; sign_in is idempotent.
         return Ok(());
     }
@@ -162,7 +165,7 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
 // Newest connection wins. Updated on every connect so a stale connection's
 // disconnect can be told apart from the active one's.
 fn record_active_connection(ctx: &ReducerContext) {
-    if let (Some(user), Some(connection_id)) = (ctx.db.user_state().identity().find(ctx.sender), ctx.connection_id) {
+    if let (Some(user), Some(connection_id)) = (ctx.db.user_state().identity().find(ctx.sender()), ctx.connection_id()) {
         let active = ActiveConnectionState {
             entity_id: user.entity_id,
             connection_id,
@@ -177,13 +180,13 @@ fn record_active_connection(ctx: &ReducerContext) {
 
 #[spacetimedb::reducer(client_disconnected)]
 pub fn identity_disconnected(ctx: &ReducerContext) {
-    if let Some(user) = ctx.db.user_state().identity().find(ctx.sender) {
+    if let Some(user) = ctx.db.user_state().identity().find(ctx.sender()) {
         if let Some(active) = ctx.db.active_connection_state().entity_id().find(user.entity_id) {
             // Stale: the identity already opened a newer connection, i.e. the player
             // reconnected before this disconnect was processed. Signing out now would
             // end the live session.
-            if ctx.connection_id != Some(active.connection_id) {
-                log::info!("(sign_out) Stale connection disconnected for {:?}", ctx.sender.to_hex());
+            if ctx.connection_id() != Some(active.connection_id) {
+                log::info!("(sign_out) Stale connection disconnected for {:?}", ctx.sender().to_hex());
                 return;
             }
             ctx.db.active_connection_state().entity_id().delete(user.entity_id);
@@ -200,7 +203,7 @@ pub fn init_region_info(
     region_index: u8,
     region_count: u8,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -250,7 +253,7 @@ pub fn start_generating_world(
     region_index: u8,
     region_count: u8,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -297,7 +300,7 @@ pub fn insert_terrain_chunk(
     buildings: Vec<WorldGenGeneratedBuilding>,
     resources: Vec<WorldGenGeneratedResourceDeposit>,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -449,7 +452,7 @@ fn insert_resources(ctx: &ReducerContext, resources: Vec<WorldGenGeneratedResour
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn insert_resources_log(ctx: &ReducerContext, resources_log: ResourcesLog) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -515,7 +518,7 @@ pub fn insert_resources_log(ctx: &ReducerContext, resources_log: ResourcesLog) -
 
 #[spacetimedb::reducer]
 pub fn generate_world(ctx: &ReducerContext, world_definition: WorldGenWorldDefinition) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -539,7 +542,7 @@ pub fn generate_world(ctx: &ReducerContext, world_definition: WorldGenWorldDefin
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn generate_dev_island(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -558,7 +561,7 @@ pub fn generate_dev_island(ctx: &ReducerContext) -> Result<(), String> {
 
 #[spacetimedb::reducer]
 pub fn generate_flat_world(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -707,7 +710,7 @@ fn commit_generated_world(ctx: &ReducerContext, generated_world: GeneratedWorld)
 #[spacetimedb::reducer]
 pub fn stop_agents(ctx: &ReducerContext) {
     //DAB Note: rename this to pause_agents
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return;
     }
 
@@ -725,7 +728,7 @@ pub fn stop_agents(ctx: &ReducerContext) {
 #[spacetimedb::reducer]
 pub fn start_agents(ctx: &ReducerContext) {
     //DAB Note: rename this to resume_agents
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return;
     }
 
@@ -748,7 +751,7 @@ pub fn start_agents(ctx: &ReducerContext) {
 #[spacetimedb::reducer]
 pub fn force_start_agents(ctx: &ReducerContext) {
     // !!! WARNING - THIS MAY CAUSE AGENTS TO GET DUPLICATED !!!
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return;
     }
 

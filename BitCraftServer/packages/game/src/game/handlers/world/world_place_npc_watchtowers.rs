@@ -47,7 +47,7 @@ pub fn world_place_npc_watchtowers(
     ignore_claims: bool,
     ignore_dimension_rules: bool,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -240,7 +240,7 @@ pub fn world_place_npc_watchtowers(
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn world_clear_npc_watchtowers(ctx: &ReducerContext, building_entity_ids: Vec<u64>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

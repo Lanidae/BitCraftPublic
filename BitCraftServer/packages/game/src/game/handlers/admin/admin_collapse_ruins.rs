@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_collapse_ruins(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -25,7 +25,7 @@ pub fn admin_collapse_ruins(ctx: &ReducerContext) -> Result<(), String> {
 
 #[spacetimedb::reducer]
 pub fn admin_collapse_ruin(ctx: &ReducerContext, ruin_building_entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

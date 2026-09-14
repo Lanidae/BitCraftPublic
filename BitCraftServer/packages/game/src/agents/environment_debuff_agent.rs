@@ -10,16 +10,16 @@ use crate::{
 };
 use spacetimedb::{log, ReducerContext, Table};
 
-#[spacetimedb::table(name = active_environment_buff_state, 
-    index(name = entity_id, btree(columns = [entity_id])), 
-    index(name = player_buff, btree(columns = [entity_id, buff_id])))]
+#[spacetimedb::table(accessor = active_environment_buff_state, 
+    index(accessor = entity_id, btree(columns = [entity_id])), 
+    index(accessor = player_buff, btree(columns = [entity_id, buff_id])))]
 #[derive(Clone, Debug)]
 pub struct ActiveEnvironmentBuffState {
     pub entity_id: u64,
     pub buff_id: i32,
 }
 
-#[spacetimedb::table(name = environment_debuff_loop_timer, scheduled(environment_debuff_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = environment_debuff_loop_timer, scheduled(environment_debuff_agent_loop, at = scheduled_at))]
 pub struct EnvironmentDebuffLoopTimer {
     #[primary_key]
     #[auto_inc]

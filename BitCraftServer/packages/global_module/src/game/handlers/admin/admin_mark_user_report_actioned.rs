@@ -1,4 +1,4 @@
-﻿use spacetimedb::ReducerContext;
+use spacetimedb::ReducerContext;
 
 use crate::{
     game::handlers::authentication::has_role,
@@ -8,7 +8,7 @@ use crate::messages::components::{player_report_state};
 
 #[spacetimedb::reducer]
 pub fn admin_mark_user_report_as_actioned(ctx: &ReducerContext, entity_id: u64, actioned: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

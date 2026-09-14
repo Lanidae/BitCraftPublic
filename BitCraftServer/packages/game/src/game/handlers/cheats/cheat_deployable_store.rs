@@ -6,7 +6,7 @@ use super::cheat_type::{can_run_cheat, CheatType};
 
 #[spacetimedb::reducer]
 pub fn cheat_deployable_store(ctx: &ReducerContext, deployable_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDeployableStore) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDeployableStore) {
         return Err("Unauthorized.".into());
     }
 

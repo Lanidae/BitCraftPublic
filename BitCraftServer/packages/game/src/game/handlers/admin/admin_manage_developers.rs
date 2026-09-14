@@ -19,7 +19,7 @@ pub fn insert_developer_identity(
     email: String,
     is_external: bool,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -52,7 +52,7 @@ pub fn insert_developer_identity(
 
 #[spacetimedb::reducer]
 pub fn delete_developer_identity(ctx: &ReducerContext, identity: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

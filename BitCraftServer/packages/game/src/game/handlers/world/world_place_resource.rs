@@ -1,4 +1,4 @@
-﻿use crate::agents::resources_regen::{try_spawn_resource_options, PrecomputeOccupiedTiles, ResourceClumpDescExtended};
+use crate::agents::resources_regen::{try_spawn_resource_options, PrecomputeOccupiedTiles, ResourceClumpDescExtended};
 use crate::game::coordinates::SmallHexTile;
 use crate::game::dimensions::OVERWORLD;
 use crate::game::game_state;
@@ -20,7 +20,7 @@ use std::collections::HashMap;
 
 #[spacetimedb::reducer]
 pub fn world_place_resource(ctx: &ReducerContext, request: WorldPlaceResourceRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

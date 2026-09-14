@@ -9,7 +9,7 @@ use spacetimedb::ReducerContext;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn cheat_remove_entity_building(ctx: &ReducerContext, building_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatRemoveEntityBuilding) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatRemoveEntityBuilding) {
         return Err("Unauthorized.".into());
     }
 

@@ -2,7 +2,7 @@ use spacetimedb::ReducerContext;
 
 use crate::{game::reducer_helpers::interior_helpers, messages::authentication::ServerIdentity, OffsetCoordinatesFloat};
 
-#[spacetimedb::table(name = destroy_dimension_network_timer, scheduled(destroy_dimension_network, at = scheduled_at))]
+#[spacetimedb::table(accessor = destroy_dimension_network_timer, scheduled(destroy_dimension_network, at = scheduled_at))]
 pub struct DestroyDimensionNetworkTimer {
     #[primary_key]
     #[auto_inc]

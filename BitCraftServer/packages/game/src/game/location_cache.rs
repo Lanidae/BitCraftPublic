@@ -17,7 +17,7 @@ pub struct RuinsEntityValuePair {
     pub coordinates: SmallHexTile,
 }
 
-#[spacetimedb::table(name = location_cache)]
+#[spacetimedb::table(accessor = location_cache)]
 pub struct LocationCache {
     #[primary_key]
     pub version: i32,

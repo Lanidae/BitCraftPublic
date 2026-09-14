@@ -56,7 +56,7 @@ fn purchase_premium_service(
     if deduct_hub_shards {
         ctx.db.premium_purchase_state().insert(PremiumPurchaseState {
             entity_id: 0,
-            identity: ctx.sender,
+            identity: ctx.sender(),
             collectible_desc_ids: None,
             price: premium_service_desc.price,
             timestamp: ctx.timestamp,

@@ -17,7 +17,7 @@ use crate::{
 pub fn purchase_premium_item(ctx: &ReducerContext, premium_item_desc_id: i32) -> Result<(), String> {
     let actor_id = game_state::actor_id(&ctx, true)?;
 
-    let user_region_state = unwrap_or_err!(ctx.db.user_region_state().identity().find(ctx.sender), "Unknown user");
+    let user_region_state = unwrap_or_err!(ctx.db.user_region_state().identity().find(ctx.sender()), "Unknown user");
     let mut player_shard_state = unwrap_or_err!(ctx.db.player_shard_state().entity_id().find(&actor_id), "Unknown PlayerShardState");
     let premium_item_desc = unwrap_or_err!(ctx.db.premium_item_desc().id().find(premium_item_desc_id), "Unknown premium item");
 
@@ -34,7 +34,7 @@ pub fn purchase_premium_item(ctx: &ReducerContext, premium_item_desc_id: i32) ->
 
     ctx.db.premium_purchase_state().insert(PremiumPurchaseState {
         entity_id: 0,
-        identity: ctx.sender,
+        identity: ctx.sender(),
         collectible_desc_ids: Some(premium_item_desc.collectible_ids),
         price: premium_item_desc.price,
         timestamp: ctx.timestamp,
@@ -44,7 +44,7 @@ pub fn purchase_premium_item(ctx: &ReducerContext, premium_item_desc_id: i32) ->
 
     grant_hub_item::send_message(
         ctx,
-        ctx.sender,
+        ctx.sender(),
         HubItemType::PremiumItem,
         premium_item_desc_id,
         premium_item_desc.quantity,

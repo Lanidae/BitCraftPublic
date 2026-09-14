@@ -21,7 +21,7 @@ use crate::{agents, building_state, footprint_tile_state, paved_tile_state, reso
 const CHUNK_WIDTH: usize = world_definition::TERRAIN_CHUNK_WIDTH as usize;
 const CHUNK_HEIGHT: usize = world_definition::TERRAIN_CHUNK_HEIGHT as usize;
 
-#[spacetimedb::table(name = resources_regen_loop_timer, scheduled(resources_regen, at = scheduled_at)
+#[spacetimedb::table(accessor = resources_regen_loop_timer, scheduled(resources_regen, at = scheduled_at)
 )]
 pub struct ResourcesRegenLoopTimer {
     #[primary_key]

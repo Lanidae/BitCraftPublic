@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use spacetimedb::ReducerContext;
 
 use crate::messages::components::*;
@@ -51,8 +53,11 @@ impl Discovery {
     }
 
     pub fn acquire_item_stacks(&mut self, ctx: &ReducerContext, item_stacks: &Vec<ItemStack>) {
+        let mut seen = HashSet::new();
         for item_stack in item_stacks {
-            self.acquire_item_stack(ctx, &item_stack);
+            if seen.insert((item_stack.item_id, item_stack.item_type as i32)) {
+                self.acquire_item_stack(ctx, item_stack);
+            }
         }
     }
 }

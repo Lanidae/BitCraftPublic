@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_delete_item(ctx: &ReducerContext, inventory_entity_id: u64, pocket_index: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDeleteItem) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDeleteItem) {
         return Err("Unauthorized.".into());
     }
 

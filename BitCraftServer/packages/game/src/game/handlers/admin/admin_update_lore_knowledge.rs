@@ -8,7 +8,7 @@ use spacetimedb::{log, ReducerContext, Table};
 
 #[spacetimedb::reducer]
 fn admin_update_lore_knowledge(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

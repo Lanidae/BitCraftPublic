@@ -135,7 +135,7 @@ impl PlayerActionState {
             return move_validation_helpers::action_validation_strike(ctx, entity_id, action_type);
         }
 
-        player_action_helpers::fail_timing(ctx, entity_id, action_type, format!("Tried to {{0}} too quickly|~{:?}", action_type))
+        player_action_helpers::fail_timing(ctx, entity_id, action_type, format!("Tried to {:?} too quickly", action_type))
     }
 
     pub fn validate_timestamp_basic(
@@ -162,7 +162,7 @@ impl PlayerActionState {
                 return Err(String::new());
             }
             return Err(format!(
-                "Invalid action type: received {{0}}, expected {{1}}|~{:?}|~{:?}",
+                "Invalid action type: received {:?}, expected {:?}",
                 player_action.action_type, action_type
             )
             .into());

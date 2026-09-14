@@ -6,6 +6,7 @@ use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::{
     game::{coordinates::*, entities::location::MobileEntityState, game_state},
+    messages::events::*,
     messages::{action_request::PlayerClimbRequest, components::*, static_data::ClimbRequirementDesc},
     unwrap_or_err,
 };
@@ -43,7 +44,7 @@ pub fn player_climb_start(ctx: &ReducerContext, request: PlayerClimbRequest) -> 
     let mut terrain_cache = TerrainChunkCache::empty();
     let target = Some(FloatHexTile::from(request.destination).parent_large_tile().hashcode_long() as u64);
     let delay = event_delay(ctx, &mut terrain_cache, &request);
-    if delay.is_err() {
+    let result = if delay.is_err() {
         player_action_helpers::fail_action(actor_id, PlayerActionType::Climb.get_layer(ctx), delay.err().unwrap())
     } else {
         player_action_helpers::start_action(
@@ -56,7 +57,13 @@ pub fn player_climb_start(ctx: &ReducerContext, request: PlayerClimbRequest) -> 
             reduce(ctx, &mut terrain_cache, actor_id, &request, true),
             request.timestamp,
         )
+    };
+    if result.is_ok() {
+        ctx.db
+            .player_climb_start_event()
+            .insert(PlayerClimbStartEvent { actor_id, request });
     }
+    result
 }
 
 #[spacetimedb::reducer]

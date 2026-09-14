@@ -12,7 +12,7 @@ use spacetimedb::ReducerContext;
 // Similar to: build.rs, lib.rs,
 #[spacetimedb::reducer]
 pub fn cheat_compendium_place_resource(ctx: &ReducerContext, request: CheatCompendiumItemPlaceRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatCompendiumPlaceResource) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatCompendiumPlaceResource) {
         return Err("Unauthorized.".into());
     }
 

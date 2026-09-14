@@ -12,7 +12,7 @@ use crate::{
     unwrap_or_return,
 };
 
-#[spacetimedb::table(name = enemy_regen_loop_timer, scheduled(enemy_regen_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = enemy_regen_loop_timer, scheduled(enemy_regen_agent_loop, at = scheduled_at))]
 pub struct EnemyRegenLoopTimer {
     #[primary_key]
     #[auto_inc]

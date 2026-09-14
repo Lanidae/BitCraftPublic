@@ -11,7 +11,7 @@ use spacetimedb::{log, ReducerContext};
 
 #[spacetimedb::reducer]
 pub fn admin_insert_resource_growth_timer(ctx: &ReducerContext, resource_id: i32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

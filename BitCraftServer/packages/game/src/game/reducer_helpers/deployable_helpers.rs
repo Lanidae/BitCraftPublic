@@ -147,7 +147,7 @@ pub fn deploy_deployable(
         .is_some()
     {
         let deployable_type = deployable_description.deployable_type;
-        return Err(format!("You can only deploy one {{0}}.|~{deployable_type}"));
+        return Err(format!("You can only deploy one {deployable_type}."));
     }
 
     let player_coordinates = coordinates_any_float(ctx, actor_id);

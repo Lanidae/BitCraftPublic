@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn admin_remove_player_previous_name(ctx: &ReducerContext, name: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

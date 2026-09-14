@@ -15,7 +15,7 @@ use crate::{
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_clean_sieges(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

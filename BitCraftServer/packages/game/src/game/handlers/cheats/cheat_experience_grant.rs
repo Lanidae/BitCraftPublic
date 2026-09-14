@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_experience_grant(ctx: &ReducerContext, request: CheatExperienceGrantRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatExperienceGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatExperienceGrant) {
         return Err("Unauthorized.".into());
     }
 

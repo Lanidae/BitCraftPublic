@@ -139,7 +139,7 @@ pub fn empire_player_leave_impl(ctx: &ReducerContext, empire_entity_id: u64) -> 
     let player_name = ctx.db.player_username_state().entity_id().find(&actor_id).unwrap().username;
     EmpireNotificationState::new(ctx, EmpireNotificationType::MemberLeft, empire_entity_id, vec![player_name]);
 
-    let region = unwrap_or_err!(ctx.db.user_region_state().identity().find(ctx.sender), "Region not found").region_id;
+    let region = unwrap_or_err!(ctx.db.user_region_state().identity().find(ctx.sender()), "Region not found").region_id;
     send_inter_module_message(
         ctx,
         crate::messages::inter_module::MessageContentsV5::OnPlayerLeftEmpire(OnPlayerLeftEmpireMsg {
@@ -261,7 +261,7 @@ pub fn empire_set_rank_title(ctx: &ReducerContext, request: EmpireSetRankTitleRe
         "Empire doesn't have own this rank"
     );
 
-    UserModerationState::validate_chat_privileges(ctx, &ctx.sender, "Your naming privileges have been suspended")?;
+    UserModerationState::validate_chat_privileges(ctx, &ctx.sender(), "Your naming privileges have been suspended")?;
 
     let sanitized_title_name = sanitize_user_inputs(&request.title);
     if let Err(_) = is_user_text_input_valid(&sanitized_title_name, 35, true) {
@@ -351,7 +351,7 @@ pub fn empire_set_player_rank(ctx: &ReducerContext, request: EmpireSetPlayerRank
             .count();
 
         if current_count + 1 > maximum_count as usize {
-            return Err(format!("Your empire is limited to {{0}} instances of that rank.|~{maximum_count}"));
+            return Err(format!("Your empire is limited to {maximum_count} instances of that rank."));
         }
     }
 
@@ -432,7 +432,7 @@ pub fn empire_rename(ctx: &ReducerContext, new_name: String) -> Result<(), Strin
     }
 
     // Prevent the player from using an empire name assigned to a different player
-    let identity = ctx.sender;
+    let identity = ctx.sender();
     if let Some(previous_entry) = ctx
         .db
         .previous_empire_name_state()
@@ -470,7 +470,7 @@ pub fn empire_rename(ctx: &ReducerContext, new_name: String) -> Result<(), Strin
     Ok(())
 }
 
-#[spacetimedb::table(name = empire_craft_supplies_timer, scheduled(empire_craft_supplies_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = empire_craft_supplies_timer, scheduled(empire_craft_supplies_scheduled, at = scheduled_at))]
 pub struct EmpireCraftSuppliesTimer {
     #[primary_key]
     #[auto_inc]
@@ -488,7 +488,7 @@ pub fn empire_craft_supplies_scheduled(ctx: &ReducerContext, timer: EmpireCraftS
 #[spacetimedb::reducer]
 #[feature_gate("craft")]
 pub fn empire_craft_supplies(ctx: &ReducerContext, foundry_entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -1009,7 +1009,7 @@ pub fn empire_transfer_watchtower_ownership(
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_recalculate_empire_upkeeps(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

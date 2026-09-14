@@ -8,7 +8,7 @@ use crate::{
     messages::{authentication::ServerIdentity, static_data::*},
 };
 
-#[spacetimedb::table(name = teleportation_energy_regen_loop_timer, scheduled(teleportation_energy_regen_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = teleportation_energy_regen_loop_timer, scheduled(teleportation_energy_regen_agent_loop, at = scheduled_at))]
 pub struct TeleportationEnergyRegenLoopTimer {
     #[primary_key]
     #[auto_inc]

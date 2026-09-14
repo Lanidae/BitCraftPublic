@@ -5,10 +5,11 @@ use crate::game::game_state;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::messages::components::PlayerActionState;
+use crate::messages::events::*;
 use crate::table_caches::claim_tile_state_cache::ClaimTileStateCache;
 use crate::table_caches::location_state_cache::LocationStateCache;
 use crate::{game::permission_helper, messages::action_request::PlayerPavingDestroyTileRequest, messages::components::*, unwrap_or_err};
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -18,7 +19,7 @@ pub fn paving_destroy_tile_start(ctx: &ReducerContext, request: PlayerPavingDest
 
     let target = Some(request.coordinates.hashcode_long() as u64);
     let delay = event_delay(actor_id, &request);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::DestroyPaving,
@@ -27,7 +28,13 @@ pub fn paving_destroy_tile_start(ctx: &ReducerContext, request: PlayerPavingDest
         delay,
         self::reduce(ctx, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .paving_destroy_tile_start_event()
+            .insert(PavingDestroyTileStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

@@ -1,12 +1,13 @@
 use bitcraft_macro::feature_gate;
 use bitcraft_macro::shared_table_reducer;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
     game::game_state::{self, game_state_filters},
     messages::{action_request::PlayerHousingEnterRequest, components::*},
     unwrap_or_err,
 };
+use crate::messages::events::*;
 
 use super::player_housing_update::player_housing_update_impl;
 
@@ -43,5 +44,7 @@ pub fn player_housing_enter(ctx: &ReducerContext, request: PlayerHousingEnterReq
         ctx.db.location_state().entity_id().find(player_housing.exit_portal_entity_id),
         "Cannot find the house entry point"
     );
-    game_state_filters::teleport_to(ctx, actor_id, location.coordinates().into(), false, 0.0)
+    game_state_filters::teleport_to(ctx, actor_id, location.coordinates().into(), false, 0.0)?;
+    ctx.db.player_teleport_event().insert(PlayerTeleportEvent { actor_id });
+    Ok(())
 }

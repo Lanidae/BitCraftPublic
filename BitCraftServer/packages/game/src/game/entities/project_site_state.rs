@@ -112,7 +112,7 @@ impl ProjectSiteState {
                     if required_paving == 0 {
                         return Err("This building requires paving!".into());
                     } else {
-                        return Err(format!("This building requires tier {{0}} paving!|~{}", required_paving).into());
+                        return Err(format!("This building requires tier {} paving!", required_paving).into());
                     }
                 }
             }

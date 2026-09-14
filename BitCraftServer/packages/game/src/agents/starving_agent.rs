@@ -10,7 +10,7 @@ use crate::{
     parameters_desc, signed_in_player_state, starving_player_state, ParametersDesc,
 };
 
-#[spacetimedb::table(name = starving_loop_timer, scheduled(starving_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = starving_loop_timer, scheduled(starving_agent_loop, at = scheduled_at))]
 pub struct StarvingLoopTimer {
     #[primary_key]
     #[auto_inc]

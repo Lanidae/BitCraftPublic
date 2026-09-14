@@ -11,7 +11,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_dungeon_update_portals(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

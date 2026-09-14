@@ -14,7 +14,7 @@ use crate::{
 };
 use crate::{building_state, location_cache, npc_desc, npc_state};
 
-#[spacetimedb::table(name = npc_ai_loop_timer, scheduled(npc_ai_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = npc_ai_loop_timer, scheduled(npc_ai_agent_loop, at = scheduled_at))]
 pub struct NpcAiLoopTimer {
     #[primary_key]
     #[auto_inc]

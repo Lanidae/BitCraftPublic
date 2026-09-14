@@ -163,7 +163,7 @@ pub fn is_npc_empire(ctx: &ReducerContext, empire_entity_id: u64) -> bool {
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn world_clear_npc_empire(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -226,7 +226,7 @@ pub fn admin_change_empire_emblem(
     color1_id: i32,
     color2_id: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -235,7 +235,7 @@ pub fn admin_change_empire_emblem(
         .empire_emblem_state()
         .entity_id()
         .find(&empire_entity_id)
-        .ok_or_else(|| format!("Empire emblem not found for entity_id {{0}}|~{}", empire_entity_id))?;
+        .ok_or_else(|| format!("Empire emblem not found for entity_id {}", empire_entity_id))?;
 
     emblem.icon_id = icon_id;
     emblem.shape_id = shape_id;
@@ -259,7 +259,7 @@ pub fn admin_change_empire_emblem(
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_assign_empire_chunks(ctx: &ReducerContext, chunk_indexes: Vec<u64>, watchtower_entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -268,7 +268,7 @@ pub fn admin_assign_empire_chunks(ctx: &ReducerContext, chunk_indexes: Vec<u64>,
         .empire_node_state()
         .entity_id()
         .find(&watchtower_entity_id)
-        .ok_or_else(|| format!("Watchtower node {{0}} not found|~{}", watchtower_entity_id))?;
+        .ok_or_else(|| format!("Watchtower node {} not found", watchtower_entity_id))?;
 
     let empire_entity_id = node.empire_entity_id;
     let mut count = 0u64;
@@ -310,7 +310,7 @@ pub fn admin_assign_empire_chunks(ctx: &ReducerContext, chunk_indexes: Vec<u64>,
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_unassign_empire_chunks(ctx: &ReducerContext, chunk_indexes: Vec<u64>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -340,7 +340,7 @@ pub fn world_form_npc_empire(
     color1_id: i32,
     color2_id: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -353,7 +353,7 @@ pub fn world_form_npc_empire(
     // Validate color IDs against the static data table (same check as empire_form)
     if ctx.db.empire_color_desc().id().find(&color1_id).is_none() || ctx.db.empire_color_desc().id().find(&color2_id).is_none() {
         return Err(format!(
-            "Invalid empire colors: color1_id={{0}}, color2_id={{1}}. Must be valid EmpireColorDesc IDs.|~{}|~{}",
+            "Invalid empire colors: color1_id={}, color2_id={}. Must be valid EmpireColorDesc IDs.",
             color1_id, color2_id
         ));
     }

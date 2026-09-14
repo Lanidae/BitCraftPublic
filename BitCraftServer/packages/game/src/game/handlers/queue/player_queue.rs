@@ -18,22 +18,22 @@ use super::end_grace_period::{end_grace_period_timer, EndGracePeriodTimer, Grace
 #[feature_gate]
 pub fn player_queue_join(ctx: &ReducerContext) -> Result<(), String> {
     let user_state = unwrap_or_err!(
-        ctx.db.user_state().identity().find(ctx.sender),
+        ctx.db.user_state().identity().find(ctx.sender()),
         "You must have a character to join the queue"
     );
 
     let region_sign_in_parameters = unwrap_or_err!(RegionSignInParameters::get(ctx), "Failed to get RegionSignInParameters");
-    if region_sign_in_parameters.is_signing_in_blocked && !has_role(ctx, &ctx.sender, Role::Gm) {
+    if region_sign_in_parameters.is_signing_in_blocked && !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err(format!("Server is unavailable at this time, please try again later."));
     }
 
     if user_state.can_sign_in {
-        EndGracePeriodTimer::new(ctx, ctx.sender, GracePeriodType::SignIn);
+        EndGracePeriodTimer::new(ctx, ctx.sender(), GracePeriodType::SignIn);
         return Ok(());
     }
 
     //Rejoin the queue in case of a client crash / alt + f4
-    if let Some(end_grace_period_timer) = ctx.db.end_grace_period_timer().identity().find(ctx.sender) {
+    if let Some(end_grace_period_timer) = ctx.db.end_grace_period_timer().identity().find(ctx.sender()) {
         ctx.db
             .end_grace_period_timer()
             .scheduled_id()
@@ -41,7 +41,7 @@ pub fn player_queue_join(ctx: &ReducerContext) -> Result<(), String> {
         return Ok(());
     }
 
-    if has_role(ctx, &ctx.sender, Role::SkipQueue) {
+    if has_role(ctx, &ctx.sender(), Role::SkipQueue) {
         allow_sign_in(ctx, user_state);
         return Ok(());
     }
@@ -66,7 +66,7 @@ pub fn player_queue_join(ctx: &ReducerContext) -> Result<(), String> {
 #[spacetimedb::reducer]
 #[feature_gate]
 pub fn player_queue_leave(ctx: &ReducerContext) -> Result<(), String> {
-    if let Some(user_state) = ctx.db.user_state().identity().find(&ctx.sender) {
+    if let Some(user_state) = ctx.db.user_state().identity().find(&ctx.sender()) {
         dequeue(ctx, user_state.entity_id);
     }
 
@@ -96,7 +96,7 @@ pub fn allow_sign_in(ctx: &ReducerContext, mut user_state: UserState) {
     EndGracePeriodTimer::new(ctx, user_state.identity, GracePeriodType::SignIn);
 
     user_state.can_sign_in = true;
-    ctx.db.user_state().identity().update(user_state);
+    ctx.db.user_state().entity_id().update(user_state);
 
     ctx.db.user_previous_region_state().identity().delete(&identity);
 }

@@ -14,7 +14,7 @@ use spacetimedb::{ReducerContext, Table};
 // Similar to paving_add_tile::reduce()
 #[spacetimedb::reducer]
 pub fn cheat_paving_add_tile(ctx: &ReducerContext, request: PlayerPavingPlaceTileRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatPavingAddTile) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatPavingAddTile) {
         return Err("Unauthorized.".into());
     }
 

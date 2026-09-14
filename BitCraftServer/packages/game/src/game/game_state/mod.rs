@@ -68,7 +68,7 @@ pub fn create_dimension(ctx: &ReducerContext) -> u32 {
 }
 
 pub fn actor_id(ctx: &ReducerContext, must_be_signed_in: bool) -> Result<u64, String> {
-    match ctx.db.user_state().identity().find(&ctx.sender) {
+    match ctx.db.user_state().identity().find(&ctx.sender()) {
         Some(user) => {
             if must_be_signed_in {
                 ensure_signed_in(ctx, user.entity_id)?;
@@ -84,7 +84,7 @@ pub fn ensure_signed_in(ctx: &ReducerContext, entity_id: u64) -> Result<(), Stri
         return Err("Not signed in".into());
     }
     // Only the newest connection may act; None means a non-player caller.
-    if let (Some(connection_id), Some(active)) = (ctx.connection_id, ctx.db.active_connection_state().entity_id().find(&entity_id)) {
+    if let (Some(connection_id), Some(active)) = (ctx.connection_id(), ctx.db.active_connection_state().entity_id().find(&entity_id)) {
         if connection_id != active.connection_id {
             return Err("Stale connection".into());
         }

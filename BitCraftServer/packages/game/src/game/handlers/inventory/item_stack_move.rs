@@ -80,7 +80,7 @@ pub fn item_stack_move(ctx: &ReducerContext, request: PlayerItemStackMoveRequest
 
     let item_stack = unwrap_or_err!(
         source_inventory.get_pocket_contents(pocket_index as usize),
-        "No items in this pocket: entity_id: {{0}} pocket_index: {{1}}|~{}|~{}",
+        "No items in this pocket: entity_id: {} pocket_index: {}",
         source_inventory.entity_id,
         pocket_index
     );
@@ -113,7 +113,7 @@ pub fn item_stack_move(ctx: &ReducerContext, request: PlayerItemStackMoveRequest
                 }
                 if forced_target_index.is_none() && function.allowed_item_id_per_slot.len() > 0 {
                     let cargo_name = ctx.db.cargo_desc().id().find(&item_stack.item_id).unwrap().name;
-                    let err_msg = format!("You cannot put {{0}} in this storage.|~{}", cargo_name);
+                    let err_msg = format!("You cannot put {} in this storage.", cargo_name);
                     return Err(err_msg);
                 }
             }

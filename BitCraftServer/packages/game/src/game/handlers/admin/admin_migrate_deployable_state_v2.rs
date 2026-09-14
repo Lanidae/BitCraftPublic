@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_migrate_deployable_state_v2(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

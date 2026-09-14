@@ -3,14 +3,14 @@ use crate::messages::authentication::Role;
 use crate::messages::components::*;
 use spacetimedb::{self, ReducerContext, Table};
 
-#[spacetimedb::table(name = official_translators, public)]
+#[spacetimedb::table(accessor = official_translators, public)]
 pub struct OfficialTranslators {
     pub lang: String,
     #[index(btree)]
     pub player_entity_id: u64,
 }
 
-#[spacetimedb::table(name = translation_corrections, public)]
+#[spacetimedb::table(accessor = translation_corrections, public)]
 pub struct TranslationCorrections {
     #[primary_key]
     #[auto_inc]
@@ -58,7 +58,7 @@ pub fn correct_translation(ctx: &ReducerContext, string_index: u32, lang: String
 
 #[spacetimedb::reducer]
 pub fn add_official_translator(ctx: &ReducerContext, username: String, lang: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

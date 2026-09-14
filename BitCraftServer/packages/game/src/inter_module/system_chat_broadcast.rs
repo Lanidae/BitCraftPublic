@@ -7,7 +7,7 @@ use crate::messages::{
 
 use super::send_inter_module_message;
 
-#[spacetimedb::table(name = sytem_chat_broadcast_timer, scheduled(system_chat_broadcast_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = sytem_chat_broadcast_timer, scheduled(system_chat_broadcast_scheduled, at = scheduled_at))]
 pub struct SystemChatBroadcastTimer {
     #[primary_key]
     #[auto_inc]

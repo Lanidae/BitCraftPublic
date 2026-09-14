@@ -27,10 +27,10 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
     let now_ms = ctx.timestamp;
 
-    log::info!("[{:?}] Signin {}, {:?}", now_ms, actor_id, &ctx.sender.to_hex());
+    log::info!("[{:?}] Signin {}, {:?}", now_ms, actor_id, &ctx.sender().to_hex());
 
     let region_sign_in_parameters = unwrap_or_err!(RegionSignInParameters::get(ctx), "Failed to get RegionSignInParameters");
-    if region_sign_in_parameters.is_signing_in_blocked && !has_role(ctx, &ctx.sender, Role::Gm) {
+    if region_sign_in_parameters.is_signing_in_blocked && !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err(format!("Server is unavailable at this time, please try again later."));
     }
 
@@ -56,7 +56,7 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
         return Ok(());
     }
 
-    let user = unwrap_or_err!(ctx.db.user_state().identity().find(&ctx.sender), "No user found");
+    let user = unwrap_or_err!(ctx.db.user_state().identity().find(&ctx.sender()), "No user found");
     if !user.can_sign_in {
         return Err(format!("You must join the queue first."));
     }
@@ -83,7 +83,8 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
         InteriorPlayerCountState::inc(ctx, network.dimension_network_entity_id);
     }
 
-    let moderations = ctx.db.user_moderation_state().target_identity().filter(&ctx.sender);
+    let sender = ctx.sender();
+    let moderations = ctx.db.user_moderation_state().target_identity().filter(&sender);
 
     for moderation in moderations {
         if moderation.user_moderation_policy == UserModerationPolicy::PermanentBlockLogin {
@@ -98,7 +99,7 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
     }
 
     //Cancel all scheduled grace periods
-    ctx.db.end_grace_period_timer().identity().delete(ctx.sender);
+    ctx.db.end_grace_period_timer().identity().delete(ctx.sender());
 
     player.signed_in = true;
     player.session_start_timestamp = game_state::unix(ctx.timestamp);

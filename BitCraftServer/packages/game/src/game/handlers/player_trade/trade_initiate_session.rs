@@ -41,7 +41,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64, acceptor_entity_id: u64) -> 
         }
 
         if session.initiator_entity_id == acceptor_entity_id || session.acceptor_entity_id == acceptor_entity_id {
-            return Err(String::from(format!("{{0}} is currently trading|~{}", i18n::dont_localize(acceptor_username))).into());
+            return Err(String::from(format!("{} is currently trading", i18n::dont_localize(acceptor_username))).into());
         }
     }
 
@@ -50,7 +50,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64, acceptor_entity_id: u64) -> 
     }
 
     if ThreatState::in_combat(ctx, acceptor_entity_id) {
-        let error_string = String::from(format!("{{0}} cannot trade right now.|~{}", i18n::dont_localize(acceptor_username)));
+        let error_string = String::from(format!("{} cannot trade right now.", i18n::dont_localize(acceptor_username)));
         return Err(error_string.into());
     }
 

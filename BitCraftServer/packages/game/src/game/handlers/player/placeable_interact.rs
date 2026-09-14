@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use bitcraft_macro::feature_gate;
 use spacetimedb::rand::Rng;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
     game::{
@@ -15,6 +15,7 @@ use crate::{
     messages::{
         action_request::PlayerPlaceableInteractRequest,
         components::*,
+        events::*,
         game_util::{ItemStack, ItemType},
         static_data::{PlaceableSelfBuffChance, *},
     },
@@ -50,7 +51,7 @@ fn format_missing_input_message(ctx: &ReducerContext, required_stack: &ItemStack
             .unwrap_or_else(|| "Unknown cargo".into()),
     };
 
-    format!("Requires {{0}} {{1}}|~{}|~{}", required_stack.quantity, item_name)
+    format!("Requires {} {}", required_stack.quantity, item_name)
 }
 
 fn event_delay_recipe_id(
@@ -82,16 +83,22 @@ pub fn placeable_interact_start(ctx: &ReducerContext, request: PlayerPlaceableIn
     let target = Some(request.target_entity_id);
     let (delay, recipe_id) = event_delay_recipe_id(ctx, &request, &stats);
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::InteractPlaceable,
         target,
         recipe_id,
         delay,
-        reduce(ctx, actor_id, request, stats, true),
+        reduce(ctx, actor_id, request.clone(), stats, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .placeable_interact_start_event()
+            .insert(PlaceableInteractStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -118,6 +125,8 @@ fn reduce(
     HealthState::check_incapacitated(ctx, actor_id, true)?;
 
     PlayerActionState::validate_timestamp_basic(ctx, actor_id, PlayerActionType::InteractPlaceable, request.timestamp)?;
+    let mut outcome_event = None;
+
     if !dry_run {
         PlayerActionState::validate(ctx, actor_id, PlayerActionType::InteractPlaceable, Some(request.target_entity_id))?;
         PlayerActionState::validate_action_timing(ctx, actor_id, PlayerActionType::InteractPlaceable, request.timestamp)?;
@@ -325,6 +334,12 @@ fn reduce(
         extract_outcome.last_timestamp = ctx.timestamp;
         extract_outcome.is_crit = is_crit;
         ctx.db.extract_outcome_state().entity_id().update(extract_outcome);
+        outcome_event = Some(ExtractEvent {
+            actor_entity_id: actor_id,
+            target_entity_id: placeable.entity_id,
+            damage: damage_output as i32,
+            is_crit,
+        });
 
         InventoryState::deposit_to_player_inventory_and_nearby_deployables(
             ctx,
@@ -337,6 +352,10 @@ fn reduce(
         )?;
 
         let _ = experience_damage_output;
+    }
+
+    if let Some(outcome_event) = outcome_event {
+        ctx.db.extract_event().insert(outcome_event);
     }
 
     Ok(())

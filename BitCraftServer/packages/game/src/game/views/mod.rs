@@ -5,11 +5,11 @@ use crate::messages::components::{
     ProspectingParticipant,
 };
 
-#[view(name = prospecting_participants, public)]
+#[view(accessor = prospecting_participants, name = "prospecting_participants", public)]
 pub fn prospecting_participants(ctx: &ViewContext) -> Vec<ProspectingParticipant> {
     let mut participants = Vec::new();
 
-    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender) {
+    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender()) {
         Some(user) => user.entity_id,
         None => return participants,
     };
@@ -38,9 +38,9 @@ pub fn prospecting_participants(ctx: &ViewContext) -> Vec<ProspectingParticipant
     participants
 }
 
-#[view(name = exposed_breadcrumbs, public)]
+#[view(accessor = exposed_breadcrumbs, name = "exposed_breadcrumbs", public)]
 pub fn exposed_breadcrumbs(ctx: &ViewContext) -> Vec<CrumbTrailExposedState> {
-    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender) {
+    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender()) {
         Some(user) => user.entity_id,
         None => return Vec::new(),
     };

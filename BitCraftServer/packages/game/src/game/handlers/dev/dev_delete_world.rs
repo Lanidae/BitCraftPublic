@@ -12,11 +12,11 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn dev_delete_world(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
-    spacetimedb::log::info!("dev_delete_world triggered by {}", ctx.sender);
+    spacetimedb::log::info!("dev_delete_world triggered by {}", ctx.sender());
 
     //Delete users
     let mut users = Vec::with_capacity(100);

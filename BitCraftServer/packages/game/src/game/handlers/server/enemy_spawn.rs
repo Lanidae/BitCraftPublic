@@ -11,7 +11,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn enemy_spawn(ctx: &ReducerContext, request: EnemySpawnRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -22,7 +22,7 @@ pub fn enemy_spawn(ctx: &ReducerContext, request: EnemySpawnRequest) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn enemy_spawn_batch(ctx: &ReducerContext, requests: Vec<EnemySpawnRequest>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

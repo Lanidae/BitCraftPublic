@@ -15,8 +15,8 @@ use crate::{
     placeable_growth_desc, placeable_state, resource_growth_recipe_desc, resource_state, unwrap_or_return,
 };
 
-#[spacetimedb::table(name = resource_growth_timer, public, scheduled(resource_growth_scheduled, at = scheduled_at))]
-#[spacetimedb::table(name = placeable_growth_timer, public, scheduled(placeable_growth_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = resource_growth_timer, public, scheduled(resource_growth_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = placeable_growth_timer, public, scheduled(placeable_growth_scheduled, at = scheduled_at))]
 pub struct GrowthTimer {
     #[primary_key]
     #[auto_inc]
@@ -210,7 +210,7 @@ fn broadcast_growth(
             scheduled_id: 0,
             scheduled_at: ScheduleAt::Time(end_timestamp - duration),
             message: format!(
-                "The (res={{0}}) in Region {{1}} at (coord={{2}},{{3}}) is preparing to unlock in {{4}}.|~{}|~{}|~{}|~{}|~{}",
+                "The (res={}) in Region {} at (coord={},{}) is preparing to unlock in {}.",
                 growth.resource_id, region.region_index, location.z, location.x, description
             ),
         });

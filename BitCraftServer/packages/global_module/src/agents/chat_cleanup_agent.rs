@@ -11,7 +11,7 @@ use crate::{
     },
 };
 
-#[spacetimedb::table(name = chat_cleanup_timer, scheduled(chat_cleanup_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = chat_cleanup_timer, scheduled(chat_cleanup_agent_loop, at = scheduled_at))]
 pub struct ChatCleanupTimer {
     #[primary_key]
     #[auto_inc]
@@ -49,7 +49,7 @@ pub fn init(ctx: &ReducerContext) {
 
 #[spacetimedb::reducer]
 fn chat_cleanup_agent_insert(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     init(ctx);

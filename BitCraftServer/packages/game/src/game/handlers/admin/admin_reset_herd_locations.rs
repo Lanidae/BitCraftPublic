@@ -15,7 +15,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_reset_herd_locations(ctx: &ReducerContext, enemy_ai_params_desc_id: i32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -36,7 +36,7 @@ pub fn admin_reset_herd_locations(ctx: &ReducerContext, enemy_ai_params_desc_id:
 
 #[spacetimedb::reducer]
 pub fn admin_reset_all_herd_locations(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

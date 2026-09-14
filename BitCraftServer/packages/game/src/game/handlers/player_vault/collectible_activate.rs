@@ -28,7 +28,7 @@ fn get_deployable_deploybale_appearance_override(
         .deployable_appearance_override_desc()
         .collectible_id()
         .find(&collectible_id)
-        .ok_or_else(|| format!("Missing deployable appearance override static data for collectible {{0}}.|~{collectible_id}"))
+        .ok_or_else(|| format!("Missing deployable appearance override static data for collectible {collectible_id}."))
 }
 
 pub fn reduce(ctx: &ReducerContext, actor_id: u64, vault_index: i32, activated: bool, dry_run: bool) -> Result<(), String> {
@@ -194,7 +194,7 @@ pub fn reduce(ctx: &ReducerContext, actor_id: u64, vault_index: i32, activated: 
     }
 
     if count > max_count {
-        return Err(format!("Cannot activate more than {{0}} collectibles of this kind.|~{}", max_count).into());
+        return Err(format!("Cannot activate more than {} collectibles of this kind.", max_count).into());
     }
 
     if !dry_run {

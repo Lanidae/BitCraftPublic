@@ -2,7 +2,7 @@ use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
 use bitcraft_macro::shared_table_reducer;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::game::reducer_helpers::building_helpers::{create_building_spawns, create_distant_visibile_building};
 use crate::{
@@ -19,7 +19,12 @@ use crate::{
         },
         terrain_chunk::TerrainChunkCache,
     },
-    messages::{action_request::PlayerProjectSiteAdvanceProjectRequest, components::*, static_data::*},
+    messages::{
+        action_request::PlayerProjectSiteAdvanceProjectRequest,
+        components::*,
+        events::{project_site_advance_project_start_event, ProjectSiteAdvanceProjectStartEvent},
+        static_data::*,
+    },
     unwrap_or_err,
 };
 
@@ -68,7 +73,7 @@ pub fn project_site_advance_project_start(ctx: &ReducerContext, request: PlayerP
     let target = Some(request.owner_entity_id);
     let (delay, recipe_id) = event_delay_recipe_id(ctx, &request, &stats);
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Build,
@@ -77,7 +82,13 @@ pub fn project_site_advance_project_start(ctx: &ReducerContext, request: PlayerP
         delay,
         reduce(ctx, actor_id, request, stats, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .project_site_advance_project_start_event()
+            .insert(ProjectSiteAdvanceProjectStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

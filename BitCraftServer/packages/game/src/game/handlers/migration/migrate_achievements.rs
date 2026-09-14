@@ -15,7 +15,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn migration_set_achievement_params(ctx: &ReducerContext, allow_destructive: bool, grant_if_already_owned: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -18,7 +18,7 @@ use crate::{
     PlayerState, PlayerTimestampState, SmallHexTile, ThreatState,
 };
 
-#[spacetimedb::table(name = player_use_elevator_timer, public, scheduled(player_elevator_arrive, at = scheduled_at))]
+#[spacetimedb::table(accessor = player_use_elevator_timer, public, scheduled(player_elevator_arrive, at = scheduled_at))]
 pub struct PlayerUseElevatorTimer {
     #[primary_key]
     #[auto_inc]

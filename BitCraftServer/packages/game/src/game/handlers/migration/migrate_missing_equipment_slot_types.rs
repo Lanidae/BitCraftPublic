@@ -40,7 +40,7 @@ fn add_missing_equipment_slot_types(equipment_slots: &mut Vec<EquipmentSlot>) ->
 
 #[spacetimedb::reducer]
 pub fn migrate_missing_equipment_slot_types(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

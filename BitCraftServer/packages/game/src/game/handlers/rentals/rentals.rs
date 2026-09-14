@@ -271,7 +271,7 @@ pub fn rent_evict(ctx: &ReducerContext, request: RentEvictRequest) -> Result<(),
     Ok(())
 }
 
-#[spacetimedb::table(name = rent_evict_timer, scheduled(rent_evict_term, at = scheduled_at))]
+#[spacetimedb::table(accessor = rent_evict_timer, scheduled(rent_evict_term, at = scheduled_at))]
 pub struct RentEvictTimer {
     #[primary_key]
     #[auto_inc]

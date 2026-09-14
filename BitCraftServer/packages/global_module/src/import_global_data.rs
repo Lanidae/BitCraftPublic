@@ -15,7 +15,7 @@ use crate::{
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn import_region_connection_info(ctx: &ReducerContext, records: Vec<RegionConnectionInfo>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -34,7 +34,7 @@ pub fn import_region_connection_info(ctx: &ReducerContext, records: Vec<RegionCo
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn import_region_sign_in_parameters(ctx: &ReducerContext, records: Vec<RegionSignInParameters>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -56,7 +56,7 @@ pub fn import_region_exploration_info(
     ctx: &ReducerContext,
     records: Vec<RegionExplorationInfo>,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

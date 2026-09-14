@@ -33,7 +33,7 @@ pub fn admin_update_moderation_enforcement_config(
     title_id_cwl: i32,
     http_request_max_retries: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -73,7 +73,7 @@ pub fn admin_add_or_update_moderation_threshold(
     category: String,
     threshold: f64,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -110,7 +110,7 @@ pub fn admin_add_or_update_moderation_threshold(
 
 #[spacetimedb::reducer]
 pub fn admin_remove_moderation_threshold(ctx: &ReducerContext, id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -128,7 +128,7 @@ pub fn admin_remove_moderation_threshold(ctx: &ReducerContext, id: u64) -> Resul
 /// Suggested word_type values: 0=Flagged, 1=ContextFlagged, 2=EntityName, 3=KnownTld
 #[spacetimedb::reducer]
 pub fn admin_add_or_update_flagged_word(ctx: &ReducerContext, id: u64, word_type: u8, word: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -163,7 +163,7 @@ pub fn admin_add_or_update_flagged_word(ctx: &ReducerContext, id: u64, word_type
 
 #[spacetimedb::reducer]
 pub fn admin_remove_flagged_word(ctx: &ReducerContext, id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -186,7 +186,7 @@ pub fn admin_add_or_update_word_replacement(
     text_replacement: String,
     is_developer_url_replacement: bool,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -218,7 +218,7 @@ pub fn admin_add_or_update_word_replacement(
 
 #[spacetimedb::reducer]
 pub fn admin_remove_word_replacement(ctx: &ReducerContext, id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -237,7 +237,7 @@ pub fn admin_remove_word_replacement(ctx: &ReducerContext, id: u64) -> Result<()
 /// Suggested text_type values: 0=FlaggedMessage, 1=FlaggedMessageLinks
 #[spacetimedb::reducer]
 pub fn admin_add_or_update_replacement_text(ctx: &ReducerContext, text_type: u8, text: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -253,7 +253,7 @@ pub fn admin_add_or_update_replacement_text(ctx: &ReducerContext, text_type: u8,
 
 #[spacetimedb::reducer]
 pub fn admin_remove_replacement_text(ctx: &ReducerContext, text_type: u8) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -281,7 +281,7 @@ pub fn admin_update_report_moderation_config(
     count_admin_moderation_actions: bool,
     discord_webhook_url_user_reports: String,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -316,7 +316,7 @@ pub fn admin_add_or_update_moderation_consequence(
     duration: i32,
     flag_level_code: u8,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -345,7 +345,7 @@ pub fn admin_add_or_update_moderation_consequence(
 
 #[spacetimedb::reducer]
 pub fn admin_remove_moderation_consequence(ctx: &ReducerContext, id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -367,7 +367,7 @@ pub fn admin_add_or_update_moderation_violation(
     point_value_min: i32,
     point_value_max: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -385,7 +385,7 @@ pub fn admin_add_or_update_moderation_violation(
 
 #[spacetimedb::reducer]
 pub fn admin_remove_moderation_violation(ctx: &ReducerContext, violation_type: u8) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -406,7 +406,7 @@ pub fn admin_add_or_update_moderation_flag_level_threshold(
     flag_level: u8,
     point_threshold: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -423,7 +423,7 @@ pub fn admin_add_or_update_moderation_flag_level_threshold(
 
 #[spacetimedb::reducer]
 pub fn admin_remove_moderation_flag_level_threshold(ctx: &ReducerContext, flag_level: u8) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -6,7 +6,7 @@ use spacetimedb::{log, ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn log_claim_member_leaderboard(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -37,7 +37,7 @@ pub fn log_claim_member_leaderboard(ctx: &ReducerContext) -> Result<(), String> 
 
 #[spacetimedb::reducer]
 pub fn log_claim_tier_leaderboard(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

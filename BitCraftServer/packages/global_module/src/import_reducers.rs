@@ -17,7 +17,7 @@ use crate::messages::static_data::*;
 
 #[spacetimedb::reducer]
 pub fn import_skill_desc(ctx: &ReducerContext, records: Vec<SkillDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_skill_desc_internal(ctx, records)?;
@@ -48,7 +48,7 @@ fn import_skill_desc_internal(ctx: &ReducerContext, records: Vec<SkillDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_achievement_desc(ctx: &ReducerContext, records: Vec<AchievementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_achievement_desc_internal(ctx, records)?;
@@ -72,7 +72,7 @@ fn import_achievement_desc_internal(ctx: &ReducerContext, records: Vec<Achieveme
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_stat_modifier_desc(ctx: &ReducerContext, records: Vec<KnowledgeStatModifierDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_knowledge_stat_modifier_desc_internal(ctx, records)?;
@@ -98,7 +98,7 @@ fn import_knowledge_stat_modifier_desc_internal(ctx: &ReducerContext, records: V
 
 #[spacetimedb::reducer]
 pub fn import_active_buff_state(ctx: &ReducerContext, records: Vec<ActiveBuffState>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_active_buff_state_internal(ctx, records)?;
@@ -124,7 +124,7 @@ fn import_active_buff_state_internal(ctx: &ReducerContext, records: Vec<ActiveBu
 
 #[spacetimedb::reducer]
 pub fn import_admin_broadcast(ctx: &ReducerContext, records: Vec<AdminBroadcast>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -138,7 +138,7 @@ pub fn import_admin_broadcast(ctx: &ReducerContext, records: Vec<AdminBroadcast>
 
 #[spacetimedb::reducer]
 pub fn import_alert_desc(ctx: &ReducerContext, records: Vec<AlertDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_alert_desc_internal(ctx, records)?;
@@ -165,7 +165,7 @@ fn import_alert_desc_internal(ctx: &ReducerContext, records: Vec<AlertDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_alert_state(ctx: &ReducerContext, records: Vec<AlertState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -178,7 +178,7 @@ pub fn import_alert_state(ctx: &ReducerContext, records: Vec<AlertState>) {
 }
 #[spacetimedb::reducer]
 pub fn import_attack_outcome_state(ctx: &ReducerContext, records: Vec<AttackOutcomeState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -192,7 +192,7 @@ pub fn import_attack_outcome_state(ctx: &ReducerContext, records: Vec<AttackOutc
 
 #[spacetimedb::reducer]
 pub fn import_biome_desc(ctx: &ReducerContext, records: Vec<BiomeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_biome_desc_internal(ctx, records)?;
@@ -219,7 +219,7 @@ fn import_biome_desc_internal(ctx: &ReducerContext, records: Vec<BiomeDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_buff_type_desc(ctx: &ReducerContext, records: Vec<BuffTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_buff_type_desc_internal(ctx, records)?;
@@ -263,7 +263,7 @@ fn import_buff_type_desc_internal(ctx: &ReducerContext, records: Vec<BuffTypeDes
 
 #[spacetimedb::reducer]
 pub fn import_buff_desc(ctx: &ReducerContext, records: Vec<BuffDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_buff_desc_internal(ctx, records)?;
@@ -287,7 +287,7 @@ fn import_buff_desc_internal(ctx: &ReducerContext, records: Vec<BuffDesc>) -> Re
 
 #[spacetimedb::reducer]
 pub fn import_building_claim_desc(ctx: &ReducerContext, records: Vec<BuildingClaimDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_claim_desc_internal(ctx, records)?;
@@ -313,7 +313,7 @@ fn import_building_claim_desc_internal(ctx: &ReducerContext, records: Vec<Buildi
 
 #[spacetimedb::reducer]
 pub fn import_building_desc(ctx: &ReducerContext, records: Vec<BuildingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_desc_internal(ctx, records)?;
@@ -337,7 +337,7 @@ fn import_building_desc_internal(ctx: &ReducerContext, records: Vec<BuildingDesc
 
 #[spacetimedb::reducer]
 pub fn import_building_map_icon_desc(ctx: &ReducerContext, records: Vec<BuildingMapIconDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_map_icon_desc_internal(ctx, records)?;
@@ -363,7 +363,7 @@ fn import_building_map_icon_desc_internal(ctx: &ReducerContext, records: Vec<Bui
 
 #[spacetimedb::reducer]
 pub fn import_building_portal_desc(ctx: &ReducerContext, records: Vec<BuildingPortalDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_portal_desc_internal(ctx, records)?;
@@ -389,7 +389,7 @@ fn import_building_portal_desc_internal(ctx: &ReducerContext, records: Vec<Build
 
 #[spacetimedb::reducer]
 pub fn import_building_repairs_desc(ctx: &ReducerContext, records: Vec<BuildingRepairsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_repairs_desc_internal(ctx, records)?;
@@ -415,7 +415,7 @@ fn import_building_repairs_desc_internal(ctx: &ReducerContext, records: Vec<Buil
 
 #[spacetimedb::reducer]
 pub fn import_building_spawn_desc(ctx: &ReducerContext, records: Vec<BuildingSpawnDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_spawn_desc_internal(ctx, records)?;
@@ -441,7 +441,7 @@ fn import_building_spawn_desc_internal(ctx: &ReducerContext, records: Vec<Buildi
 
 #[spacetimedb::reducer]
 pub fn import_building_state(ctx: &ReducerContext, records: Vec<BuildingState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -455,7 +455,7 @@ pub fn import_building_state(ctx: &ReducerContext, records: Vec<BuildingState>) 
 
 #[spacetimedb::reducer]
 pub fn import_building_type_desc(ctx: &ReducerContext, records: Vec<BuildingTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_building_type_desc_internal(ctx, records)?;
@@ -481,7 +481,7 @@ fn import_building_type_desc_internal(ctx: &ReducerContext, records: Vec<Buildin
 
 #[spacetimedb::reducer]
 pub fn import_cargo_desc(ctx: &ReducerContext, records: Vec<CargoDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_cargo_desc_internal(ctx, records)?;
@@ -505,7 +505,7 @@ fn import_cargo_desc_internal(ctx: &ReducerContext, records: Vec<CargoDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_character_stat_desc(ctx: &ReducerContext, records: Vec<CharacterStatDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_character_stat_desc_internal(ctx, records)?;
@@ -534,7 +534,7 @@ fn import_character_stat_desc_internal(ctx: &ReducerContext, records: Vec<Charac
 
 #[spacetimedb::reducer]
 pub fn import_character_stats_state(ctx: &ReducerContext, records: Vec<CharacterStatsState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -548,7 +548,7 @@ pub fn import_character_stats_state(ctx: &ReducerContext, records: Vec<Character
 
 #[spacetimedb::reducer]
 pub fn import_chat_message_state(ctx: &ReducerContext, records: Vec<ChatMessageState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -562,7 +562,7 @@ pub fn import_chat_message_state(ctx: &ReducerContext, records: Vec<ChatMessageS
 
 #[spacetimedb::reducer]
 pub fn import_chest_rarity_desc(ctx: &ReducerContext, records: Vec<ChestRarityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_chest_rarity_desc_internal(ctx, records)?;
@@ -586,7 +586,7 @@ fn import_chest_rarity_desc_internal(ctx: &ReducerContext, records: Vec<ChestRar
 
 #[spacetimedb::reducer]
 pub fn import_claim_state(ctx: &ReducerContext, records: Vec<ClaimState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -600,7 +600,7 @@ pub fn import_claim_state(ctx: &ReducerContext, records: Vec<ClaimState>) {
 
 #[spacetimedb::reducer]
 pub fn import_claim_local_state(ctx: &ReducerContext, records: Vec<ClaimLocalState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -614,7 +614,7 @@ pub fn import_claim_local_state(ctx: &ReducerContext, records: Vec<ClaimLocalSta
 
 #[spacetimedb::reducer]
 pub fn import_claim_recruitment_state(ctx: &ReducerContext, records: Vec<ClaimRecruitmentState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -628,7 +628,7 @@ pub fn import_claim_recruitment_state(ctx: &ReducerContext, records: Vec<ClaimRe
 
 #[spacetimedb::reducer]
 pub fn import_claim_tech_desc(ctx: &ReducerContext, records: Vec<ClaimTechDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_claim_tech_desc_internal(ctx, records)?;
@@ -652,7 +652,7 @@ fn import_claim_tech_desc_internal(ctx: &ReducerContext, records: Vec<ClaimTechD
 
 #[spacetimedb::reducer]
 pub fn import_claim_tech_state(ctx: &ReducerContext, records: Vec<ClaimTechState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -666,7 +666,7 @@ pub fn import_claim_tech_state(ctx: &ReducerContext, records: Vec<ClaimTechState
 
 #[spacetimedb::reducer]
 pub fn import_claim_tile_cost(ctx: &ReducerContext, records: Vec<ClaimTileCost>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_claim_tile_cost_internal(ctx, records)?;
@@ -692,7 +692,7 @@ fn import_claim_tile_cost_internal(ctx: &ReducerContext, records: Vec<ClaimTileC
 
 #[spacetimedb::reducer]
 pub fn import_claim_tile_state(ctx: &ReducerContext, records: Vec<ClaimTileState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -706,7 +706,7 @@ pub fn import_claim_tile_state(ctx: &ReducerContext, records: Vec<ClaimTileState
 
 #[spacetimedb::reducer]
 pub fn import_climb_requirement_desc(ctx: &ReducerContext, records: Vec<ClimbRequirementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_climb_requirement_desc_internal(ctx, records)?;
@@ -732,7 +732,7 @@ fn import_climb_requirement_desc_internal(ctx: &ReducerContext, records: Vec<Cli
 
 #[spacetimedb::reducer]
 pub fn import_clothing_desc(ctx: &ReducerContext, records: Vec<ClothingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_clothing_desc_internal(ctx, records)?;
@@ -758,7 +758,7 @@ fn import_clothing_desc_internal(ctx: &ReducerContext, records: Vec<ClothingDesc
 
 #[spacetimedb::reducer]
 pub fn import_collectible_desc(ctx: &ReducerContext, records: Vec<CollectibleDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_collectible_desc_internal(ctx, records)?;
@@ -782,7 +782,7 @@ fn import_collectible_desc_internal(ctx: &ReducerContext, records: Vec<Collectib
 
 #[spacetimedb::reducer]
 pub fn import_combat_action_desc(ctx: &ReducerContext, records: Vec<CombatActionDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_combat_action_desc_internal(ctx, records)?;
@@ -808,7 +808,7 @@ fn import_combat_action_desc_internal(ctx: &ReducerContext, records: Vec<CombatA
 
 #[spacetimedb::reducer]
 pub fn import_combat_state(ctx: &ReducerContext, records: Vec<CombatState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -822,7 +822,7 @@ pub fn import_combat_state(ctx: &ReducerContext, records: Vec<CombatState>) {
 
 #[spacetimedb::reducer]
 pub fn import_config(ctx: &ReducerContext, records: Vec<Config>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -836,7 +836,7 @@ pub fn import_config(ctx: &ReducerContext, records: Vec<Config>) {
 
 #[spacetimedb::reducer]
 pub fn import_construction_recipe_desc(ctx: &ReducerContext, records: Vec<ConstructionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_construction_recipe_desc_internal(ctx, records)?;
@@ -862,7 +862,7 @@ fn import_construction_recipe_desc_internal(ctx: &ReducerContext, records: Vec<C
 
 #[spacetimedb::reducer]
 pub fn import_crafting_recipe_desc(ctx: &ReducerContext, records: Vec<CraftingRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_crafting_recipe_desc_internal(ctx, records)?;
@@ -888,7 +888,7 @@ fn import_crafting_recipe_desc_internal(ctx: &ReducerContext, records: Vec<Craft
 
 #[spacetimedb::reducer]
 pub fn import_deconstruction_recipe_desc(ctx: &ReducerContext, records: Vec<DeconstructionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_deconstruction_recipe_desc_internal(ctx, records)?;
@@ -914,7 +914,7 @@ fn import_deconstruction_recipe_desc_internal(ctx: &ReducerContext, records: Vec
 
 #[spacetimedb::reducer]
 pub fn import_dimension_description_state(ctx: &ReducerContext, records: Vec<DimensionDescriptionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -928,7 +928,7 @@ pub fn import_dimension_description_state(ctx: &ReducerContext, records: Vec<Dim
 
 #[spacetimedb::reducer]
 pub fn import_dimension_network_description_state(ctx: &ReducerContext, records: Vec<DimensionNetworkState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -942,7 +942,7 @@ pub fn import_dimension_network_description_state(ctx: &ReducerContext, records:
 
 #[spacetimedb::reducer]
 pub fn import_emote_desc(ctx: &ReducerContext, records: Vec<EmoteDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_emote_desc_internal(ctx, records)?;
@@ -966,7 +966,7 @@ fn import_emote_desc_internal(ctx: &ReducerContext, records: Vec<EmoteDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_enemy_ai_params_desc(ctx: &ReducerContext, records: Vec<EnemyAiParamsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_enemy_ai_params_desc_internal(ctx, records)?;
@@ -992,7 +992,7 @@ fn import_enemy_ai_params_desc_internal(ctx: &ReducerContext, records: Vec<Enemy
 
 #[spacetimedb::reducer]
 pub fn import_enemy_desc(ctx: &ReducerContext, records: Vec<EnemyDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_enemy_desc_internal(ctx, records)?;
@@ -1019,7 +1019,7 @@ fn import_enemy_desc_internal(ctx: &ReducerContext, records: Vec<EnemyDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn import_enemy_state(ctx: &ReducerContext, records: Vec<EnemyState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1033,7 +1033,7 @@ pub fn import_enemy_state(ctx: &ReducerContext, records: Vec<EnemyState>) {
 
 #[spacetimedb::reducer]
 pub fn import_environment_debuff_desc(ctx: &ReducerContext, records: Vec<EnvironmentDebuffDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_environment_debuff_desc_internal(ctx, records)?;
@@ -1059,7 +1059,7 @@ fn import_environment_debuff_desc_internal(ctx: &ReducerContext, records: Vec<En
 
 #[spacetimedb::reducer]
 pub fn import_equipment_desc(ctx: &ReducerContext, records: Vec<EquipmentDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_equipment_desc_internal(ctx, records)?;
@@ -1085,7 +1085,7 @@ fn import_equipment_desc_internal(ctx: &ReducerContext, records: Vec<EquipmentDe
 
 #[spacetimedb::reducer]
 pub fn import_equipment_state(ctx: &ReducerContext, records: Vec<EquipmentState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1099,7 +1099,7 @@ pub fn import_equipment_state(ctx: &ReducerContext, records: Vec<EquipmentState>
 
 #[spacetimedb::reducer]
 pub fn import_equipment_preset_state(ctx: &ReducerContext, records: Vec<EquipmentPresetState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1113,7 +1113,7 @@ pub fn import_equipment_preset_state(ctx: &ReducerContext, records: Vec<Equipmen
 
 #[spacetimedb::reducer]
 pub fn import_experience_state(ctx: &ReducerContext, records: Vec<ExperienceState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1127,7 +1127,7 @@ pub fn import_experience_state(ctx: &ReducerContext, records: Vec<ExperienceStat
 
 #[spacetimedb::reducer]
 pub fn import_exploration_chunks_state(ctx: &ReducerContext, records: Vec<ExplorationChunksStateV2>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1141,7 +1141,7 @@ pub fn import_exploration_chunks_state(ctx: &ReducerContext, records: Vec<Explor
 
 #[spacetimedb::reducer]
 pub fn import_extraction_recipe_desc(ctx: &ReducerContext, records: Vec<ExtractionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_extraction_recipe_desc_internal(ctx, records)?;
@@ -1167,7 +1167,7 @@ fn import_extraction_recipe_desc_internal(ctx: &ReducerContext, records: Vec<Ext
 
 #[spacetimedb::reducer]
 pub fn import_food_desc(ctx: &ReducerContext, records: Vec<FoodDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_food_desc_internal(ctx, records)?;
@@ -1191,7 +1191,7 @@ fn import_food_desc_internal(ctx: &ReducerContext, records: Vec<FoodDesc>) -> Re
 
 #[spacetimedb::reducer]
 pub fn import_footprint_tile_state(ctx: &ReducerContext, records: Vec<FootprintTileState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1205,7 +1205,7 @@ pub fn import_footprint_tile_state(ctx: &ReducerContext, records: Vec<FootprintT
 
 #[spacetimedb::reducer]
 pub fn import_globals(ctx: &ReducerContext, records: Vec<Globals>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1219,7 +1219,7 @@ pub fn import_globals(ctx: &ReducerContext, records: Vec<Globals>) {
 
 #[spacetimedb::reducer]
 pub fn import_world_region_state(ctx: &ReducerContext, records: Vec<WorldRegionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1233,7 +1233,7 @@ pub fn import_world_region_state(ctx: &ReducerContext, records: Vec<WorldRegionS
 
 #[spacetimedb::reducer]
 pub fn import_world_region_name_state(ctx: &ReducerContext, records: Vec<WorldRegionNameState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1247,7 +1247,7 @@ pub fn import_world_region_name_state(ctx: &ReducerContext, records: Vec<WorldRe
 
 #[spacetimedb::reducer]
 pub fn import_growth_state(ctx: &ReducerContext, records: Vec<GrowthState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1261,7 +1261,7 @@ pub fn import_growth_state(ctx: &ReducerContext, records: Vec<GrowthState>) {
 
 #[spacetimedb::reducer]
 pub fn import_health_state(ctx: &ReducerContext, records: Vec<HealthState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1275,7 +1275,7 @@ pub fn import_health_state(ctx: &ReducerContext, records: Vec<HealthState>) {
 
 #[spacetimedb::reducer]
 pub fn import_herd_cache(ctx: &ReducerContext, records: Vec<HerdState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1289,7 +1289,7 @@ pub fn import_herd_cache(ctx: &ReducerContext, records: Vec<HerdState>) {
 
 #[spacetimedb::reducer]
 pub fn import_satiation_state(ctx: &ReducerContext, records: Vec<SatiationState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1303,7 +1303,7 @@ pub fn import_satiation_state(ctx: &ReducerContext, records: Vec<SatiationState>
 
 #[spacetimedb::reducer]
 pub fn import_identity_role(ctx: &ReducerContext, records: Vec<IdentityRole>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1317,7 +1317,7 @@ pub fn import_identity_role(ctx: &ReducerContext, records: Vec<IdentityRole>) {
 
 #[spacetimedb::reducer]
 pub fn import_interior_collapse_trigger_state(ctx: &ReducerContext, records: Vec<InteriorCollapseTriggerState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1331,7 +1331,7 @@ pub fn import_interior_collapse_trigger_state(ctx: &ReducerContext, records: Vec
 
 #[spacetimedb::reducer]
 pub fn import_interior_instance_desc(ctx: &ReducerContext, records: Vec<InteriorInstanceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_interior_instance_desc_internal(ctx, records)?;
@@ -1357,7 +1357,7 @@ fn import_interior_instance_desc_internal(ctx: &ReducerContext, records: Vec<Int
 
 #[spacetimedb::reducer]
 pub fn import_interior_network_desc(ctx: &ReducerContext, records: Vec<InteriorNetworkDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_interior_network_desc_internal(ctx, records)?;
@@ -1383,7 +1383,7 @@ fn import_interior_network_desc_internal(ctx: &ReducerContext, records: Vec<Inte
 
 #[spacetimedb::reducer]
 pub fn import_interior_portal_connections_desc(ctx: &ReducerContext, records: Vec<InteriorPortalConnectionsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_interior_portal_connections_desc_internal(ctx, records)?;
@@ -1412,7 +1412,7 @@ fn import_interior_portal_connections_desc_internal(
 
 #[spacetimedb::reducer]
 pub fn import_interior_shape_desc(ctx: &ReducerContext, records: Vec<InteriorShapeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_interior_shape_desc_internal(ctx, records)?;
@@ -1438,7 +1438,7 @@ fn import_interior_shape_desc_internal(ctx: &ReducerContext, records: Vec<Interi
 
 #[spacetimedb::reducer]
 pub fn import_interior_spawn_desc(ctx: &ReducerContext, records: Vec<InteriorSpawnDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_interior_spawn_desc_internal(ctx, records)?;
@@ -1464,7 +1464,7 @@ fn import_interior_spawn_desc_internal(ctx: &ReducerContext, records: Vec<Interi
 
 #[spacetimedb::reducer]
 pub fn import_inventory_state(ctx: &ReducerContext, records: Vec<InventoryState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1478,7 +1478,7 @@ pub fn import_inventory_state(ctx: &ReducerContext, records: Vec<InventoryState>
 
 #[spacetimedb::reducer]
 pub fn import_item_conversion_recipe_desc(ctx: &ReducerContext, records: Vec<ItemConversionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_item_conversion_recipe_desc_internal(ctx, records)?;
@@ -1504,7 +1504,7 @@ fn import_item_conversion_recipe_desc_internal(ctx: &ReducerContext, records: Ve
 
 #[spacetimedb::reducer]
 pub fn import_item_desc(ctx: &ReducerContext, records: Vec<ItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_item_desc_internal(ctx, records)?;
@@ -1528,7 +1528,7 @@ fn import_item_desc_internal(ctx: &ReducerContext, records: Vec<ItemDesc>) -> Re
 
 #[spacetimedb::reducer]
 pub fn import_item_list_desc(ctx: &ReducerContext, records: Vec<ItemListDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_item_list_desc_internal(ctx, records)?;
@@ -1552,7 +1552,7 @@ fn import_item_list_desc_internal(ctx: &ReducerContext, records: Vec<ItemListDes
 
 #[spacetimedb::reducer]
 pub fn import_dropped_inventory_state(ctx: &ReducerContext, records: Vec<DroppedInventoryState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1566,7 +1566,7 @@ pub fn import_dropped_inventory_state(ctx: &ReducerContext, records: Vec<Dropped
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_achievement_state(ctx: &ReducerContext, records: Vec<KnowledgeAchievementState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1580,7 +1580,7 @@ pub fn import_knowledge_achievement_state(ctx: &ReducerContext, records: Vec<Kno
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_battle_action_state(ctx: &ReducerContext, records: Vec<KnowledgeBattleActionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1594,7 +1594,7 @@ pub fn import_knowledge_battle_action_state(ctx: &ReducerContext, records: Vec<K
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_building_state(ctx: &ReducerContext, records: Vec<KnowledgeBuildingState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1608,7 +1608,7 @@ pub fn import_knowledge_building_state(ctx: &ReducerContext, records: Vec<Knowle
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_cargo_state(ctx: &ReducerContext, records: Vec<KnowledgeCargoState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1622,7 +1622,7 @@ pub fn import_knowledge_cargo_state(ctx: &ReducerContext, records: Vec<Knowledge
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_construction_state(ctx: &ReducerContext, records: Vec<KnowledgeConstructionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1636,7 +1636,7 @@ pub fn import_knowledge_construction_state(ctx: &ReducerContext, records: Vec<Kn
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_craft_state(ctx: &ReducerContext, records: Vec<KnowledgeCraftState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1650,7 +1650,7 @@ pub fn import_knowledge_craft_state(ctx: &ReducerContext, records: Vec<Knowledge
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_enemy_state(ctx: &ReducerContext, records: Vec<KnowledgeEnemyState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1664,7 +1664,7 @@ pub fn import_knowledge_enemy_state(ctx: &ReducerContext, records: Vec<Knowledge
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_extract_state(ctx: &ReducerContext, records: Vec<KnowledgeExtractState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1678,7 +1678,7 @@ pub fn import_knowledge_extract_state(ctx: &ReducerContext, records: Vec<Knowled
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_item_state(ctx: &ReducerContext, records: Vec<KnowledgeItemState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1692,7 +1692,7 @@ pub fn import_knowledge_item_state(ctx: &ReducerContext, records: Vec<KnowledgeI
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_lore_state(ctx: &ReducerContext, records: Vec<KnowledgeLoreState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1706,7 +1706,7 @@ pub fn import_knowledge_lore_state(ctx: &ReducerContext, records: Vec<KnowledgeL
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_npc_state(ctx: &ReducerContext, records: Vec<KnowledgeNpcState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1720,7 +1720,7 @@ pub fn import_knowledge_npc_state(ctx: &ReducerContext, records: Vec<KnowledgeNp
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_paving_state(ctx: &ReducerContext, records: Vec<KnowledgePavingState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1734,7 +1734,7 @@ pub fn import_knowledge_paving_state(ctx: &ReducerContext, records: Vec<Knowledg
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_resource_placement_state(ctx: &ReducerContext, records: Vec<KnowledgeResourcePlacementState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1748,7 +1748,7 @@ pub fn import_knowledge_resource_placement_state(ctx: &ReducerContext, records: 
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_resource_state(ctx: &ReducerContext, records: Vec<KnowledgeResourceState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1762,7 +1762,7 @@ pub fn import_knowledge_resource_state(ctx: &ReducerContext, records: Vec<Knowle
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_ruins_state(ctx: &ReducerContext, records: Vec<KnowledgeRuinsState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1776,7 +1776,7 @@ pub fn import_knowledge_ruins_state(ctx: &ReducerContext, records: Vec<Knowledge
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_scroll_desc(ctx: &ReducerContext, records: Vec<KnowledgeScrollDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_knowledge_scroll_desc_internal(ctx, records)?;
@@ -1802,7 +1802,7 @@ fn import_knowledge_scroll_desc_internal(ctx: &ReducerContext, records: Vec<Know
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_scroll_type_desc(ctx: &ReducerContext, records: Vec<KnowledgeScrollTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_knowledge_scroll_type_desc_internal(ctx, records)?;
@@ -1828,7 +1828,7 @@ fn import_knowledge_scroll_type_desc_internal(ctx: &ReducerContext, records: Vec
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_secondary_state(ctx: &ReducerContext, records: Vec<KnowledgeSecondaryState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1842,7 +1842,7 @@ pub fn import_knowledge_secondary_state(ctx: &ReducerContext, records: Vec<Knowl
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_vault_state(ctx: &ReducerContext, records: Vec<KnowledgeVaultState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1856,7 +1856,7 @@ pub fn import_knowledge_vault_state(ctx: &ReducerContext, records: Vec<Knowledge
 
 #[spacetimedb::reducer]
 pub fn import_knowledge_deployable_state(ctx: &ReducerContext, records: Vec<KnowledgeDeployableState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1870,7 +1870,7 @@ pub fn import_knowledge_deployable_state(ctx: &ReducerContext, records: Vec<Know
 
 #[spacetimedb::reducer]
 pub fn import_location_state(ctx: &ReducerContext, records: Vec<LocationState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1884,7 +1884,7 @@ pub fn import_location_state(ctx: &ReducerContext, records: Vec<LocationState>) 
 
 #[spacetimedb::reducer]
 pub fn import_loot_chest_desc(ctx: &ReducerContext, records: Vec<LootChestDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_loot_chest_desc_internal(ctx, records)?;
@@ -1908,7 +1908,7 @@ fn import_loot_chest_desc_internal(ctx: &ReducerContext, records: Vec<LootChestD
 
 #[spacetimedb::reducer]
 pub fn import_loot_chest_state(ctx: &ReducerContext, records: Vec<LootChestState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1922,7 +1922,7 @@ pub fn import_loot_chest_state(ctx: &ReducerContext, records: Vec<LootChestState
 
 #[spacetimedb::reducer]
 pub fn import_loot_rarity_desc(ctx: &ReducerContext, records: Vec<LootRarityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_loot_rarity_desc_internal(ctx, records)?;
@@ -1946,7 +1946,7 @@ fn import_loot_rarity_desc_internal(ctx: &ReducerContext, records: Vec<LootRarit
 
 #[spacetimedb::reducer]
 pub fn import_loot_table_desc(ctx: &ReducerContext, records: Vec<LootTableDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_loot_table_desc_internal(ctx, records)?;
@@ -1970,7 +1970,7 @@ fn import_loot_table_desc_internal(ctx: &ReducerContext, records: Vec<LootTableD
 
 #[spacetimedb::reducer]
 pub fn import_mobile_entity_state(ctx: &ReducerContext, records: Vec<MobileEntityState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1984,7 +1984,7 @@ pub fn import_mobile_entity_state(ctx: &ReducerContext, records: Vec<MobileEntit
 
 #[spacetimedb::reducer]
 pub fn import_mounting_state(ctx: &ReducerContext, records: Vec<MountingState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -1998,7 +1998,7 @@ pub fn import_mounting_state(ctx: &ReducerContext, records: Vec<MountingState>) 
 
 #[spacetimedb::reducer]
 pub fn import_npc_desc(ctx: &ReducerContext, records: Vec<NpcDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_npc_desc_internal(ctx, records)?;
@@ -2025,7 +2025,7 @@ fn import_npc_desc_internal(ctx: &ReducerContext, records: Vec<NpcDesc>) -> Resu
 
 #[spacetimedb::reducer]
 pub fn import_npc_state(ctx: &ReducerContext, records: Vec<NpcState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2039,7 +2039,7 @@ pub fn import_npc_state(ctx: &ReducerContext, records: Vec<NpcState>) {
 
 #[spacetimedb::reducer]
 pub fn import_onboarding_reward_desc(ctx: &ReducerContext, records: Vec<OnboardingRewardDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_onboarding_reward_desc_internal(ctx, records)?;
@@ -2065,7 +2065,7 @@ fn import_onboarding_reward_desc_internal(ctx: &ReducerContext, records: Vec<Onb
 
 #[spacetimedb::reducer]
 pub fn import_onboarding_state(ctx: &ReducerContext, records: Vec<OnboardingState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2079,7 +2079,7 @@ pub fn import_onboarding_state(ctx: &ReducerContext, records: Vec<OnboardingStat
 
 #[spacetimedb::reducer]
 pub fn import_parameters_desc(ctx: &ReducerContext, records: Vec<ParametersDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_parameters_desc_internal(ctx, records)?;
@@ -2105,7 +2105,7 @@ fn import_parameters_desc_internal(ctx: &ReducerContext, records: Vec<Parameters
 
 #[spacetimedb::reducer]
 pub fn import_private_parameters_desc(ctx: &ReducerContext, records: Vec<PrivateParametersDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_private_parameters_desc_internal(ctx, records)
@@ -2130,7 +2130,7 @@ fn import_private_parameters_desc_internal(ctx: &ReducerContext, records: Vec<Pr
 
 #[spacetimedb::reducer]
 pub fn import_paved_tile_state(ctx: &ReducerContext, records: Vec<PavedTileState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2144,7 +2144,7 @@ pub fn import_paved_tile_state(ctx: &ReducerContext, records: Vec<PavedTileState
 
 #[spacetimedb::reducer]
 pub fn import_pathfinding_desc(ctx: &ReducerContext, records: Vec<PathfindingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_pathfinding_desc_internal(ctx, records)
@@ -2169,7 +2169,7 @@ pub fn import_pathfinding_desc_internal(ctx: &ReducerContext, records: Vec<Pathf
 
 #[spacetimedb::reducer]
 pub fn import_paving_tile_desc(ctx: &ReducerContext, records: Vec<PavingTileDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_paving_tile_desc_internal(ctx, records)?;
@@ -2193,7 +2193,7 @@ fn import_paving_tile_desc_internal(ctx: &ReducerContext, records: Vec<PavingTil
 
 #[spacetimedb::reducer]
 pub fn import_player_action_state(ctx: &ReducerContext, records: Vec<PlayerActionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2207,7 +2207,7 @@ pub fn import_player_action_state(ctx: &ReducerContext, records: Vec<PlayerActio
 
 #[spacetimedb::reducer]
 pub fn import_player_prefs_state(ctx: &ReducerContext, records: Vec<PlayerPrefsState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2221,7 +2221,7 @@ pub fn import_player_prefs_state(ctx: &ReducerContext, records: Vec<PlayerPrefsS
 
 #[spacetimedb::reducer]
 pub fn import_player_state(ctx: &ReducerContext, records: Vec<PlayerState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2235,7 +2235,7 @@ pub fn import_player_state(ctx: &ReducerContext, records: Vec<PlayerState>) {
 
 #[spacetimedb::reducer]
 pub fn import_player_vote_state(ctx: &ReducerContext, records: Vec<PlayerVoteState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2249,7 +2249,7 @@ pub fn import_player_vote_state(ctx: &ReducerContext, records: Vec<PlayerVoteSta
 
 #[spacetimedb::reducer]
 pub fn import_portal_state(ctx: &ReducerContext, records: Vec<PortalState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2263,7 +2263,7 @@ pub fn import_portal_state(ctx: &ReducerContext, records: Vec<PortalState>) {
 
 #[spacetimedb::reducer]
 pub fn import_progressive_action_state(ctx: &ReducerContext, records: Vec<ProgressiveActionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2277,7 +2277,7 @@ pub fn import_progressive_action_state(ctx: &ReducerContext, records: Vec<Progre
 
 #[spacetimedb::reducer]
 pub fn import_project_site_state(ctx: &ReducerContext, records: Vec<ProjectSiteState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2291,7 +2291,7 @@ pub fn import_project_site_state(ctx: &ReducerContext, records: Vec<ProjectSiteS
 
 #[spacetimedb::reducer]
 pub fn import_rent_state(ctx: &ReducerContext, records: Vec<RentState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2305,7 +2305,7 @@ pub fn import_rent_state(ctx: &ReducerContext, records: Vec<RentState>) {
 
 #[spacetimedb::reducer]
 pub fn import_resource_clump_desc(ctx: &ReducerContext, records: Vec<ResourceClumpDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_resource_clump_desc_internal(ctx, records)?;
@@ -2347,7 +2347,7 @@ fn import_resource_clump_desc_internal(ctx: &ReducerContext, records: Vec<Resour
 
 #[spacetimedb::reducer]
 pub fn import_resource_count(ctx: &ReducerContext, records: Vec<ResourceCount>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2361,7 +2361,7 @@ pub fn import_resource_count(ctx: &ReducerContext, records: Vec<ResourceCount>) 
 
 #[spacetimedb::reducer]
 pub fn import_resource_desc(ctx: &ReducerContext, records: Vec<ResourceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_resource_desc_internal(ctx, records)?;
@@ -2385,7 +2385,7 @@ fn import_resource_desc_internal(ctx: &ReducerContext, records: Vec<ResourceDesc
 
 #[spacetimedb::reducer]
 pub fn import_resource_growth_recipe_desc(ctx: &ReducerContext, records: Vec<ResourceGrowthRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_resource_growth_recipe_desc_internal(ctx, records)?;
@@ -2411,7 +2411,7 @@ fn import_resource_growth_recipe_desc_internal(ctx: &ReducerContext, records: Ve
 
 #[spacetimedb::reducer]
 pub fn import_resource_placement_recipe_desc(ctx: &ReducerContext, records: Vec<ResourcePlacementRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_resource_placement_recipe_desc_internal(ctx, records)?;
@@ -2437,7 +2437,7 @@ fn import_resource_placement_recipe_desc_internal(ctx: &ReducerContext, records:
 
 #[spacetimedb::reducer]
 pub fn import_resource_state(ctx: &ReducerContext, records: Vec<ResourceState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2451,7 +2451,7 @@ pub fn import_resource_state(ctx: &ReducerContext, records: Vec<ResourceState>) 
 
 #[spacetimedb::reducer]
 pub fn import_secondary_knowledge_desc(ctx: &ReducerContext, records: Vec<SecondaryKnowledgeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_secondary_knowledge_desc_internal(ctx, records)?;
@@ -2477,7 +2477,7 @@ fn import_secondary_knowledge_desc_internal(ctx: &ReducerContext, records: Vec<S
 
 #[spacetimedb::reducer]
 pub fn import_server_identity(ctx: &ReducerContext, records: Vec<ServerIdentity>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2491,7 +2491,7 @@ pub fn import_server_identity(ctx: &ReducerContext, records: Vec<ServerIdentity>
 
 #[spacetimedb::reducer]
 pub fn import_signed_in_player_state(ctx: &ReducerContext, records: Vec<SignedInPlayerState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2505,7 +2505,7 @@ pub fn import_signed_in_player_state(ctx: &ReducerContext, records: Vec<SignedIn
 
 #[spacetimedb::reducer]
 pub fn import_stamina_state(ctx: &ReducerContext, records: Vec<StaminaState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2519,7 +2519,7 @@ pub fn import_stamina_state(ctx: &ReducerContext, records: Vec<StaminaState>) {
 
 #[spacetimedb::reducer]
 pub fn import_target_state(ctx: &ReducerContext, records: Vec<TargetState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2533,7 +2533,7 @@ pub fn import_target_state(ctx: &ReducerContext, records: Vec<TargetState>) {
 
 #[spacetimedb::reducer]
 pub fn import_targetable_state(ctx: &ReducerContext, records: Vec<TargetableState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2547,7 +2547,7 @@ pub fn import_targetable_state(ctx: &ReducerContext, records: Vec<TargetableStat
 
 #[spacetimedb::reducer]
 pub fn import_targeting_matrix_desc(ctx: &ReducerContext, records: Vec<TargetingMatrixDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_targeting_matrix_desc_internal(ctx, records)?;
@@ -2573,7 +2573,7 @@ fn import_targeting_matrix_desc_internal(ctx: &ReducerContext, records: Vec<Targ
 
 #[spacetimedb::reducer]
 pub fn import_teleport_item_desc(ctx: &ReducerContext, records: Vec<TeleportItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_teleport_item_desc_internal(ctx, records)?;
@@ -2599,7 +2599,7 @@ fn import_teleport_item_desc_internal(ctx: &ReducerContext, records: Vec<Telepor
 
 #[spacetimedb::reducer]
 pub fn import_terraform_recipe_desc(ctx: &ReducerContext, records: Vec<TerraformRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_terraform_recipe_desc_internal(ctx, records)?;
@@ -2625,7 +2625,7 @@ fn import_terraform_recipe_desc_internal(ctx: &ReducerContext, records: Vec<Terr
 
 #[spacetimedb::reducer]
 pub fn import_terrain_chunk_state(ctx: &ReducerContext, records: Vec<TerrainChunkState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2639,7 +2639,7 @@ pub fn import_terrain_chunk_state(ctx: &ReducerContext, records: Vec<TerrainChun
 
 #[spacetimedb::reducer]
 pub fn import_tool_desc(ctx: &ReducerContext, records: Vec<ToolDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_tool_desc_internal(ctx, records)?;
@@ -2663,7 +2663,7 @@ fn import_tool_desc_internal(ctx: &ReducerContext, records: Vec<ToolDesc>) -> Re
 
 #[spacetimedb::reducer]
 pub fn import_tool_type_desc(ctx: &ReducerContext, records: Vec<ToolTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_tool_type_desc_internal(ctx, records)?;
@@ -2687,7 +2687,7 @@ fn import_tool_type_desc_internal(ctx: &ReducerContext, records: Vec<ToolTypeDes
 
 #[spacetimedb::reducer]
 pub fn import_trade_order_state(ctx: &ReducerContext, records: Vec<TradeOrderState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2701,7 +2701,7 @@ pub fn import_trade_order_state(ctx: &ReducerContext, records: Vec<TradeOrderSta
 
 #[spacetimedb::reducer]
 pub fn import_trade_session_state(ctx: &ReducerContext, records: Vec<TradeSessionState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2715,7 +2715,7 @@ pub fn import_trade_session_state(ctx: &ReducerContext, records: Vec<TradeSessio
 
 #[spacetimedb::reducer]
 pub fn import_traveler_trade_order_desc(ctx: &ReducerContext, records: Vec<TravelerTradeOrderDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_traveler_trade_order_desc_internal(ctx, records)?;
@@ -2741,7 +2741,7 @@ fn import_traveler_trade_order_desc_internal(ctx: &ReducerContext, records: Vec<
 
 #[spacetimedb::reducer]
 pub fn import_traveler_task_desc(ctx: &ReducerContext, records: Vec<TravelerTaskDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_traveler_task_desc_internal(ctx, records)?;
@@ -2767,7 +2767,7 @@ fn import_traveler_task_desc_internal(ctx: &ReducerContext, records: Vec<Travele
 
 #[spacetimedb::reducer]
 pub fn import_user_moderation_state(ctx: &ReducerContext, records: Vec<UserModerationState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2781,7 +2781,7 @@ pub fn import_user_moderation_state(ctx: &ReducerContext, records: Vec<UserModer
 
 #[spacetimedb::reducer]
 pub fn import_user_state(ctx: &ReducerContext, records: Vec<UserState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2795,7 +2795,7 @@ pub fn import_user_state(ctx: &ReducerContext, records: Vec<UserState>) {
 
 #[spacetimedb::reducer]
 pub fn import_vault_state(ctx: &ReducerContext, records: Vec<VaultState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2809,7 +2809,7 @@ pub fn import_vault_state(ctx: &ReducerContext, records: Vec<VaultState>) {
 
 #[spacetimedb::reducer]
 pub fn import_deployable_desc(ctx: &ReducerContext, records: Vec<DeployableDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_deployable_desc_internal(ctx, records)?;
@@ -2833,7 +2833,7 @@ fn import_deployable_desc_internal(ctx: &ReducerContext, records: Vec<Deployable
 
 #[spacetimedb::reducer]
 pub fn import_deployable_state(ctx: &ReducerContext, records: Vec<DeployableState>) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Invalid permissions");
         return ();
     }
@@ -2847,7 +2847,7 @@ pub fn import_deployable_state(ctx: &ReducerContext, records: Vec<DeployableStat
 
 #[spacetimedb::reducer]
 pub fn import_weapon_desc(ctx: &ReducerContext, records: Vec<WeaponDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_weapon_desc_internal(ctx, records)?;
@@ -2871,7 +2871,7 @@ fn import_weapon_desc_internal(ctx: &ReducerContext, records: Vec<WeaponDesc>) -
 
 #[spacetimedb::reducer]
 pub fn import_weapon_type_desc(ctx: &ReducerContext, records: Vec<WeaponTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_weapon_type_desc_internal(ctx, records)?;
@@ -2895,7 +2895,7 @@ fn import_weapon_type_desc_internal(ctx: &ReducerContext, records: Vec<WeaponTyp
 
 #[spacetimedb::reducer]
 pub fn import_empire_rank_desc(ctx: &ReducerContext, records: Vec<EmpireRankDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_rank_desc_internal(ctx, records)?;
@@ -2921,7 +2921,7 @@ fn import_empire_rank_desc_internal(ctx: &ReducerContext, records: Vec<EmpireRan
 
 #[spacetimedb::reducer]
 pub fn import_empire_supplies_desc(ctx: &ReducerContext, records: Vec<EmpireSuppliesDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_supplies_desc_internal(ctx, records)?;
@@ -2947,7 +2947,7 @@ fn import_empire_supplies_desc_internal(ctx: &ReducerContext, records: Vec<Empir
 
 #[spacetimedb::reducer]
 pub fn import_empire_notification_desc(ctx: &ReducerContext, records: Vec<EmpireNotificationDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_notification_desc_internal(ctx, records)?;
@@ -2973,7 +2973,7 @@ fn import_empire_notification_desc_internal(ctx: &ReducerContext, records: Vec<E
 
 #[spacetimedb::reducer]
 pub fn import_empire_territory_desc(ctx: &ReducerContext, records: Vec<EmpireTerritoryDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_territory_desc_internal(ctx, records)?;
@@ -2999,7 +2999,7 @@ fn import_empire_territory_desc_internal(ctx: &ReducerContext, records: Vec<Empi
 
 #[spacetimedb::reducer]
 pub fn import_empire_colors_desc(ctx: &ReducerContext, records: Vec<EmpireColorDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_colors_desc_internal(ctx, records)?;
@@ -3023,7 +3023,7 @@ fn import_empire_colors_desc_internal(ctx: &ReducerContext, records: Vec<EmpireC
 
 #[spacetimedb::reducer]
 pub fn import_empire_icon_desc(ctx: &ReducerContext, records: Vec<EmpireIconDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_empire_icon_desc_internal(ctx, records)?;
@@ -3047,7 +3047,7 @@ fn import_empire_icon_desc_internal(ctx: &ReducerContext, records: Vec<EmpireIco
 
 #[spacetimedb::reducer]
 pub fn import_wall_desc(ctx: &ReducerContext, records: Vec<WallDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_wall_desc_internal(ctx, records)?;
@@ -3071,7 +3071,7 @@ fn import_wall_desc_internal(ctx: &ReducerContext, records: Vec<WallDesc>) -> Re
 
 #[spacetimedb::reducer]
 pub fn import_gate_desc(ctx: &ReducerContext, records: Vec<GateDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_gate_desc_internal(ctx, records)?;
@@ -3135,7 +3135,7 @@ fn import_static_data_post_processing(ctx: &ReducerContext) -> Result<(), String
 
 #[spacetimedb::reducer]
 pub fn import_elevator_desc(ctx: &ReducerContext, records: Vec<ElevatorDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_elevator_desc_internal(ctx, records)?;
@@ -3186,7 +3186,7 @@ fn generate_building_function_mappings(ctx: &ReducerContext) -> Result<(), Strin
 
 #[spacetimedb::reducer]
 pub fn import_player_action_desc(ctx: &ReducerContext, records: Vec<PlayerActionDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_player_action_desc_internal(ctx, records)?;
@@ -3212,7 +3212,7 @@ fn import_player_action_desc_internal(ctx: &ReducerContext, records: Vec<PlayerA
 
 #[spacetimedb::reducer]
 pub fn import_distant_visible_entity_desc(ctx: &ReducerContext, records: Vec<DistantVisibleEntityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_distant_visible_entity_desc_internal(ctx, records)?;
@@ -3238,7 +3238,7 @@ fn import_distant_visible_entity_desc_internal(ctx: &ReducerContext, records: Ve
 
 #[spacetimedb::reducer]
 pub fn import_hexite_exchange_entry_desc(ctx: &ReducerContext, records: Vec<HexiteExchangeEntryDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_hexite_exchange_entry_desc_internal(ctx, records)?;
@@ -3264,7 +3264,7 @@ fn import_hexite_exchange_entry_desc_internal(ctx: &ReducerContext, records: Vec
 
 #[spacetimedb::reducer]
 pub fn import_wind_params_desc(ctx: &ReducerContext, records: Vec<WindParamsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_wind_params_desc_internal(ctx, records)?;
@@ -3291,7 +3291,7 @@ fn import_wind_params_desc_internal(ctx: &ReducerContext, records: Vec<WindParam
 
 #[spacetimedb::reducer]
 pub fn import_premium_item_desc(ctx: &ReducerContext, records: Vec<PremiumItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_premium_item_desc_internal(ctx, records)?;
@@ -3318,7 +3318,7 @@ fn import_premium_item_desc_internal(ctx: &ReducerContext, records: Vec<PremiumI
 
 #[spacetimedb::reducer]
 pub fn import_premium_service_desc(ctx: &ReducerContext, records: Vec<PremiumServiceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     import_premium_service_desc_internal(ctx, records)?;
@@ -3349,7 +3349,7 @@ fn collect_table<T: spacetimedb::Table>(table: &T) -> Vec<T::Row> {
 
 #[spacetimedb::reducer]
 pub fn commit_staged_static_data(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

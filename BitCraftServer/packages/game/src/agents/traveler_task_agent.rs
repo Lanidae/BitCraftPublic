@@ -11,7 +11,7 @@ use crate::{
 
 pub const TRAVELER_TASK_RESET_INTERVAL_SECS: i32 = 7 * 24 * 60 * 60;
 
-#[spacetimedb::table(name = traveler_task_loop_timer, public, scheduled(traveler_task_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = traveler_task_loop_timer, public, scheduled(traveler_task_agent_loop, at = scheduled_at))]
 pub struct TravelerTaskLoopTimer {
     #[primary_key]
     #[auto_inc]
@@ -85,7 +85,7 @@ fn traveler_task_agent_loop(ctx: &ReducerContext, _timer: TravelerTaskLoopTimer)
 
 #[spacetimedb::reducer]
 fn admin_reset_traveler_task_credits(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

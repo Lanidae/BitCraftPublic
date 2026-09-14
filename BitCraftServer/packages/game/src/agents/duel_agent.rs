@@ -13,7 +13,7 @@ use crate::{
     params,
 };
 
-#[spacetimedb::table(name = duel_agent_timer, scheduled(duel_agent_timer_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = duel_agent_timer, scheduled(duel_agent_timer_loop, at = scheduled_at))]
 pub struct DuelAgentTimer {
     #[primary_key]
     #[auto_inc]

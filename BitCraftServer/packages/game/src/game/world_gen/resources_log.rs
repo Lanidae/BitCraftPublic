@@ -13,7 +13,7 @@ use super::{
 const CHUNK_WIDTH: u64 = world_definition::TERRAIN_CHUNK_WIDTH as u64;
 const CHUNK_HEIGHT: u64 = world_definition::TERRAIN_CHUNK_HEIGHT as u64;
 
-#[spacetimedb::table(name = resources_log)]
+#[spacetimedb::table(accessor = resources_log)]
 pub struct ResourcesLog {
     #[primary_key]
     pub version: i32,
@@ -26,7 +26,7 @@ pub struct ResourcesLog {
     pub random: CommonRNG,
 }
 
-#[spacetimedb::table(name = single_resource_clump_info)]
+#[spacetimedb::table(accessor = single_resource_clump_info)]
 pub struct SingleResourceClumpInfo {
     #[primary_key]
     pub clump_id: i32,

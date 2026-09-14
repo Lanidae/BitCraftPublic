@@ -15,7 +15,7 @@ pub fn admin_update_region_moderation_config(
     rate_limit_window_sec: i32,
     new_account_min_playtime_sec: i32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

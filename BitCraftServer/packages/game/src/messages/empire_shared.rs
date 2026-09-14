@@ -29,7 +29,7 @@ pub enum EmpireOwnerType {
     Npc = 1,
 }
 
-#[spacetimedb::table(name = empire_state, public)]
+#[spacetimedb::table(accessor = empire_state, public)]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireState {
@@ -47,7 +47,7 @@ pub struct EmpireState {
     pub owner_type: EmpireOwnerType,
 }
 
-#[spacetimedb::table(name = empire_lowercase_name_state, public)]
+#[spacetimedb::table(accessor = empire_lowercase_name_state, public)]
 #[derive(Clone, Debug)]
 pub struct EmpireLowercaseNameState {
     #[primary_key]
@@ -56,10 +56,10 @@ pub struct EmpireLowercaseNameState {
     pub name_lowercase: String,
 }
 
-#[spacetimedb::table(name = empire_node_state, public, 
-    index(name = empire_entity_id, btree(columns = [empire_entity_id])),
-    index(name = active, btree(columns = [active])),
-    index(name = chunk_index, btree(columns = [chunk_index])))]
+#[spacetimedb::table(accessor = empire_node_state, public, 
+    index(accessor = empire_entity_id, btree(columns = [empire_entity_id])),
+    index(accessor = active, btree(columns = [active])),
+    index(accessor = chunk_index, btree(columns = [chunk_index])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireNodeState {
@@ -73,10 +73,10 @@ pub struct EmpireNodeState {
     pub location: OffsetCoordinatesSmallMessage, // For map purpose
 }
 
-#[spacetimedb::table(name = empire_settlement_state, public, 
-    index(name = empire_entity_id, btree(columns = [empire_entity_id])),
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])),
-    index(name = chunk_index, btree(columns = [chunk_index])))]
+#[spacetimedb::table(accessor = empire_settlement_state, public, 
+    index(accessor = empire_entity_id, btree(columns = [empire_entity_id])),
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])),
+    index(accessor = chunk_index, btree(columns = [chunk_index])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireSettlementState {
@@ -91,9 +91,9 @@ pub struct EmpireSettlementState {
     pub location: OffsetCoordinatesSmallMessage, // For map purpose
 }
 
-#[spacetimedb::table(name = empire_chunk_state, public,
-    index(name = watchtower_entity_id, btree(columns = [watchtower_entity_id])),
-    index(name = empire_entity_id, btree(columns = [empire_entity_id])))]
+#[spacetimedb::table(accessor = empire_chunk_state, public,
+    index(accessor = watchtower_entity_id, btree(columns = [watchtower_entity_id])),
+    index(accessor = empire_entity_id, btree(columns = [empire_entity_id])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireChunkState {
@@ -103,7 +103,7 @@ pub struct EmpireChunkState {
     pub watchtower_entity_id: u64, // Permanent link to owning watchtower, set at world gen
 }
 
-#[spacetimedb::table(name = empire_player_data_state, public, index(name = empire_entity_id, btree(columns = [empire_entity_id])))]
+#[spacetimedb::table(accessor = empire_player_data_state, public, index(accessor = empire_entity_id, btree(columns = [empire_entity_id])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpirePlayerDataState {
@@ -116,10 +116,10 @@ pub struct EmpirePlayerDataState {
     pub donated_empire_currency: u32,
 }
 
-#[spacetimedb::table(name = empire_rank_state, public, 
-    index(name = empire_entity_id, btree(columns = [empire_entity_id])),
-    index(name = empire_rank, btree(columns = [empire_entity_id, rank])),
-    index(name = rank, btree(columns = [rank])))]
+#[spacetimedb::table(accessor = empire_rank_state, public, 
+    index(accessor = empire_entity_id, btree(columns = [empire_entity_id])),
+    index(accessor = empire_rank, btree(columns = [empire_entity_id, rank])),
+    index(accessor = rank, btree(columns = [rank])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireRankState {
@@ -131,10 +131,10 @@ pub struct EmpireRankState {
     pub permissions: Vec<bool>, //Based on EmpirePermission enum //DAB Note: these can be packed into a u8 (STDB has significant overhead for serializing vecs)
 }
 
-#[spacetimedb::table(name = empire_node_siege_state, public,
-    index(name = empire_entity_id, btree(columns = [empire_entity_id])),
-    index(name = active, btree(columns = [active])),
-    index(name = building_entity_id, btree(columns = [building_entity_id])))]
+#[spacetimedb::table(accessor = empire_node_siege_state, public,
+    index(accessor = empire_entity_id, btree(columns = [empire_entity_id])),
+    index(accessor = active, btree(columns = [active])),
+    index(accessor = building_entity_id, btree(columns = [building_entity_id])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct EmpireNodeSiegeState {

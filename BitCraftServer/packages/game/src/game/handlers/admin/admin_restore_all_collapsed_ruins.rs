@@ -8,7 +8,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_restore_all_collapsed_ruins(ctx: &ReducerContext) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Unauthorized.");
         return;
     }

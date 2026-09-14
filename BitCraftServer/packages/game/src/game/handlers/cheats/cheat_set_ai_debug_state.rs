@@ -7,7 +7,7 @@ use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn cheat_set_ai_debug_state(ctx: &ReducerContext, request: CheatSetDebugAiStateRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

@@ -3,7 +3,7 @@ use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn cheat_quest_restart(ctx: &ReducerContext, player_entity_id: u64, quest_desc_id: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatRestartQuest) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatRestartQuest) {
         return Err("Unauthorized.".into());
     }
 

@@ -6,7 +6,7 @@ use crate::{
     messages::{authentication::ServerIdentity, components::*},
 };
 
-#[spacetimedb::table(name = duel_despawn_timer, scheduled(duel_despawn, at = scheduled_at))]
+#[spacetimedb::table(accessor = duel_despawn_timer, scheduled(duel_despawn, at = scheduled_at))]
 pub struct DuelDespawnTimer {
     #[primary_key]
     #[auto_inc]

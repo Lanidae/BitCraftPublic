@@ -2,8 +2,8 @@ use std::time::Duration;
 
 use spacetimedb::{ReducerContext, Table};
 
-#[spacetimedb::table(name = on_durability_zero_timer, public, scheduled(on_durability_zero, at = scheduled_at), 
-    index(name = player_entity_id, btree(columns = [player_entity_id])))]
+#[spacetimedb::table(accessor = on_durability_zero_timer, public, scheduled(on_durability_zero, at = scheduled_at), 
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])))]
 pub struct OnDurabilityZeroTimer {
     #[primary_key]
     #[auto_inc]

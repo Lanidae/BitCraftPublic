@@ -1,9 +1,9 @@
 use bitcraft_macro::shared_table_reducer;
 use spacetimedb::{duration, log, ReducerContext, Table, TimeDuration};
 
-use crate::{agents, game::handlers::player::sign_out, messages::authentication::ServerIdentity, player_timestamp_state, user_state};
+use crate::{agents, game::handlers::player::sign_out, messages::{authentication::ServerIdentity, events::{player_signed_out_event, PlayerSignedOutEvent, PlayerSignedOutReason}}, player_timestamp_state, user_state};
 
-#[spacetimedb::table(name = auto_logout_loop_timer, scheduled(auto_logout_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = auto_logout_loop_timer, scheduled(auto_logout_loop, at = scheduled_at))]
 pub struct AutoLogoutLoopTimer {
     #[primary_key]
     #[auto_inc]
@@ -41,6 +41,10 @@ fn auto_logout_loop(ctx: &ReducerContext, _timer: AutoLogoutLoopTimer) {
         if player.timestamp < expired {
             if let Some(user_state) = ctx.db.user_state().entity_id().find(&player.entity_id) {
                 sign_out::sign_out_internal(ctx, user_state.identity, true);
+                ctx.db.player_signed_out_event().insert(PlayerSignedOutEvent {
+                    identity: user_state.identity,
+                    reason: PlayerSignedOutReason::Inactivity,
+                });
             } else {
                 log::error!("Signed in player state without a UserState: {}", player.entity_id);
             }

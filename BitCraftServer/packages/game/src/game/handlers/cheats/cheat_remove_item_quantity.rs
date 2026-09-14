@@ -1,10 +1,10 @@
-﻿use spacetimedb::ReducerContext;
+use spacetimedb::ReducerContext;
 use crate::game::handlers::cheats::cheat_type::{can_run_cheat, CheatType};
 use crate::messages::components::inventory_state;
 
 #[spacetimedb::reducer]
 pub fn cheat_remove_item_quantity(ctx: &ReducerContext, inventory_entity_id: u64, pocket_index: i32, quantity_to_remove: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDeleteItem) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDeleteItem) {
         return Err("Unauthorized.".into());
     }
 
@@ -20,7 +20,7 @@ pub fn cheat_remove_item_quantity(ctx: &ReducerContext, inventory_entity_id: u64
 
 #[spacetimedb::reducer]
 pub fn cheat_remove_item_quantity_all(ctx: &ReducerContext, inventory_entity_id: u64, pocket_index: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDeleteItem) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDeleteItem) {
         return Err("Unauthorized.".into());
     }
 

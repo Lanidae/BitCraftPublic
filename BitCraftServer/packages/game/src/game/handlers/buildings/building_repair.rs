@@ -1,15 +1,17 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::messages::game_util::ToolRequirement;
 use crate::{
-    game::{
-        game_state::{self, game_state_filters},
+    game::game_state::{self, game_state_filters},
+    messages::{
+        action_request::PlayerBuildingRepairRequest,
+        components::*,
+        events::{building_repair_start_event, BuildingRepairStartEvent},
     },
-    messages::{action_request::PlayerBuildingRepairRequest, components::*},
     unwrap_or_err,
 };
 use crate::{parameters_desc, tool_type_desc, CharacterStatType, ToolDesc};
@@ -28,7 +30,7 @@ pub fn building_repair_start(ctx: &ReducerContext, request: PlayerBuildingRepair
 
     let target = Some(request.building_entity_id);
     let delay = event_delay(ctx, actor_id);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::RepairBuilding,
@@ -37,7 +39,13 @@ pub fn building_repair_start(ctx: &ReducerContext, request: PlayerBuildingRepair
         delay,
         reduce(ctx, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .building_repair_start_event()
+            .insert(BuildingRepairStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

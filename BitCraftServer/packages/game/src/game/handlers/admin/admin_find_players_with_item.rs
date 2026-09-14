@@ -16,7 +16,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_find_all_players_with_item(ctx: &ReducerContext, item_id: i32, is_cargo: bool, claim_entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     if claim_entity_id > 0 {
@@ -40,7 +40,7 @@ pub fn admin_find_all_players_with_item_above_quantity(
     claim_entity_id: u64,
     min_quantity: u64,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     if claim_entity_id > 0 {

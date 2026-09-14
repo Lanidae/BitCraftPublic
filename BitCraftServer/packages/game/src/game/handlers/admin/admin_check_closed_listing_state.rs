@@ -7,7 +7,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_check_closed_listing_states(ctx: &ReducerContext, max_value: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

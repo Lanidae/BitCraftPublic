@@ -13,7 +13,7 @@ use crate::{
     SmallHexTile, TerrainChunkState,
 };
 
-#[spacetimedb::table(name = respawn_resource_in_chunk_timer, scheduled(respawn_resource_in_chunk, at = scheduled_at))]
+#[spacetimedb::table(accessor = respawn_resource_in_chunk_timer, scheduled(respawn_resource_in_chunk, at = scheduled_at))]
 pub struct RespawnResourceInChunkTimer {
     #[primary_key]
     #[auto_inc]
@@ -27,7 +27,7 @@ pub struct RespawnResourceInChunkTimer {
 #[spacetimedb::reducer]
 #[feature_gate]
 pub fn respawn_resource_in_chunk(ctx: &ReducerContext, timer: RespawnResourceInChunkTimer) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

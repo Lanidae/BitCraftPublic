@@ -15,7 +15,7 @@ pub fn cheat_drop_item_on_entity(
     is_cargo: bool,
     owner_entity_id: u64,
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatItemStackGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatItemStackGrant) {
         return Err("Unauthorized.".into());
     }
 
@@ -36,7 +36,7 @@ pub fn cheat_drop_item_on_tile(
     is_cargo: bool,
     owner_entity_id: u64,
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatItemStackGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatItemStackGrant) {
         return Err("Unauthorized.".into());
     }
 

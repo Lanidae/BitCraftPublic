@@ -14,7 +14,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_resources_log_count(ctx: &ReducerContext, threshold: f32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

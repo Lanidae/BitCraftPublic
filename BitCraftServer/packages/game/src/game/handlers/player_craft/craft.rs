@@ -14,6 +14,7 @@ use crate::{
     messages::{
         action_request::{PlayerCraftContinueRequest, PlayerCraftInitiateRequest},
         components::*,
+        events::{craft_continue_start_event, craft_initiate_start_event, CraftContinueStartEvent, CraftInitiateStartEvent},
         game_util::ItemStack,
         static_data::*,
     },
@@ -67,7 +68,7 @@ pub fn craft_initiate_start(ctx: &ReducerContext, request: PlayerCraftInitiateRe
         ProgressiveActionState::new(ctx, actor_id, building.entity_id, &building_desc, request.recipe_id, request.count);
     ctx.db.progressive_action_state().try_insert(progressive_action.clone())?;
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Craft,
@@ -87,7 +88,13 @@ pub fn craft_initiate_start(ctx: &ReducerContext, request: PlayerCraftInitiateRe
             true,
         ),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .craft_initiate_start_event()
+            .insert(CraftInitiateStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -160,7 +167,7 @@ pub fn craft_continue_start(ctx: &ReducerContext, request: PlayerCraftContinueRe
         validate_slots(ctx, actor_id, &building, true)?;
     }
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Craft,
@@ -180,7 +187,13 @@ pub fn craft_continue_start(ctx: &ReducerContext, request: PlayerCraftContinueRe
             true,
         ),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .craft_continue_start_event()
+            .insert(CraftContinueStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

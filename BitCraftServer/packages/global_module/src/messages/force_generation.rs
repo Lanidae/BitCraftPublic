@@ -9,7 +9,7 @@ use super::{
     util::{ChunkCoordinatesMessage, FloatHexTileMessage, LargeHexTileMessage},
 };
 
-#[spacetimedb::table(name = force_generate_types)]
+#[spacetimedb::table(accessor = force_generate_types)]
 pub struct ForceGenerateTypes {
     pub hex_direction: HexDirection,
     pub float_hex_tile: FloatHexTileMessage,

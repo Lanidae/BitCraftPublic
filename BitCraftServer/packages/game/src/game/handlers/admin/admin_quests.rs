@@ -13,7 +13,7 @@ use crate::{
 // If we don't delete the quest progress, it'll sit in their quest log forever.
 #[spacetimedb::reducer]
 pub fn admin_fail_quest(ctx: &ReducerContext, quest_desc_id: i32) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Unauthorized.");
         return;
     }

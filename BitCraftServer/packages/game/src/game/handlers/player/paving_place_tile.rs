@@ -1,8 +1,8 @@
-use bitcraft_macro::feature_gate;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::game::{claim_helper, dimensions};
 use crate::messages::components::PlayerActionState;
+use crate::messages::events::*;
 use crate::messages::game_util::ItemStack;
 use crate::{
     game::{
@@ -14,6 +14,7 @@ use crate::{
     messages::static_data::*,
     unwrap_or_err,
 };
+use bitcraft_macro::feature_gate;
 use spacetimedb::{ReducerContext, Table};
 use std::time::Duration;
 
@@ -26,7 +27,7 @@ pub fn paving_place_tile_start(ctx: &ReducerContext, request: PlayerPavingPlaceT
     let target = Some(request.tile_type_id as u64);
     let delay = event_delay(ctx, &request);
     let mut terrain_cache = TerrainChunkCache::empty();
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::PaveTile,
@@ -35,7 +36,13 @@ pub fn paving_place_tile_start(ctx: &ReducerContext, request: PlayerPavingPlaceT
         delay,
         self::reduce(ctx, &mut terrain_cache, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .paving_place_tile_start_event()
+            .insert(PavingPlaceTileStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

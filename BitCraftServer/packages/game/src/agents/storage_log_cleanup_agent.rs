@@ -10,7 +10,7 @@ use crate::{
 
 const DELETE_LOGS_AFTER_DAYS: i32 = 14;
 
-#[spacetimedb::table(name = storage_log_cleanup_loop_timer, scheduled(storage_log_cleanup_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = storage_log_cleanup_loop_timer, scheduled(storage_log_cleanup_loop, at = scheduled_at))]
 pub struct StorageLogCleanupLoopTimer {
     #[primary_key]
     #[auto_inc]

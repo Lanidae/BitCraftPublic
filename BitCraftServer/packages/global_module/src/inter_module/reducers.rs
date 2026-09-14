@@ -120,7 +120,7 @@ pub fn on_inter_module_message_processed(ctx: &ReducerContext, id: u64, error: O
         Some(m) => m,
         None => {
             return Err(format!(
-                "No inter_module_message for id {{0}}. Is there more than one relay running?|~{id}",
+                "No inter_module_message for id {id}. Is there more than one relay running?",
             ))
         }
     };
@@ -135,7 +135,7 @@ pub fn on_inter_module_message_processed(ctx: &ReducerContext, id: u64, error: O
 }
 
 fn validate_relay_identity(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     return Ok(());

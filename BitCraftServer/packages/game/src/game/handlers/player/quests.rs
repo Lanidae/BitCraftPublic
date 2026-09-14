@@ -132,7 +132,7 @@ pub fn advance_quest_stage(ctx: &ReducerContext, chain_id: i32) -> Result<(), St
         current_stage_id = unwrap_or_err!(quest_chain_desc.stages.first().copied(), "Cannot advance quest. Quest chain does not have a first stage.");
         quest_stage_option = ctx.db.quest_stage_desc().id().find(current_stage_id);
     }
-    let quest_stage = unwrap_or_err!(quest_stage_option, "Cannot advance quest. Current stage {{0}} in chain {{1}} invalid.|~{}|~{}", current_stage_id, chain_id);
+    let quest_stage = unwrap_or_err!(quest_stage_option, "Cannot advance quest. Current stage {} in chain {} invalid.", current_stage_id, chain_id);
 
     quest_stage.fulfil_completion_conditions(ctx, actor_id)?;
 
@@ -144,7 +144,7 @@ pub fn advance_quest_stage(ctx: &ReducerContext, chain_id: i32) -> Result<(), St
             new_stage_id = quest_chain_desc.stages[stage_index];
         }
     } else {
-        return Err(format!("Cannot advance quest. Chain {{0}} doesn't have stage {{1}}.|~{}|~{}", chain_id, quest_chain_state.stage_id));
+        return Err(format!("Cannot advance quest. Chain {} doesn't have stage {}.", chain_id, quest_chain_state.stage_id));
     }
 
     quest_chain_state.stage_id = new_stage_id;

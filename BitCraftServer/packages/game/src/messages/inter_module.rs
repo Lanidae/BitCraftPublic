@@ -9,7 +9,7 @@ use super::{
 };
 
 //Used to check messages received by this module where it is the destination
-#[spacetimedb::table(name = inter_module_message_counter)]
+#[spacetimedb::table(accessor = inter_module_message_counter)]
 pub struct InterModuleMessageCounter {
     #[primary_key]
     pub module_id: u8,
@@ -17,15 +17,15 @@ pub struct InterModuleMessageCounter {
 }
 
 //Used to check message responses received by this module where it is the sender
-#[spacetimedb::table(name = inter_module_response_message_counter)]
+#[spacetimedb::table(accessor = inter_module_response_message_counter)]
 pub struct InterModuleResponseMessageCounter {
     #[primary_key]
     pub dst_module_id: u8,
     pub last_processed_message_id: u64,
 }
 
-#[spacetimedb::table(name = inter_module_message_errors,
-    index(name = id, btree(columns = [sender_module_id, message_id])))]
+#[spacetimedb::table(accessor = inter_module_message_errors,
+    index(accessor = id, btree(columns = [sender_module_id, message_id])))]
 pub struct InterModuleMessageErrors {
     #[primary_key]
     pub sender_module_id: u8,
@@ -33,7 +33,7 @@ pub struct InterModuleMessageErrors {
     pub error: String,
 }
 
-#[spacetimedb::table(name = inter_module_message, public)]
+#[spacetimedb::table(accessor = inter_module_message, public)]
 pub struct InterModuleMessage {
     #[primary_key]
     #[auto_inc]
@@ -42,7 +42,7 @@ pub struct InterModuleMessage {
     pub contents: MessageContents,
 }
 
-#[spacetimedb::table(name = inter_module_message_v2, public)]
+#[spacetimedb::table(accessor = inter_module_message_v2, public)]
 pub struct InterModuleMessageV2 {
     #[primary_key]
     #[auto_inc]
@@ -51,7 +51,7 @@ pub struct InterModuleMessageV2 {
     pub contents: MessageContentsV2,
 }
 
-#[spacetimedb::table(name = inter_module_message_v3, public)]
+#[spacetimedb::table(accessor = inter_module_message_v3, public)]
 pub struct InterModuleMessageV3 {
     #[primary_key]
     #[auto_inc]
@@ -60,7 +60,7 @@ pub struct InterModuleMessageV3 {
     pub contents: MessageContentsV3,
 }
 
-#[spacetimedb::table(name = inter_module_message_v4, public)]
+#[spacetimedb::table(accessor = inter_module_message_v4, public)]
 pub struct InterModuleMessageV4 {
     #[primary_key]
     #[auto_inc]
@@ -69,7 +69,7 @@ pub struct InterModuleMessageV4 {
     pub contents: MessageContentsV4,
 }
 
-#[spacetimedb::table(name = inter_module_message_v5, public)]
+#[spacetimedb::table(accessor = inter_module_message_v5, public)]
 pub struct InterModuleMessageV5 {
     #[primary_key]
     #[auto_inc]

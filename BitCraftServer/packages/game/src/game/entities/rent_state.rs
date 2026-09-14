@@ -47,7 +47,7 @@ impl RentState {
 
         if !InventoryState::remove_stacks_from_player_inventory(ctx, player_entity_id, &coin_deposit, false) {
             return Err(format!(
-                "You need {{0}} hex coins between your inventory and your treasury to evict this tenant.|~{}",
+                "You need {} hex coins between your inventory and your treasury to evict this tenant.",
                 initial_amount
             )
             .into());

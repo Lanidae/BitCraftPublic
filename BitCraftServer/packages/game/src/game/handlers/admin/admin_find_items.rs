@@ -13,7 +13,7 @@ use super::admin_find_players_with_item::quantity_of_item;
 
 #[spacetimedb::reducer]
 pub fn admin_find_items_in_inventories(ctx: &ReducerContext, item_id: i32, is_cargo: bool, min_threshold: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -37,7 +37,7 @@ pub fn admin_find_items_in_inventories(ctx: &ReducerContext, item_id: i32, is_ca
 
 #[spacetimedb::reducer]
 pub fn admin_find_items_in_trades(ctx: &ReducerContext, item_id: i32, is_cargo: bool, min_threshold: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

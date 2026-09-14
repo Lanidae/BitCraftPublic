@@ -58,7 +58,7 @@ pub fn item_stack_move_all(ctx: &ReducerContext, request: PlayerItemStackMoveAll
 
     let source_item = unwrap_or_err!(
         source_inventory.get_pocket_contents(request.from_pocket.pocket_index as usize),
-        "No items in this pocket: entity_id: {{0}} pocket_index: {{1}}|~{}|~{}",
+        "No items in this pocket: entity_id: {} pocket_index: {}",
         source_inventory.entity_id,
         request.from_pocket.pocket_index
     );

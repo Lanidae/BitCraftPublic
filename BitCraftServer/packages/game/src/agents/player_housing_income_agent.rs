@@ -15,7 +15,7 @@ use crate::{
 
 const SECONDS_IN_A_DAY: i32 = 24 * 60 * 60;
 
-#[spacetimedb::table(name = player_housing_income_loop_timer, scheduled(player_housing_income_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = player_housing_income_loop_timer, scheduled(player_housing_income_agent_loop, at = scheduled_at))]
 pub struct PlayerHousingIncomeLoopTimer {
     #[primary_key]
     #[auto_inc]

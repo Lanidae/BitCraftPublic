@@ -12,7 +12,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_mark_premium_purchase_processed(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 #[spacetimedb::reducer]
 pub fn admin_remove_collectible(ctx: &ReducerContext, identity: String, collectible_id: i32, quantity: u32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

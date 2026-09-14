@@ -1,15 +1,16 @@
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
-    ThreatState, action_state, agents::crumb_trail_clean_up_agent, enemy_state, game::{autogen::_delete_entity::delete_entity, reducer_helpers::player_action_helpers::post_reducer_update_cargo}, herd_state, messages::{
+    ThreatState, action_state, agents::crumb_trail_clean_up_agent, enemy_state, game::{autogen::_delete_entity::delete_entity, game_state::unix_ms, reducer_helpers::player_action_helpers::post_reducer_update_cargo}, herd_state, messages::{
         action_request::EnemySpawnLootRequest,
         authentication::ServerIdentity,
-        components::{ContributionState, InventoryState, ability_state, crumb_trail_contribution_lock_state, crumb_trail_state},
+        components::{ContributionState, InventoryState, ability_state, crumb_trail_contribution_lock_state, crumb_trail_state, mobile_entity_state}, events::{enemy_despawn_event, EnemyDespawnEvent},
         static_data::{QuestDropDesc, enemy_desc},
+        util::OffsetCoordinatesFloat,
     }
 };
 
-#[spacetimedb::table(name = enemy_despawn_timer, scheduled(enemy_despawn, at = scheduled_at))]
+#[spacetimedb::table(accessor = enemy_despawn_timer, scheduled(enemy_despawn, at = scheduled_at))]
 pub struct EnemyDespawnTimer {
     #[primary_key]
     #[auto_inc]
@@ -55,14 +56,14 @@ pub fn enemy_spawn_loot(ctx: &ReducerContext, request: EnemySpawnLootRequest) ->
 #[spacetimedb::reducer]
 pub fn enemy_despawn(ctx: &ReducerContext, timer: EnemyDespawnTimer) -> Result<(), String> {
     ServerIdentity::validate_server_or_admin(&ctx)?;
-    reduce(ctx, timer.entity_id);
+    reduce(ctx, timer.entity_id, true);
     Ok(())
 }
 
 #[spacetimedb::reducer]
 pub fn enemy_despawn_from_mob_monitor(ctx: &ReducerContext, enemy_entity_id: u64) -> Result<(), String> {
     ServerIdentity::validate_server_or_admin(&ctx)?;
-    reduce(ctx, enemy_entity_id);
+    reduce(ctx, enemy_entity_id, false);
     Ok(())
 }
 
@@ -70,12 +71,12 @@ pub fn enemy_despawn_from_mob_monitor(ctx: &ReducerContext, enemy_entity_id: u64
 pub fn enemy_despawn_from_mob_monitor_batch(ctx: &ReducerContext, enemy_entity_ids: Vec<u64>) -> Result<(), String> {
     ServerIdentity::validate_server_or_admin(&ctx)?;
     for enemy_entity_id in enemy_entity_ids {
-        reduce(ctx, enemy_entity_id);
+        reduce(ctx, enemy_entity_id, false);
     }
     Ok(())
 }
 
-pub fn reduce(ctx: &ReducerContext, entity_id: u64) {
+pub fn reduce(ctx: &ReducerContext, entity_id: u64, emit_despawn_event: bool) {
     // The enemy can be despawned twice if it is killed just as it is unspawned because of the time of day.
     // (one call from the server and one call from the mob monitor)
     // In this case, just despawn it once, with whatever happens first.
@@ -106,6 +107,27 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64) {
                     .find(prospecting_lock.crumb_trail_entity_id)
                     .unwrap();
                 crumb_trail_clean_up_agent::delete_crumb_trail(ctx, &crumb_trail);
+            }
+        }
+
+        if emit_despawn_event {
+            if let Some(mobile_entity) = ctx.db.mobile_entity_state().entity_id().find(&entity_id) {
+                ctx.db.enemy_despawn_event().insert(EnemyDespawnEvent {
+                    entity_id,
+                    enemy_type: enemy.enemy_type,
+                    despawn_timestamp: unix_ms(ctx.timestamp),
+                    location: OffsetCoordinatesFloat {
+                        x: mobile_entity.location_x,
+                        z: mobile_entity.location_z,
+                        dimension: mobile_entity.dimension,
+                    },
+                    destination: OffsetCoordinatesFloat {
+                        x: mobile_entity.destination_x,
+                        z: mobile_entity.destination_z,
+                        dimension: mobile_entity.dimension,
+                    },
+                    movement_timestamp: mobile_entity.timestamp,
+                });
             }
         }
 

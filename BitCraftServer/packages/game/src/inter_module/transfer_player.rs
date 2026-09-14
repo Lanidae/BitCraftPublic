@@ -1,4 +1,4 @@
-use bitcraft_macro::{event_table, shared_table_reducer};
+use bitcraft_macro::shared_table_reducer;
 use spacetimedb::{ReducerContext, Table};
 
 use crate::{
@@ -16,6 +16,7 @@ use crate::{
         authentication::ServerIdentity,
         components::*,
         empire_shared::{empire_player_data_state, EmpireState},
+        events::PlayerRegionTransferEvent,
         generic::{region_control_info, world_region_state},
         inter_module::{MessageContentsV5, TransferPlayerMsgV5},
         static_data::BuffCategory,
@@ -63,7 +64,7 @@ pub fn send_message(
     return Ok(());
 }
 
-#[spacetimedb::table(name = transfer_player_timer, scheduled(transfer_player_delayed, at = scheduled_at))]
+#[spacetimedb::table(accessor = transfer_player_timer, scheduled(transfer_player_delayed, at = scheduled_at))]
 pub struct TransferPlayerTimer {
     #[primary_key]
     #[auto_inc]
@@ -527,10 +528,4 @@ fn insert_player(ctx: &ReducerContext, req: TransferPlayerMsgV5, location: Float
             _ = EmpireState::update_crown_status(ctx, rank.empire_entity_id);
         }
     }
-}
-
-#[event_table(name = player_region_transfer_event)]
-pub struct PlayerRegionTransferEvent {
-    pub player_entity_id: u64,
-    pub new_region_index: u8,
 }

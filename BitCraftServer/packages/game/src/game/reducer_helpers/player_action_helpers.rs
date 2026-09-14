@@ -44,7 +44,7 @@ pub fn validate_action_elevation_known(
     error_verb: &str,
 ) -> Result<(), String> {
     if (player_elevation - target_elevation).abs() > max_elevation {
-        return Err(format!("Can't {{0}} over a cliff.|~{error_verb}"));
+        return Err(format!("Can't {error_verb} over a cliff."));
     }
     return Ok(());
 }
@@ -74,7 +74,7 @@ pub fn start_action(
                 "Cannot find allowable action matrix"
             );
             if !action_desc.allowed_concurrent_action_ids.contains(&base_action_id) {
-                let error_msg = format!("Cannot {{0}} during {{1}}|~{:?}|~{:?}", action_type, base_action_type);
+                let error_msg = format!("Cannot {:?} during {:?}", action_type, base_action_type);
                 return fail_action(actor_id, layer, error_msg);
             }
         }

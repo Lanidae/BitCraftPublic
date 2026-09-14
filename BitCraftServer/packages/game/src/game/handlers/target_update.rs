@@ -23,7 +23,7 @@ pub fn target_update(ctx: &ReducerContext, request: TargetUpdateRequest) -> Resu
         game_state::ensure_signed_in(ctx, actor_id)?;
         PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
     } else {
-        if !has_role(ctx, &ctx.sender, Role::Admin) {
+        if !has_role(ctx, &ctx.sender(), Role::Admin) {
             return Err("Invalid permissions".into());
         }
     }

@@ -7,7 +7,7 @@ use crate::unwrap_or_err;
 
 #[spacetimedb::reducer]
 pub fn cheat_shards_grant(ctx: &ReducerContext, request: CheatShardsGrantRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatShardsGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatShardsGrant) {
         return Err("Unauthorized.".into());
     }
 

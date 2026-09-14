@@ -32,7 +32,7 @@ const TELEPORT_OFFSET_FROM_REGION_EDGE: i32 = 2;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_expel_players(ctx: &ReducerContext, commit: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -63,7 +63,7 @@ pub fn init(ctx: &ReducerContext) {
 
 #[spacetimedb::reducer]
 pub fn update_scheduled_timers_from_static_data(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     log::info!("Updating scheduled timers with values from static data");

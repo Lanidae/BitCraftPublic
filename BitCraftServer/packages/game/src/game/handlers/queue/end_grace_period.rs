@@ -8,7 +8,7 @@ use crate::{
 
 use super::player_queue;
 
-#[spacetimedb::table(name = end_grace_period_timer, scheduled(end_grace_period, at = scheduled_at))]
+#[spacetimedb::table(accessor = end_grace_period_timer, scheduled(end_grace_period, at = scheduled_at))]
 pub struct EndGracePeriodTimer {
     #[primary_key]
     #[auto_inc]
@@ -63,7 +63,7 @@ fn end_grace_period(ctx: &ReducerContext, timer: EndGracePeriodTimer) {
             player_queue::process_queue(ctx);
 
             user_state.can_sign_in = false;
-            ctx.db.user_state().identity().update(user_state);
+            ctx.db.user_state().entity_id().update(user_state);
         }
         GracePeriodType::QueueJoin => player_queue::dequeue(ctx, user_state.entity_id),
     }

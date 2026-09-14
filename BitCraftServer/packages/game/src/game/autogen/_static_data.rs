@@ -7,7 +7,7 @@ use crate::game::handlers::authentication::has_role;
 
 #[spacetimedb::reducer]
 pub fn clear_staged_static_data(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -335,7 +335,7 @@ pub fn clear_staged_static_data(ctx: &ReducerContext) -> Result<(), String> {
 
 #[spacetimedb::reducer]
 pub fn stage_ability_custom_desc(ctx: &ReducerContext, records: Vec<AbilityCustomDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -349,7 +349,7 @@ pub fn stage_ability_custom_desc(ctx: &ReducerContext, records: Vec<AbilityCusto
 
 #[spacetimedb::reducer]
 pub fn stage_ability_unlock_desc(ctx: &ReducerContext, records: Vec<AbilityUnlockDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -363,7 +363,7 @@ pub fn stage_ability_unlock_desc(ctx: &ReducerContext, records: Vec<AbilityUnloc
 
 #[spacetimedb::reducer]
 pub fn stage_achievement_desc(ctx: &ReducerContext, records: Vec<AchievementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -377,7 +377,7 @@ pub fn stage_achievement_desc(ctx: &ReducerContext, records: Vec<AchievementDesc
 
 #[spacetimedb::reducer]
 pub fn stage_alert_desc(ctx: &ReducerContext, records: Vec<AlertDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -391,7 +391,7 @@ pub fn stage_alert_desc(ctx: &ReducerContext, records: Vec<AlertDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_biome_desc(ctx: &ReducerContext, records: Vec<BiomeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -405,7 +405,7 @@ pub fn stage_biome_desc(ctx: &ReducerContext, records: Vec<BiomeDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_buff_desc(ctx: &ReducerContext, records: Vec<BuffDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -419,7 +419,7 @@ pub fn stage_buff_desc(ctx: &ReducerContext, records: Vec<BuffDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_buff_type_desc(ctx: &ReducerContext, records: Vec<BuffTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -433,7 +433,7 @@ pub fn stage_buff_type_desc(ctx: &ReducerContext, records: Vec<BuffTypeDesc>) ->
 
 #[spacetimedb::reducer]
 pub fn stage_building_buff_desc(ctx: &ReducerContext, records: Vec<BuildingBuffDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -447,7 +447,7 @@ pub fn stage_building_buff_desc(ctx: &ReducerContext, records: Vec<BuildingBuffD
 
 #[spacetimedb::reducer]
 pub fn stage_building_claim_desc(ctx: &ReducerContext, records: Vec<BuildingClaimDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -461,7 +461,7 @@ pub fn stage_building_claim_desc(ctx: &ReducerContext, records: Vec<BuildingClai
 
 #[spacetimedb::reducer]
 pub fn stage_building_desc(ctx: &ReducerContext, records: Vec<BuildingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -475,7 +475,7 @@ pub fn stage_building_desc(ctx: &ReducerContext, records: Vec<BuildingDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn stage_building_map_icon_desc(ctx: &ReducerContext, records: Vec<BuildingMapIconDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -489,7 +489,7 @@ pub fn stage_building_map_icon_desc(ctx: &ReducerContext, records: Vec<BuildingM
 
 #[spacetimedb::reducer]
 pub fn stage_building_portal_desc(ctx: &ReducerContext, records: Vec<BuildingPortalDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -503,7 +503,7 @@ pub fn stage_building_portal_desc(ctx: &ReducerContext, records: Vec<BuildingPor
 
 #[spacetimedb::reducer]
 pub fn stage_building_repairs_desc(ctx: &ReducerContext, records: Vec<BuildingRepairsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -517,7 +517,7 @@ pub fn stage_building_repairs_desc(ctx: &ReducerContext, records: Vec<BuildingRe
 
 #[spacetimedb::reducer]
 pub fn stage_building_spawn_desc(ctx: &ReducerContext, records: Vec<BuildingSpawnDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -531,7 +531,7 @@ pub fn stage_building_spawn_desc(ctx: &ReducerContext, records: Vec<BuildingSpaw
 
 #[spacetimedb::reducer]
 pub fn stage_building_type_desc(ctx: &ReducerContext, records: Vec<BuildingTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -545,7 +545,7 @@ pub fn stage_building_type_desc(ctx: &ReducerContext, records: Vec<BuildingTypeD
 
 #[spacetimedb::reducer]
 pub fn stage_cargo_desc(ctx: &ReducerContext, records: Vec<CargoDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -559,7 +559,7 @@ pub fn stage_cargo_desc(ctx: &ReducerContext, records: Vec<CargoDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_character_stat_desc(ctx: &ReducerContext, records: Vec<CharacterStatDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -573,7 +573,7 @@ pub fn stage_character_stat_desc(ctx: &ReducerContext, records: Vec<CharacterSta
 
 #[spacetimedb::reducer]
 pub fn stage_chest_rarity_desc(ctx: &ReducerContext, records: Vec<ChestRarityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -587,7 +587,7 @@ pub fn stage_chest_rarity_desc(ctx: &ReducerContext, records: Vec<ChestRarityDes
 
 #[spacetimedb::reducer]
 pub fn stage_claim_tech_desc(ctx: &ReducerContext, records: Vec<ClaimTechDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -601,7 +601,7 @@ pub fn stage_claim_tech_desc(ctx: &ReducerContext, records: Vec<ClaimTechDesc>) 
 
 #[spacetimedb::reducer]
 pub fn stage_claim_tile_cost(ctx: &ReducerContext, records: Vec<ClaimTileCost>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -615,7 +615,7 @@ pub fn stage_claim_tile_cost(ctx: &ReducerContext, records: Vec<ClaimTileCost>) 
 
 #[spacetimedb::reducer]
 pub fn stage_climb_requirement_desc(ctx: &ReducerContext, records: Vec<ClimbRequirementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -629,7 +629,7 @@ pub fn stage_climb_requirement_desc(ctx: &ReducerContext, records: Vec<ClimbRequ
 
 #[spacetimedb::reducer]
 pub fn stage_clothing_desc(ctx: &ReducerContext, records: Vec<ClothingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -643,7 +643,7 @@ pub fn stage_clothing_desc(ctx: &ReducerContext, records: Vec<ClothingDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn stage_collectible_desc(ctx: &ReducerContext, records: Vec<CollectibleDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -657,7 +657,7 @@ pub fn stage_collectible_desc(ctx: &ReducerContext, records: Vec<CollectibleDesc
 
 #[spacetimedb::reducer]
 pub fn stage_combat_action_desc(ctx: &ReducerContext, records: Vec<CombatActionDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -671,7 +671,7 @@ pub fn stage_combat_action_desc(ctx: &ReducerContext, records: Vec<CombatActionD
 
 #[spacetimedb::reducer]
 pub fn stage_combat_action_multi_hit_desc(ctx: &ReducerContext, records: Vec<CombatActionMultiHitDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -685,7 +685,7 @@ pub fn stage_combat_action_multi_hit_desc(ctx: &ReducerContext, records: Vec<Com
 
 #[spacetimedb::reducer]
 pub fn stage_construction_recipe_desc(ctx: &ReducerContext, records: Vec<ConstructionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -699,7 +699,7 @@ pub fn stage_construction_recipe_desc(ctx: &ReducerContext, records: Vec<Constru
 
 #[spacetimedb::reducer]
 pub fn stage_contribution_loot_desc(ctx: &ReducerContext, records: Vec<ContributionLootDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -713,7 +713,7 @@ pub fn stage_contribution_loot_desc(ctx: &ReducerContext, records: Vec<Contribut
 
 #[spacetimedb::reducer]
 pub fn stage_crafting_recipe_desc(ctx: &ReducerContext, records: Vec<CraftingRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -727,7 +727,7 @@ pub fn stage_crafting_recipe_desc(ctx: &ReducerContext, records: Vec<CraftingRec
 
 #[spacetimedb::reducer]
 pub fn stage_deconstruction_recipe_desc(ctx: &ReducerContext, records: Vec<DeconstructionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -741,7 +741,7 @@ pub fn stage_deconstruction_recipe_desc(ctx: &ReducerContext, records: Vec<Decon
 
 #[spacetimedb::reducer]
 pub fn stage_deployable_appearance_override_desc(ctx: &ReducerContext, records: Vec<DeployableAppearanceOverrideDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -755,7 +755,7 @@ pub fn stage_deployable_appearance_override_desc(ctx: &ReducerContext, records: 
 
 #[spacetimedb::reducer]
 pub fn stage_deployable_desc(ctx: &ReducerContext, records: Vec<DeployableDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -769,7 +769,7 @@ pub fn stage_deployable_desc(ctx: &ReducerContext, records: Vec<DeployableDesc>)
 
 #[spacetimedb::reducer]
 pub fn stage_distant_visible_entity_desc(ctx: &ReducerContext, records: Vec<DistantVisibleEntityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -783,7 +783,7 @@ pub fn stage_distant_visible_entity_desc(ctx: &ReducerContext, records: Vec<Dist
 
 #[spacetimedb::reducer]
 pub fn stage_elevator_desc(ctx: &ReducerContext, records: Vec<ElevatorDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -797,7 +797,7 @@ pub fn stage_elevator_desc(ctx: &ReducerContext, records: Vec<ElevatorDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn stage_emote_desc(ctx: &ReducerContext, records: Vec<EmoteDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -811,7 +811,7 @@ pub fn stage_emote_desc(ctx: &ReducerContext, records: Vec<EmoteDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_empire_colors_desc(ctx: &ReducerContext, records: Vec<EmpireColorDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -825,7 +825,7 @@ pub fn stage_empire_colors_desc(ctx: &ReducerContext, records: Vec<EmpireColorDe
 
 #[spacetimedb::reducer]
 pub fn stage_empire_icon_desc(ctx: &ReducerContext, records: Vec<EmpireIconDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -839,7 +839,7 @@ pub fn stage_empire_icon_desc(ctx: &ReducerContext, records: Vec<EmpireIconDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_empire_notification_desc(ctx: &ReducerContext, records: Vec<EmpireNotificationDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -853,7 +853,7 @@ pub fn stage_empire_notification_desc(ctx: &ReducerContext, records: Vec<EmpireN
 
 #[spacetimedb::reducer]
 pub fn stage_empire_rank_desc(ctx: &ReducerContext, records: Vec<EmpireRankDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -867,7 +867,7 @@ pub fn stage_empire_rank_desc(ctx: &ReducerContext, records: Vec<EmpireRankDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_empire_supplies_desc(ctx: &ReducerContext, records: Vec<EmpireSuppliesDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -881,7 +881,7 @@ pub fn stage_empire_supplies_desc(ctx: &ReducerContext, records: Vec<EmpireSuppl
 
 #[spacetimedb::reducer]
 pub fn stage_empire_territory_desc(ctx: &ReducerContext, records: Vec<EmpireTerritoryDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -895,7 +895,7 @@ pub fn stage_empire_territory_desc(ctx: &ReducerContext, records: Vec<EmpireTerr
 
 #[spacetimedb::reducer]
 pub fn stage_enemy_ai_params_desc(ctx: &ReducerContext, records: Vec<EnemyAiParamsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -909,7 +909,7 @@ pub fn stage_enemy_ai_params_desc(ctx: &ReducerContext, records: Vec<EnemyAiPara
 
 #[spacetimedb::reducer]
 pub fn stage_enemy_desc(ctx: &ReducerContext, records: Vec<EnemyDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -923,7 +923,7 @@ pub fn stage_enemy_desc(ctx: &ReducerContext, records: Vec<EnemyDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_enemy_scaling_desc(ctx: &ReducerContext, records: Vec<EnemyScalingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -937,7 +937,7 @@ pub fn stage_enemy_scaling_desc(ctx: &ReducerContext, records: Vec<EnemyScalingD
 
 #[spacetimedb::reducer]
 pub fn stage_environment_debuff_desc(ctx: &ReducerContext, records: Vec<EnvironmentDebuffDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -951,7 +951,7 @@ pub fn stage_environment_debuff_desc(ctx: &ReducerContext, records: Vec<Environm
 
 #[spacetimedb::reducer]
 pub fn stage_equipment_desc(ctx: &ReducerContext, records: Vec<EquipmentDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -965,7 +965,7 @@ pub fn stage_equipment_desc(ctx: &ReducerContext, records: Vec<EquipmentDesc>) -
 
 #[spacetimedb::reducer]
 pub fn stage_equipment_preset_knowledge_desc(ctx: &ReducerContext, records: Vec<EquipmentPresetKnowledgeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -979,7 +979,7 @@ pub fn stage_equipment_preset_knowledge_desc(ctx: &ReducerContext, records: Vec<
 
 #[spacetimedb::reducer]
 pub fn stage_extraction_recipe_desc(ctx: &ReducerContext, records: Vec<ExtractionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -993,7 +993,7 @@ pub fn stage_extraction_recipe_desc(ctx: &ReducerContext, records: Vec<Extractio
 
 #[spacetimedb::reducer]
 pub fn stage_food_desc(ctx: &ReducerContext, records: Vec<FoodDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1007,7 +1007,7 @@ pub fn stage_food_desc(ctx: &ReducerContext, records: Vec<FoodDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_gate_desc(ctx: &ReducerContext, records: Vec<GateDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1021,7 +1021,7 @@ pub fn stage_gate_desc(ctx: &ReducerContext, records: Vec<GateDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_hexite_exchange_entry_desc(ctx: &ReducerContext, records: Vec<HexiteExchangeEntryDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1035,7 +1035,7 @@ pub fn stage_hexite_exchange_entry_desc(ctx: &ReducerContext, records: Vec<Hexit
 
 #[spacetimedb::reducer]
 pub fn stage_interior_environment_desc(ctx: &ReducerContext, records: Vec<InteriorEnvironmentDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1049,7 +1049,7 @@ pub fn stage_interior_environment_desc(ctx: &ReducerContext, records: Vec<Interi
 
 #[spacetimedb::reducer]
 pub fn stage_interior_instance_desc(ctx: &ReducerContext, records: Vec<InteriorInstanceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1063,7 +1063,7 @@ pub fn stage_interior_instance_desc(ctx: &ReducerContext, records: Vec<InteriorI
 
 #[spacetimedb::reducer]
 pub fn stage_interior_network_desc(ctx: &ReducerContext, records: Vec<InteriorNetworkDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1077,7 +1077,7 @@ pub fn stage_interior_network_desc(ctx: &ReducerContext, records: Vec<InteriorNe
 
 #[spacetimedb::reducer]
 pub fn stage_interior_portal_connections_desc(ctx: &ReducerContext, records: Vec<InteriorPortalConnectionsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1091,7 +1091,7 @@ pub fn stage_interior_portal_connections_desc(ctx: &ReducerContext, records: Vec
 
 #[spacetimedb::reducer]
 pub fn stage_interior_shape_desc(ctx: &ReducerContext, records: Vec<InteriorShapeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1105,7 +1105,7 @@ pub fn stage_interior_shape_desc(ctx: &ReducerContext, records: Vec<InteriorShap
 
 #[spacetimedb::reducer]
 pub fn stage_interior_spawn_desc(ctx: &ReducerContext, records: Vec<InteriorSpawnDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1119,7 +1119,7 @@ pub fn stage_interior_spawn_desc(ctx: &ReducerContext, records: Vec<InteriorSpaw
 
 #[spacetimedb::reducer]
 pub fn stage_item_conversion_recipe_desc(ctx: &ReducerContext, records: Vec<ItemConversionRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1133,7 +1133,7 @@ pub fn stage_item_conversion_recipe_desc(ctx: &ReducerContext, records: Vec<Item
 
 #[spacetimedb::reducer]
 pub fn stage_item_desc(ctx: &ReducerContext, records: Vec<ItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1147,7 +1147,7 @@ pub fn stage_item_desc(ctx: &ReducerContext, records: Vec<ItemDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_item_list_desc(ctx: &ReducerContext, records: Vec<ItemListDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1161,7 +1161,7 @@ pub fn stage_item_list_desc(ctx: &ReducerContext, records: Vec<ItemListDesc>) ->
 
 #[spacetimedb::reducer]
 pub fn stage_knowledge_scroll_desc(ctx: &ReducerContext, records: Vec<KnowledgeScrollDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1175,7 +1175,7 @@ pub fn stage_knowledge_scroll_desc(ctx: &ReducerContext, records: Vec<KnowledgeS
 
 #[spacetimedb::reducer]
 pub fn stage_knowledge_scroll_type_desc(ctx: &ReducerContext, records: Vec<KnowledgeScrollTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1189,7 +1189,7 @@ pub fn stage_knowledge_scroll_type_desc(ctx: &ReducerContext, records: Vec<Knowl
 
 #[spacetimedb::reducer]
 pub fn stage_knowledge_stat_modifier_desc(ctx: &ReducerContext, records: Vec<KnowledgeStatModifierDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1203,7 +1203,7 @@ pub fn stage_knowledge_stat_modifier_desc(ctx: &ReducerContext, records: Vec<Kno
 
 #[spacetimedb::reducer]
 pub fn stage_loot_chest_desc(ctx: &ReducerContext, records: Vec<LootChestDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1217,7 +1217,7 @@ pub fn stage_loot_chest_desc(ctx: &ReducerContext, records: Vec<LootChestDesc>) 
 
 #[spacetimedb::reducer]
 pub fn stage_loot_rarity_desc(ctx: &ReducerContext, records: Vec<LootRarityDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1231,7 +1231,7 @@ pub fn stage_loot_rarity_desc(ctx: &ReducerContext, records: Vec<LootRarityDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_loot_table_desc(ctx: &ReducerContext, records: Vec<LootTableDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1245,7 +1245,7 @@ pub fn stage_loot_table_desc(ctx: &ReducerContext, records: Vec<LootTableDesc>) 
 
 #[spacetimedb::reducer]
 pub fn stage_npc_desc(ctx: &ReducerContext, records: Vec<NpcDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1259,7 +1259,7 @@ pub fn stage_npc_desc(ctx: &ReducerContext, records: Vec<NpcDesc>) -> Result<(),
 
 #[spacetimedb::reducer]
 pub fn stage_onboarding_reward_desc(ctx: &ReducerContext, records: Vec<OnboardingRewardDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1273,7 +1273,7 @@ pub fn stage_onboarding_reward_desc(ctx: &ReducerContext, records: Vec<Onboardin
 
 #[spacetimedb::reducer]
 pub fn stage_parameters_desc(ctx: &ReducerContext, records: Vec<ParametersDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1287,7 +1287,7 @@ pub fn stage_parameters_desc(ctx: &ReducerContext, records: Vec<ParametersDesc>)
 
 #[spacetimedb::reducer]
 pub fn stage_pathfinding_desc(ctx: &ReducerContext, records: Vec<PathfindingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1301,7 +1301,7 @@ pub fn stage_pathfinding_desc(ctx: &ReducerContext, records: Vec<PathfindingDesc
 
 #[spacetimedb::reducer]
 pub fn stage_paving_tile_desc(ctx: &ReducerContext, records: Vec<PavingTileDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1315,7 +1315,7 @@ pub fn stage_paving_tile_desc(ctx: &ReducerContext, records: Vec<PavingTileDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_pillar_shaping_desc(ctx: &ReducerContext, records: Vec<PillarShapingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1329,7 +1329,7 @@ pub fn stage_pillar_shaping_desc(ctx: &ReducerContext, records: Vec<PillarShapin
 
 #[spacetimedb::reducer]
 pub fn stage_placeable_desc(ctx: &ReducerContext, records: Vec<PlaceableDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1343,7 +1343,7 @@ pub fn stage_placeable_desc(ctx: &ReducerContext, records: Vec<PlaceableDesc>) -
 
 #[spacetimedb::reducer]
 pub fn stage_placeable_group_desc(ctx: &ReducerContext, records: Vec<PlaceableGroupDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1357,7 +1357,7 @@ pub fn stage_placeable_group_desc(ctx: &ReducerContext, records: Vec<PlaceableGr
 
 #[spacetimedb::reducer]
 pub fn stage_placeable_growth_desc(ctx: &ReducerContext, records: Vec<PlaceableGrowthDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1371,7 +1371,7 @@ pub fn stage_placeable_growth_desc(ctx: &ReducerContext, records: Vec<PlaceableG
 
 #[spacetimedb::reducer]
 pub fn stage_placeable_interaction_desc(ctx: &ReducerContext, records: Vec<PlaceableInteractionDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1385,7 +1385,7 @@ pub fn stage_placeable_interaction_desc(ctx: &ReducerContext, records: Vec<Place
 
 #[spacetimedb::reducer]
 pub fn stage_placeable_placement_desc(ctx: &ReducerContext, records: Vec<PlaceablePlacementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1399,7 +1399,7 @@ pub fn stage_placeable_placement_desc(ctx: &ReducerContext, records: Vec<Placeab
 
 #[spacetimedb::reducer]
 pub fn stage_player_action_desc(ctx: &ReducerContext, records: Vec<PlayerActionDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1413,7 +1413,7 @@ pub fn stage_player_action_desc(ctx: &ReducerContext, records: Vec<PlayerActionD
 
 #[spacetimedb::reducer]
 pub fn stage_player_housing_desc(ctx: &ReducerContext, records: Vec<PlayerHousingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1427,7 +1427,7 @@ pub fn stage_player_housing_desc(ctx: &ReducerContext, records: Vec<PlayerHousin
 
 #[spacetimedb::reducer]
 pub fn stage_premium_item_desc(ctx: &ReducerContext, records: Vec<PremiumItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1441,7 +1441,7 @@ pub fn stage_premium_item_desc(ctx: &ReducerContext, records: Vec<PremiumItemDes
 
 #[spacetimedb::reducer]
 pub fn stage_premium_service_desc(ctx: &ReducerContext, records: Vec<PremiumServiceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1455,7 +1455,7 @@ pub fn stage_premium_service_desc(ctx: &ReducerContext, records: Vec<PremiumServ
 
 #[spacetimedb::reducer]
 pub fn stage_private_parameters_desc(ctx: &ReducerContext, records: Vec<PrivateParametersDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1469,7 +1469,7 @@ pub fn stage_private_parameters_desc(ctx: &ReducerContext, records: Vec<PrivateP
 
 #[spacetimedb::reducer]
 pub fn stage_prospecting_desc(ctx: &ReducerContext, records: Vec<ProspectingDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1483,7 +1483,7 @@ pub fn stage_prospecting_desc(ctx: &ReducerContext, records: Vec<ProspectingDesc
 
 #[spacetimedb::reducer]
 pub fn stage_quest_chain_desc(ctx: &ReducerContext, records: Vec<QuestChainDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1497,7 +1497,7 @@ pub fn stage_quest_chain_desc(ctx: &ReducerContext, records: Vec<QuestChainDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_quest_drop_desc(ctx: &ReducerContext, records: Vec<QuestDropDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1511,7 +1511,7 @@ pub fn stage_quest_drop_desc(ctx: &ReducerContext, records: Vec<QuestDropDesc>) 
 
 #[spacetimedb::reducer]
 pub fn stage_quest_stage_desc(ctx: &ReducerContext, records: Vec<QuestStageDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1525,7 +1525,7 @@ pub fn stage_quest_stage_desc(ctx: &ReducerContext, records: Vec<QuestStageDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_reserved_name_desc(ctx: &ReducerContext, records: Vec<ReservedNameDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1539,7 +1539,7 @@ pub fn stage_reserved_name_desc(ctx: &ReducerContext, records: Vec<ReservedNameD
 
 #[spacetimedb::reducer]
 pub fn stage_resource_clump_desc(ctx: &ReducerContext, records: Vec<ResourceClumpDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1553,7 +1553,7 @@ pub fn stage_resource_clump_desc(ctx: &ReducerContext, records: Vec<ResourceClum
 
 #[spacetimedb::reducer]
 pub fn stage_resource_desc(ctx: &ReducerContext, records: Vec<ResourceDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1567,7 +1567,7 @@ pub fn stage_resource_desc(ctx: &ReducerContext, records: Vec<ResourceDesc>) -> 
 
 #[spacetimedb::reducer]
 pub fn stage_resource_growth_recipe_desc(ctx: &ReducerContext, records: Vec<ResourceGrowthRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1581,7 +1581,7 @@ pub fn stage_resource_growth_recipe_desc(ctx: &ReducerContext, records: Vec<Reso
 
 #[spacetimedb::reducer]
 pub fn stage_resource_placement_recipe_desc(ctx: &ReducerContext, records: Vec<ResourcePlacementRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1595,7 +1595,7 @@ pub fn stage_resource_placement_recipe_desc(ctx: &ReducerContext, records: Vec<R
 
 #[spacetimedb::reducer]
 pub fn stage_secondary_knowledge_desc(ctx: &ReducerContext, records: Vec<SecondaryKnowledgeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1609,7 +1609,7 @@ pub fn stage_secondary_knowledge_desc(ctx: &ReducerContext, records: Vec<Seconda
 
 #[spacetimedb::reducer]
 pub fn stage_skill_desc(ctx: &ReducerContext, records: Vec<SkillDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1623,7 +1623,7 @@ pub fn stage_skill_desc(ctx: &ReducerContext, records: Vec<SkillDesc>) -> Result
 
 #[spacetimedb::reducer]
 pub fn stage_skill_level_knowledge_desc(ctx: &ReducerContext, records: Vec<SkillLevelKnowledgeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1637,7 +1637,7 @@ pub fn stage_skill_level_knowledge_desc(ctx: &ReducerContext, records: Vec<Skill
 
 #[spacetimedb::reducer]
 pub fn stage_stage_rewards_desc(ctx: &ReducerContext, records: Vec<StageRewardsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1651,7 +1651,7 @@ pub fn stage_stage_rewards_desc(ctx: &ReducerContext, records: Vec<StageRewardsD
 
 #[spacetimedb::reducer]
 pub fn stage_targeting_matrix_desc(ctx: &ReducerContext, records: Vec<TargetingMatrixDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1665,7 +1665,7 @@ pub fn stage_targeting_matrix_desc(ctx: &ReducerContext, records: Vec<TargetingM
 
 #[spacetimedb::reducer]
 pub fn stage_teleport_item_desc(ctx: &ReducerContext, records: Vec<TeleportItemDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1679,7 +1679,7 @@ pub fn stage_teleport_item_desc(ctx: &ReducerContext, records: Vec<TeleportItemD
 
 #[spacetimedb::reducer]
 pub fn stage_terraform_recipe_desc(ctx: &ReducerContext, records: Vec<TerraformRecipeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1693,7 +1693,7 @@ pub fn stage_terraform_recipe_desc(ctx: &ReducerContext, records: Vec<TerraformR
 
 #[spacetimedb::reducer]
 pub fn stage_tool_desc(ctx: &ReducerContext, records: Vec<ToolDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1707,7 +1707,7 @@ pub fn stage_tool_desc(ctx: &ReducerContext, records: Vec<ToolDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_tool_type_desc(ctx: &ReducerContext, records: Vec<ToolTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1721,7 +1721,7 @@ pub fn stage_tool_type_desc(ctx: &ReducerContext, records: Vec<ToolTypeDesc>) ->
 
 #[spacetimedb::reducer]
 pub fn stage_traveler_task_desc(ctx: &ReducerContext, records: Vec<TravelerTaskDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1735,7 +1735,7 @@ pub fn stage_traveler_task_desc(ctx: &ReducerContext, records: Vec<TravelerTaskD
 
 #[spacetimedb::reducer]
 pub fn stage_traveler_task_knowledge_requirement_desc(ctx: &ReducerContext, records: Vec<TravelerTaskKnowledgeRequirementDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1749,7 +1749,7 @@ pub fn stage_traveler_task_knowledge_requirement_desc(ctx: &ReducerContext, reco
 
 #[spacetimedb::reducer]
 pub fn stage_traveler_trade_order_desc(ctx: &ReducerContext, records: Vec<TravelerTradeOrderDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1763,7 +1763,7 @@ pub fn stage_traveler_trade_order_desc(ctx: &ReducerContext, records: Vec<Travel
 
 #[spacetimedb::reducer]
 pub fn stage_wall_desc(ctx: &ReducerContext, records: Vec<WallDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1777,7 +1777,7 @@ pub fn stage_wall_desc(ctx: &ReducerContext, records: Vec<WallDesc>) -> Result<(
 
 #[spacetimedb::reducer]
 pub fn stage_weapon_desc(ctx: &ReducerContext, records: Vec<WeaponDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1791,7 +1791,7 @@ pub fn stage_weapon_desc(ctx: &ReducerContext, records: Vec<WeaponDesc>) -> Resu
 
 #[spacetimedb::reducer]
 pub fn stage_weapon_type_desc(ctx: &ReducerContext, records: Vec<WeaponTypeDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {
@@ -1805,7 +1805,7 @@ pub fn stage_weapon_type_desc(ctx: &ReducerContext, records: Vec<WeaponTypeDesc>
 
 #[spacetimedb::reducer]
 pub fn stage_wind_params_desc(ctx: &ReducerContext, records: Vec<WindParamsDesc>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     for r in records {

@@ -1,5 +1,5 @@
 use bitcraft_macro::feature_gate;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
     game::{game_state, reducer_helpers::deployable_helpers::expel_passengers, terrain_chunk::TerrainChunkCache},
@@ -9,6 +9,7 @@ use crate::{
     },
     unwrap_or_err, OffsetCoordinatesFloat, SmallHexTile,
 };
+use crate::messages::events::*;
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -19,6 +20,12 @@ pub fn deployable_move_off_bounds(ctx: &ReducerContext, deployable_entity_id: u6
     let actor_id = game_state::actor_id(&ctx, true)?;
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
 
+    move_deployable_off_bounds(ctx, deployable_entity_id, Some(actor_id))
+}
+
+// Server-initiated relocation has no player actor to authorize, but otherwise uses
+// the same search and state updates as the player-facing recovery reducer.
+pub fn move_deployable_off_bounds(ctx: &ReducerContext, deployable_entity_id: u64, actor_id: Option<u64>) -> Result<(), String> {
     let location = unwrap_or_err!(
         ctx.db.mobile_entity_state().entity_id().find(&deployable_entity_id),
         "Deployable does not exist"
@@ -38,8 +45,10 @@ pub fn deployable_move_off_bounds(ctx: &ReducerContext, deployable_entity_id: u6
     // Ignore siege engines requirements for now (there's no harm if anyone does that, really) - client check is enough for that.
 
     let deployable_desc = ctx.db.deployable_desc().id().find(deployable.deployable_description_id).unwrap();
-    if deployable_desc.deployable_type != DeployableType::SiegeEngine && deployable.owner_id != actor_id {
-        return Err("Only the deployable owner can move it out of bounds".into());
+    if let Some(actor_id) = actor_id {
+        if deployable_desc.deployable_type != DeployableType::SiegeEngine && deployable.owner_id != actor_id {
+            return Err("Only the deployable owner can move it out of bounds".into());
+        }
     }
 
     let mut radius = 1;
@@ -104,6 +113,12 @@ pub fn deployable_move_off_bounds(ctx: &ReducerContext, deployable_entity_id: u6
     }
 
     ctx.db.mobile_entity_state().entity_id().update(new_location);
+    if let Some(actor_id) = actor_id {
+        ctx.db.deployable_disembark_event().insert(DeployableDisembarkEvent {
+            actor_id,
+            deployable_entity_id,
+        });
+    }
 
     Ok(())
 }

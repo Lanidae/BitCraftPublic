@@ -14,7 +14,7 @@ use crate::{
     },
 };
 
-#[spacetimedb::table(name = crumb_tail_cleanup_timer, scheduled(crumb_tail_cleanup_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = crumb_tail_cleanup_timer, scheduled(crumb_tail_cleanup_agent_loop, at = scheduled_at))]
 pub struct CrumbTrailCleanupTimer {
     #[primary_key]
     #[auto_inc]
@@ -52,7 +52,7 @@ pub fn init(ctx: &ReducerContext) {
 
 #[spacetimedb::reducer]
 fn crumb_tail_cleanup_agent_insert(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     init(ctx);

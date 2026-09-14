@@ -8,7 +8,7 @@ use std::str::FromStr;
 
 #[spacetimedb::reducer]
 pub fn admin_grant_shards(ctx: &ReducerContext, identity: String, amount: i32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -1,7 +1,7 @@
 use bitcraft_macro::shared_table;
 use spacetimedb::Timestamp;
 
-#[spacetimedb::table(name = world_region_state, public)]
+#[spacetimedb::table(accessor = world_region_state, public)]
 #[derive(Debug)]
 pub struct WorldRegionState {
     #[primary_key]
@@ -15,7 +15,7 @@ pub struct WorldRegionState {
     pub region_count_sqrt: u8,
 }
 
-#[spacetimedb::table(name = world_region_name_state, public)]
+#[spacetimedb::table(accessor = world_region_name_state, public)]
 #[derive(Debug)]
 pub struct WorldRegionNameState {
     #[primary_key]
@@ -24,7 +24,7 @@ pub struct WorldRegionNameState {
     pub module_name_prefix: String, // e.g. "bitcraft_region_"
 }
 
-#[spacetimedb::table(name = globals, public)]
+#[spacetimedb::table(accessor = globals, public)]
 pub struct Globals {
     #[primary_key]
     pub version: i32,
@@ -34,7 +34,7 @@ pub struct Globals {
     pub region_index: u8,
 }
 
-#[spacetimedb::table(name = admin_broadcast, public)]
+#[spacetimedb::table(accessor = admin_broadcast, public)]
 pub struct AdminBroadcast {
     #[primary_key]
     pub version: i32,
@@ -44,7 +44,7 @@ pub struct AdminBroadcast {
     pub timestamp: Timestamp,
 }
 
-#[spacetimedb::table(name = config)]
+#[spacetimedb::table(accessor = config)]
 #[derive(Clone)]
 pub struct Config {
     #[primary_key]
@@ -61,7 +61,7 @@ pub struct Config {
 /// In the resources regen loop, for each type of resource,
 /// compute the difference between the count and the desired number of deposits,
 /// spawn resources equal to the difference, and set the count to the desired number.
-#[spacetimedb::table(name = resource_count)]
+#[spacetimedb::table(accessor = resource_count)]
 pub struct ResourceCount {
     #[primary_key]
     /// The id of the type of resource deposit to which this counter refers.
@@ -71,7 +71,7 @@ pub struct ResourceCount {
     pub num_in_world: i32,
 }
 
-#[spacetimedb::table(name = region_connection_info, public)]
+#[spacetimedb::table(accessor = region_connection_info, public)]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct RegionConnectionInfo {
@@ -81,7 +81,7 @@ pub struct RegionConnectionInfo {
     pub module: String,
 }
 
-#[spacetimedb::table(name = region_control_info, public)]
+#[spacetimedb::table(accessor = region_control_info, public)]
 #[shared_table] //Owned by regions, replicated to global
 #[derive(Clone, Debug)]
 pub struct RegionControlInfo {
@@ -93,7 +93,7 @@ pub struct RegionControlInfo {
     pub allow_player_spawns: bool,
 }
 
-#[spacetimedb::table(name = region_population_info, public)]
+#[spacetimedb::table(accessor = region_population_info, public)]
 #[shared_table] //Owned by regions, replicated to global
 #[derive(Clone, Debug)]
 pub struct RegionPopulationInfo {
@@ -112,7 +112,7 @@ pub enum HubItemType {
     PremiumItem,
 }
 
-#[spacetimedb::table(name = region_sign_in_parameters, public)]
+#[spacetimedb::table(accessor = region_sign_in_parameters, public)]
 #[shared_table] //Owned by global, replicated to regions
 #[derive(Clone, Debug)]
 pub struct RegionSignInParameters {
@@ -125,7 +125,7 @@ pub struct RegionSignInParameters {
     pub grace_period_seconds: u64,
 }
 
-#[spacetimedb::table(name = region_exploration_info, public)]
+#[spacetimedb::table(accessor = region_exploration_info, public)]
 #[shared_table] //Owned by global, replicated to regions
 #[derive(Clone, Debug)]
 pub struct RegionExplorationInfo {
@@ -134,7 +134,7 @@ pub struct RegionExplorationInfo {
     pub counts_toward_achievements: bool,
 }
 
-#[spacetimedb::table(name = gated_features)]
+#[spacetimedb::table(accessor = gated_features)]
 pub struct GatedFeature {
     #[primary_key]
     pub feature: String,

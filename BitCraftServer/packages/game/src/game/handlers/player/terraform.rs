@@ -5,11 +5,16 @@ use crate::messages::components::PlayerActionState;
 use crate::messages::util::OffsetCoordinatesLargeMessage;
 use crate::{
     game::{coordinates::ChunkCoordinates, game_state::game_state_filters},
-    messages::{action_request::PlayerTerraformRequest, components::*, static_data::*},
+    messages::{
+        action_request::PlayerTerraformRequest,
+        components::*,
+        events::{terraform_start_event, TerraformStartEvent},
+        static_data::*,
+    },
     unwrap_or_err,
 };
 use bitcraft_macro::feature_gate;
-use spacetimedb::{log, ReducerContext};
+use spacetimedb::{log, ReducerContext, Table};
 use std::time::Duration;
 
 fn event_delay_recipe_id(ctx: &ReducerContext, terrain_cell: Option<TerrainCell>, actor_id: u64, delta: i16) -> (Duration, Option<i32>) {
@@ -70,7 +75,7 @@ pub fn terraform_start(ctx: &ReducerContext, request: PlayerTerraformRequest) ->
     }
     let (delay, recipe_id) = event_delay_recipe_id(ctx, terrain_cell, actor_id, delta);
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Terraform,
@@ -79,7 +84,11 @@ pub fn terraform_start(ctx: &ReducerContext, request: PlayerTerraformRequest) ->
         delay,
         reduce(ctx, &mut cache, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db.terraform_start_event().insert(TerraformStartEvent { actor_id, request });
+    }
+    result
 }
 
 fn get_terraform_building_id(ctx: &ReducerContext, coordinates: OffsetCoordinatesLargeMessage) -> Option<u64> {

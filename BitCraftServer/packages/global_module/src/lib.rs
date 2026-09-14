@@ -15,10 +15,13 @@ use crate::messages::generic::AdminBroadcast;
 use crate::messages::generic::{Config, Globals};
 use messages::authentication::identity_role;
 use messages::generic::{admin_broadcast, config, globals};
-use spacetimedb::{log, ReducerContext, Table};
+use spacetimedb::{log, CaseConversionPolicy, ReducerContext, Table};
 
 use crate::messages::components::*;
 use crate::messages::static_data::*;
+
+#[spacetimedb::settings]
+const CASE_CONVERSION_POLICY: CaseConversionPolicy = CaseConversionPolicy::None;
 
 #[spacetimedb::reducer(init)]
 pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
@@ -39,7 +42,7 @@ pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
         .identity_role()
         .try_insert(IdentityRole {
             role: Role::Admin,
-            identity: ctx.sender,
+            identity: ctx.sender(),
         })
         .is_err()
     {
@@ -50,7 +53,7 @@ pub fn initialize(ctx: &ReducerContext) -> Result<(), String> {
         .identity_role()
         .try_insert(IdentityRole {
             role: Role::Admin,
-            identity: ctx.identity(),
+            identity: ctx.database_identity(),
         })
         .is_err()
     {

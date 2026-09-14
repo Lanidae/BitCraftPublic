@@ -8,7 +8,7 @@ use crate::{
     unwrap_or_err, unwrap_or_return,
 };
 
-#[spacetimedb::table(name = claim_tech_unlock_timer, scheduled(claim_tech_unlock_tech, at = scheduled_at))]
+#[spacetimedb::table(accessor = claim_tech_unlock_timer, scheduled(claim_tech_unlock_tech, at = scheduled_at))]
 pub struct ClaimTechUnlockTimer {
     #[primary_key]
     #[auto_inc]

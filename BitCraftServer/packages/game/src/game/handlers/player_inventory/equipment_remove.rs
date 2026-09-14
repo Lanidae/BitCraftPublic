@@ -99,7 +99,7 @@ pub fn equipment_remove(ctx: &ReducerContext, request: PlayerEquipmentRemoveRequ
                     if skill_name == "ANY" {
                         skill_name = "in any skill".into();
                     }
-                    return Err(format!("You need to be level {{0}} {{1}}|~{0}|~{1}", level_req.level, skill_name).into());
+                    return Err(format!("You need to be level {0} {1}", level_req.level, skill_name).into());
                 }
             }
 

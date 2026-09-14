@@ -16,7 +16,7 @@ pub fn is_user_text_input_valid(user_input_source: &String, max_length: usize, a
     // check length first for performance reasons
     if user_input.len() > max_length {
         return Err(format!(
-            "user_input is longer than expected: max_length: {{0}}, user_input.len(): {{1}}|~{}|~{}",
+            "user_input is longer than expected: max_length: {}, user_input.len(): {}",
             max_length,
             user_input.len()
         ));
@@ -24,19 +24,19 @@ pub fn is_user_text_input_valid(user_input_source: &String, max_length: usize, a
 
     // probably will never happen because of trim()
     if user_input.chars().all(char::is_whitespace) {
-        return Err(format!("user_input contains white space only : '{{0}}'|~{}", user_input).into());
+        return Err(format!("user_input contains white space only : '{}'", user_input).into());
     }
 
     // pattern alphanumeric and space
     if allow_alphanumeric_only {
         let regex = Regex::new(r"[^A-Za-zÀ-ÖØ-öø-ÿ0-9 ]").unwrap();
         if regex.is_match(&user_input) {
-            return Err(format!("user_input contains non-alphanumeric values : {{0}}|~{}", user_input).into());
+            return Err(format!("user_input contains non-alphanumeric values : {}", user_input).into());
         }
     }
 
     if !i18n::is_sanitized(user_input) {
-        return Err(format!("user_input contains forbidden character sequence : '{{0}}'|~{}", user_input).into());
+        return Err(format!("user_input contains forbidden character sequence : '{}'", user_input).into());
     }
 
     Ok(())

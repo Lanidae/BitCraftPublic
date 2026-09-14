@@ -1,8 +1,9 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
+use crate::messages::events::*;
 use crate::{
     game::{
         game_state::{self, game_state_filters},
@@ -35,16 +36,22 @@ pub fn empire_resupply_node_start(ctx: &ReducerContext, request: EmpireResupplyN
 
     // DAB Note: TODO prevent CheatEngine and check timing for actions with duration
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::ResupplyEmpireNode,
         Some(target),
         None,
         delay,
-        empire_resupply_node_reduce(ctx, actor_id, request.building_entity_id, request.from_pocket, true),
+        empire_resupply_node_reduce(ctx, actor_id, request.building_entity_id, request.from_pocket.clone(), true),
         game_state::unix_ms(ctx.timestamp),
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .empire_resupply_node_start_event()
+            .insert(EmpireResupplyNodeStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

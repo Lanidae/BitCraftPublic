@@ -12,7 +12,7 @@ use spacetimedb::{log, ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn player_create(ctx: &ReducerContext) -> Result<(), String> {
-    if ctx.db.user_region_state().identity().find(ctx.sender).is_some() {
+    if ctx.db.user_region_state().identity().find(ctx.sender()).is_some() {
         return Err("Player already exists".into());
     }
 
@@ -21,11 +21,11 @@ pub fn player_create(ctx: &ReducerContext) -> Result<(), String> {
 
     //Insert this right away, to prevent attempting to create multiple characters (if the target region is unavailable)
     ctx.db.user_region_state().insert(UserRegionState {
-        identity: ctx.sender,
+        identity: ctx.sender(),
         region_id: region_id,
     });
     ctx.db.user_creation_timestamp_state().insert(UserCreationTimestampState {
-        identity: ctx.sender,
+        identity: ctx.sender(),
         timestamp: ctx.timestamp,
     });
 
@@ -45,7 +45,7 @@ fn get_best_region_for_new_player(ctx: &ReducerContext) -> Result<u8, String> {
     let mut candidates: Vec<RegionInfo> = vec![];
 
     // check if account is gm
-    let is_gm = has_role(ctx, &ctx.sender, Role::Gm);
+    let is_gm = has_role(ctx, &ctx.sender(), Role::Gm);
 
     for id in 1..=region_count {
         let region_sign_in_parameters = unwrap_or_err!(

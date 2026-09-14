@@ -10,7 +10,7 @@ fn cheat_claim_totem_add_supplies(
     claim_entity_id: u64,
     amount: f32, /* can be negative */
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimTotemAddSupplies) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimTotemAddSupplies) {
         return Err("Unauthorized.".into());
     }
 
@@ -22,7 +22,7 @@ fn cheat_claim_totem_add_supplies(
 
 #[spacetimedb::reducer]
 fn cheat_claim_totem_research_all(ctx: &ReducerContext, claim_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimTotemResearchAll) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimTotemResearchAll) {
         return Err("Unauthorized.".into());
     }
 
@@ -51,7 +51,7 @@ fn cheat_claim_totem_research_all(ctx: &ReducerContext, claim_entity_id: u64) ->
 
 #[spacetimedb::reducer]
 fn cheat_claim_unlock_tech(ctx: &ReducerContext, claim_entity_id: u64, tech_id: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimTotemUnlockTech) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimTotemUnlockTech) {
         return Err("Unauthorized.".into());
     }
 
@@ -76,7 +76,7 @@ fn cheat_claim_unlock_tech(ctx: &ReducerContext, claim_entity_id: u64, tech_id: 
 
 #[spacetimedb::reducer]
 pub fn cheat_claims_complete_all_current_research(ctx: &ReducerContext) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimsCompleteAllCurrentResearch) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimsCompleteAllCurrentResearch) {
         return Err("Unauthorized.".into());
     }
 

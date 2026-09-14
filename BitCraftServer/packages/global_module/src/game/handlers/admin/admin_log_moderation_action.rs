@@ -15,7 +15,7 @@ pub fn admin_log_moderation_action(
     moderation_notice: String,
     details: String,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

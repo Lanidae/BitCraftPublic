@@ -24,6 +24,7 @@ use crate::{
         action_request::PlayerExtractRequest,
         components::*,
         empire_shared::{empire_chunk_state, empire_player_data_state, EmpirePlayerDataState},
+        events::{extract_event, extract_start_event, resource_depleted_event, ExtractEvent, ExtractStartEvent, ResourceDepletedEvent},
         game_util::{ItemStack, ItemType},
         static_data::*,
     },
@@ -60,7 +61,7 @@ fn format_missing_input_message(ctx: &ReducerContext, required_stack: &ItemStack
             .unwrap_or_else(|| "Unknown cargo".into()),
     };
 
-    format!("Requires {{0}} {{1}}|~{}|~{}", required_stack.quantity, item_name)
+    format!("Requires {} {}", required_stack.quantity, item_name)
 }
 
 fn event_delay_recipe_id(ctx: &ReducerContext, request: &PlayerExtractRequest, stats: &CharacterStatsState) -> (Duration, Option<i32>) {
@@ -92,7 +93,7 @@ pub fn extract_start(ctx: &ReducerContext, request: PlayerExtractRequest) -> Res
     let target = Some(request.target_entity_id);
     let (delay, recipe_id) = event_delay_recipe_id(ctx, &request, &stats);
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Extract,
@@ -101,7 +102,11 @@ pub fn extract_start(ctx: &ReducerContext, request: PlayerExtractRequest) -> Res
         delay,
         reduce(ctx, actor_id, request, stats, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db.extract_start_event().insert(ExtractStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -518,6 +523,12 @@ fn reduce(
         extract_outcome.last_timestamp = ctx.timestamp;
         extract_outcome.is_crit = is_crit;
         ctx.db.extract_outcome_state().entity_id().update(extract_outcome);
+        ctx.db.extract_event().insert(ExtractEvent {
+            actor_entity_id: actor_id,
+            target_entity_id: deposit_entity_id,
+            damage: damage_output,
+            is_crit,
+        });
 
         if !resource.ignore_damage {
             deposit_health.health = i32::max(deposit_health.health - damage_output, 0);
@@ -541,6 +552,12 @@ fn reduce(
                 // delete the deposit along its footprints and location then spawn the replacement resource if needed
                 let resource_id = deposit.resource_id;
                 let resource_direction = deposit.direction_index;
+                ctx.db.resource_depleted_event().insert(ResourceDepletedEvent {
+                    player_entity_id: actor_id,
+                    resource_entity_id: deposit_entity_id,
+                    location: coordinates,
+                    show_time_left: resource.show_time_left,
+                });
                 deposit.despawn_self(ctx);
                 ResourceState::produce_offspawn(ctx, resource_id, coordinates, resource_direction);
                 PlayerActionState::success(

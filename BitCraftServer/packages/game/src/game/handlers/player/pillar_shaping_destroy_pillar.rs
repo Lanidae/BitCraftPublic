@@ -5,8 +5,9 @@ use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::game::{coordinates::*, game_state};
 use crate::messages::components::PlayerActionState;
+use crate::messages::events::*;
 use crate::{game::permission_helper, messages::action_request::PlayerPillarShapingDestroyRequest, messages::components::*, unwrap_or_err};
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -16,7 +17,7 @@ pub fn pillar_shaping_destroy_start(ctx: &ReducerContext, request: PlayerPillarS
 
     let target = Some(request.coordinates.hashcode_long() as u64);
     let delay = event_delay(actor_id, &request);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::DestroyPillarShaping,
@@ -25,7 +26,13 @@ pub fn pillar_shaping_destroy_start(ctx: &ReducerContext, request: PlayerPillarS
         delay,
         self::reduce(ctx, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .pillar_shaping_destroy_start_event()
+            .insert(PillarShapingDestroyStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

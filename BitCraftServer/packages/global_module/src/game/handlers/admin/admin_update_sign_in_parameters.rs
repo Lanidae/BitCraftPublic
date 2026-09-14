@@ -18,7 +18,7 @@ pub fn admin_update_sign_in_parameters(
     region_sign_in_parameters: RegionSignInParameters,
     region: u8,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

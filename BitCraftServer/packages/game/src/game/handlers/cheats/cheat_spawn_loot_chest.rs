@@ -16,7 +16,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 fn cheat_spawn_loot_chest(ctx: &ReducerContext, request: CheatSpawnLootChestRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatSpawnLootChest) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatSpawnLootChest) {
         return Err("Unauthorized.".into());
     }
 

@@ -15,7 +15,7 @@ pub fn cheat_item_stack_grant(
     quantity: i32,
     is_cargo: bool,
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatItemStackGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatItemStackGrant) {
         return Err("Unauthorized.".into());
     }
 
@@ -48,7 +48,7 @@ pub fn cheat_item_stack_grant_and_equip(
     quantity: i32,
     is_cargo: bool,
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatItemStackGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatItemStackGrant) {
         return Err("Unauthorized.".into());
     }
 

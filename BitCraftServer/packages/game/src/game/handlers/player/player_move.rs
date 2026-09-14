@@ -7,8 +7,9 @@ use crate::{
     messages::{action_request::PlayerMoveRequest, components::*, static_data::*},
     unwrap_or_err,
 };
+use crate::messages::events::*;
 use bitcraft_macro::feature_gate;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -73,7 +74,7 @@ pub fn player_move(ctx: &ReducerContext, request: PlayerMoveRequest) -> Result<(
         }
     }
 
-    if !has_role_no_dev(ctx, &ctx.sender, Role::Gm) {
+    if !has_role_no_dev(ctx, &ctx.sender(), Role::Gm) {
         move_validation_helpers::validate_move_timestamp(prev_mobile_entity.timestamp, request.timestamp, ctx.timestamp)?;
         move_validation_helpers::validate_move_basic(ctx, &prev_origin, &source_coordinates, &target_coordinates, request.duration)?;
         validate_move(
@@ -113,6 +114,11 @@ pub fn player_move(ctx: &ReducerContext, request: PlayerMoveRequest) -> Result<(
         None,
         request.timestamp,
     );
+
+    ctx.db.player_move_event().insert(PlayerMoveEvent {
+        actor_id,
+        request,
+    });
 
     Ok(())
 }

@@ -8,7 +8,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_cargo_grant(ctx: &ReducerContext, request: CheatCargoGrantRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatCargoGrant) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatCargoGrant) {
         return Err("Unauthorized.".into());
     }
 

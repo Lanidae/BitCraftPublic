@@ -1,9 +1,10 @@
 use bitcraft_macro::feature_gate;
 use crate::game::game_state::{self, game_state_filters};
 use crate::messages::components::{active_buff_state, HealthState, PlayerActionState, StaminaState};
+use crate::messages::events::{player_teleport_event, PlayerTeleportEvent};
 use crate::{health_state, parameters_desc, unwrap_or_err, SatiationState};
 use bitcraft_macro::shared_table_reducer;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use super::sleep;
 
@@ -52,6 +53,7 @@ fn player_respawn(ctx: &ReducerContext, teleport_home: bool) -> Result<(), Strin
 
         // Sleep if there's a sleep building on the end-point. Ignore the error if there's no building.
         let _ = sleep::reduce(ctx, actor_id);
+        ctx.db.player_teleport_event().insert(PlayerTeleportEvent { actor_id });
     } else {
         let _ = PlayerActionState::clear_by_entity_id(ctx, actor_id);
     }

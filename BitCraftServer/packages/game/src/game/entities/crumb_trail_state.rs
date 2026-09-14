@@ -107,7 +107,7 @@ impl CrumbTrailState {
                 current_node.attempts += 1;
 
                 if current_node.attempts > if is_prize_node { FINAL_PRIZE_MAX_ATTEMPTS } else { MAX_ATTEMPTS } {
-                    Self::extra_debug_log(format!("# Removing Node {{0}}|~{}", trail.len() - 1,).as_str());
+                    Self::extra_debug_log(format!("# Removing Node {}", trail.len() - 1,).as_str());
                     trail.remove(trail.len() - 1);
                     continue;
                 }
@@ -116,7 +116,7 @@ impl CrumbTrailState {
             let current_node = trail.last().unwrap();
             Self::extra_debug_log(
                 format!(
-                    "Checking Node {{0}} at {{1}} (tries: {{2}})|~{}|~{:?}|~{}",
+                    "Checking Node {} at {:?} (tries: {})",
                     trail.len() - 1,
                     current_node.coord,
                     current_node.attempts
@@ -138,7 +138,7 @@ impl CrumbTrailState {
             } + delta;
             let next_pos = Vector2 { x: vec.x, y: vec.y };
 
-            Self::extra_debug_log(format!("{{0}} -> {{1}}|~{:?}|~{:?}", current_pos, next_pos).as_str());
+            Self::extra_debug_log(format!("{:?} -> {:?}", current_pos, next_pos).as_str());
             // Check if angle is not within the dead angle
             if current_trail_length > 1 {
                 let v1 = delta; // current crumb to next crumb
@@ -152,7 +152,7 @@ impl CrumbTrailState {
                 let angle = Vec2::angle_to(v1, v2);
                 Self::extra_debug_log(
                     format!(
-                        "v1 = {{0}}, v2 = {{1}}, angle = {{2}} deadzone = {{3}} dot = {{4}}|~{:?}|~{:?}|~{angle}|~{deadzone}|~{}",
+                        "v1 = {:?}, v2 = {:?}, angle = {angle} deadzone = {deadzone} dot = {}",
                         v1,
                         v2,
                         v1.normalize().dot(v2.normalize())
@@ -167,10 +167,10 @@ impl CrumbTrailState {
             }
 
             let coord = SmallHexTileMessage::from_position(next_pos, dimensions::OVERWORLD);
-            Self::extra_debug_log(format!("new node at {{0}}|~{:?}", coord).as_str());
+            Self::extra_debug_log(format!("new node at {:?}", coord).as_str());
             // Check if the new location water/ground state and biome are adequate
             if let Some(terrain_cell) = terrain_cache.get_terrain_cell(ctx, &coord.parent_large_tile()) {
-                Self::extra_debug_log(format!("terrain cell biome: {{0}}|~{}", terrain_cell.biome()).as_str());
+                Self::extra_debug_log(format!("terrain cell biome: {}", terrain_cell.biome()).as_str());
                 let is_submerged = game_state_filters::is_submerged(ctx, &mut terrain_cache, coord);
                 if is_submerged {
                     if !is_prize_node && !prospecting_desc.allow_aquatic_bread_crumb {
@@ -204,9 +204,9 @@ impl CrumbTrailState {
                         let mut result = Vec::new();
                         let mut resources_to_delete = Vec::new();
                         Self::extra_debug_log("# trying to spawn final resource #");
-                        Self::extra_debug_log(format!("clump_desc_extended => {{0}}|~{:?}", clump_desc_extended).as_str());
-                        Self::extra_debug_log(format!("hex_coordinates => {{0}}|~{:?}", hex_coordinates).as_str());
-                        Self::extra_debug_log(format!("resource_desc => {{0}}|~{:?}", resource_desc).as_str());
+                        Self::extra_debug_log(format!("clump_desc_extended => {:?}", clump_desc_extended).as_str());
+                        Self::extra_debug_log(format!("hex_coordinates => {:?}", hex_coordinates).as_str());
+                        Self::extra_debug_log(format!("resource_desc => {:?}", resource_desc).as_str());
                         if try_spawn_resource_no_clump_info(
                             ctx,
                             &mut terrain_cache,
@@ -220,8 +220,8 @@ impl CrumbTrailState {
                         ) {
                             // This is a success, we can generate the trail
                             // Note: the placeholder resource will already be inserted at the end
-                            Self::extra_debug_log(format!("RESULT => {{0}}|~{:?}", result).as_str());
-                            Self::extra_debug_log(format!("resources_to_delete => {{0}}|~{:?}", resources_to_delete).as_str());
+                            Self::extra_debug_log(format!("RESULT => {:?}", result).as_str());
+                            Self::extra_debug_log(format!("resources_to_delete => {:?}", resources_to_delete).as_str());
                             prize_location = OffsetCoordinatesSmallMessage::from(result[0].1);
 
                             // this is pretty much a resource regen/respawn code. We'll need to do a common function at some point.
@@ -389,7 +389,7 @@ impl CrumbTrailState {
         let to_prize = step as usize >= self.crumb_locations.len();
 
         let a = player_location.to_center_position_xz();
-        Self::extra_debug_log(format!("player {{0}} => {{1}}|~{:?}|~{:?}", player_location, a).as_str());
+        Self::extra_debug_log(format!("player {:?} => {:?}", player_location, a).as_str());
         let mut b = Vec::new();
 
         // atan2
@@ -402,17 +402,17 @@ impl CrumbTrailState {
             let t = tile.to_center_position_xz();
             let v = t - a;
             let p = WorldGenVector2 { x: v.y, y: -v.x }.normalized() * (radius as f32) * 3.33333;
-            Self::extra_debug_log(format!("target {{0}} => {{1}} delta v => {{2}}|~{:?}|~{:?}|~{:?}", tile, t, v).as_str());
+            Self::extra_debug_log(format!("target {:?} => {:?} delta v => {:?}", tile, t, v).as_str());
             Self::extra_debug_log(
                 format!(
-                    "perpendicular => {{0}} normalized => {{1}}|~{:?}|~{:?}",
+                    "perpendicular => {:?} normalized => {:?}",
                     WorldGenVector2 { x: v.y, y: -v.x },
                     WorldGenVector2 { x: v.y, y: -v.x }.normalized()
                 )
                 .as_str(),
             );
-            Self::extra_debug_log(format!("t1 => {{0}} ({{1}})|~{:?}|~{:?}", t + p, SmallHexTileMessage::from_position(t + p, 1)).as_str());
-            Self::extra_debug_log(format!("t2 => {{0}} ({{1}})|~{:?}|~{:?}", t - p, SmallHexTileMessage::from_position(t - p, 1)).as_str());
+            Self::extra_debug_log(format!("t1 => {:?} ({:?})", t + p, SmallHexTileMessage::from_position(t + p, 1)).as_str());
+            Self::extra_debug_log(format!("t2 => {:?} ({:?})", t - p, SmallHexTileMessage::from_position(t - p, 1)).as_str());
             b.push(t + p - a);
             b.push(t - p - a);
         }
@@ -421,7 +421,7 @@ impl CrumbTrailState {
             .iter()
             .map(|delta| {
                 let angle = f32::atan2(delta.y, delta.x);
-                Self::extra_debug_log(format!("{{0}} => atan2 = {{1}}|~{:?}|~{angle}", delta).as_str());
+                Self::extra_debug_log(format!("{:?} => atan2 = {angle}", delta).as_str());
                 angle
             })
             .collect();

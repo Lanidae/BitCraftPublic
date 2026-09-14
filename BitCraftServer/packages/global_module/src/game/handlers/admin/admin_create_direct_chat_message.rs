@@ -1,4 +1,4 @@
-﻿use spacetimedb::{ReducerContext, Table};
+use spacetimedb::{ReducerContext, Table};
 use crate::game::game_state::{create_entity, unix};
 use crate::game::handlers::authentication::has_role;
 use crate::messages::authentication::Role;
@@ -12,7 +12,7 @@ pub fn admin_create_direct_chat_message(
     receiver_id: u64,
     new_message_text: String,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

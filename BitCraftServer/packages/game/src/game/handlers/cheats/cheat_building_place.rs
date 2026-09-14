@@ -19,7 +19,7 @@ const DEFAULT_NPC_WATCHTOWER_UPKEEP: i32 = 2;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn cheat_building_place(ctx: &ReducerContext, request: PlayerProjectSitePlaceRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatBuildingPlace) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatBuildingPlace) {
         return Err("Unauthorized.".into());
     }
 
@@ -30,7 +30,7 @@ pub fn cheat_building_place(ctx: &ReducerContext, request: PlayerProjectSitePlac
     );
 
     let coord = SmallHexTile::from(request.coordinates);
-    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender) {
+    let actor_id = match ctx.db.user_state().identity().find(&ctx.sender()) {
         Some(user) => user.entity_id,
         None => 0,
     };

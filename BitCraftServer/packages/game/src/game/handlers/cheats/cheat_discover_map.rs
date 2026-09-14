@@ -11,7 +11,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 fn cheat_discover_map(ctx: &ReducerContext, request: CheatDiscoverMapRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDiscoverMap) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDiscoverMap) {
         return Err("Unauthorized.".into());
     }
 
@@ -74,7 +74,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
 
 #[spacetimedb::reducer]
 fn cheat_undiscover_map(ctx: &ReducerContext, player_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatDiscoverMap) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatDiscoverMap) {
         return Err("Unauthorized.".into());
     }
 

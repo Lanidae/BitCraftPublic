@@ -105,14 +105,14 @@ pub fn validate_dimension_rules(
     }
     if required_interior_tier > 0 {
         if dim.interior_instance_id == 0 {
-            return Err(format!("Requires Tier {{0}} interior|~{}", required_interior_tier));
+            return Err(format!("Requires Tier {} interior", required_interior_tier));
         }
         let inst = unwrap_or_err!(
             ctx.db.interior_instance_desc().id().find(&dim.interior_instance_id),
             "Missing interior instance"
         );
         if inst.tier < required_interior_tier {
-            return Err(format!("Requires Tier {{0}} interior|~{}", required_interior_tier));
+            return Err(format!("Requires Tier {} interior", required_interior_tier));
         }
     }
     Ok(())

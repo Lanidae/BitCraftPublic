@@ -21,7 +21,7 @@ impl ToolDesc {
                             }
                         } else {
                             let tool_name = ctx.db.item_desc().id().find(&contents.item_id).unwrap().name;
-                            return Err(format!("You need a higher skill to use your {{0}}|~{}", tool_name));
+                            return Err(format!("You need a higher skill to use your {}", tool_name));
                         }
                     }
                 }
@@ -33,11 +33,11 @@ impl ToolDesc {
         let article = if tool_name.chars().nth(0).unwrap() == 'A' { "an" } else { "a" };
 
         if tool_requirement.level <= 0 {
-            return Result::Err(format!("You must have {{0}} {{1}} on your toolbelt|~{}|~{}", article, tool_name));
+            return Result::Err(format!("You must have {} {} on your toolbelt", article, tool_name));
         }
 
         Err(format!(
-            "You must have {{0}} {{1}} tier {{2}} or higher on your toolbelt|~{}|~{}|~{}",
+            "You must have {} {} tier {} or higher on your toolbelt",
             article, tool_name, tool_requirement.level
         ))
     }

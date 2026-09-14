@@ -184,7 +184,7 @@ pub fn validate_siege_distance(
     let min = params.empire_min_siege_distance - padding;
     let max = params.empire_max_siege_distance + padding;
     if distance < min || distance > max {
-        return Err(format!("{{0}} within {{1}} and {{2}} tiles from the target watchtower|~{error_message}|~{min}|~{max}"));
+        return Err(format!("{error_message} within {min} and {max} tiles from the target watchtower"));
     }
 
     Ok(())

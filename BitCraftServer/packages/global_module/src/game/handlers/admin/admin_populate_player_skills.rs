@@ -11,7 +11,7 @@ pub fn admin_populate_player_skills(ctx: &ReducerContext, identity_skill_stacks_
     // This will return rows under the form of:
     //  0x13679cea332c56f468f6e79b9ed9e8a4d01999ced1ced3e1f0c6ecc9f92f2dfe | (skill_id = 1, quantity = 0)(skill_id = 3, quantity = 0)(skill_id = 15, quantity = 0)(skill_id = 13, quantity = 0)(skill_id = 11, quantity = 0)(skill_id = 12, quantity = 0)(skill_id = 14, quantity = 0)(skill_id = 2, quantity = 0)(skill_id = 22, quantity = 0)(skill_id = 9, quantity = 0)(skill_id = 8, quantity = 0)(skill_id = 4, quantity = 0)(skill_id = 19, quantity = 0)(skill_id = 5, quantity = 0)(skill_id = 21, quantity = 0)(skill_id = 7, quantity = 0)(skill_id = 18, quantity = 0)(skill_id = 6, quantity = 0)(skill_id = 10, quantity = 0)(skill_id = 17, quantity = 0)
     // use each of these rows for the 'identity_skill_stacks_row'
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

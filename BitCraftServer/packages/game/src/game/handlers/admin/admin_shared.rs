@@ -21,7 +21,7 @@ pub fn admin_create_chat_message(
     target_id: u64,
     new_message_text: String,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -51,7 +51,7 @@ pub fn admin_create_chat_message(
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_modify_chat_message(ctx: &ReducerContext, entity_id: u64, new_message_text: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -69,7 +69,7 @@ pub fn admin_modify_chat_message(ctx: &ReducerContext, entity_id: u64, new_messa
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_delete_chat_message(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -92,7 +92,7 @@ pub fn admin_create_entity_name_report(
     entity_name: String,
     message: String,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -120,7 +120,7 @@ pub fn admin_create_entity_name_report(
 
 pub fn build_player_report(ctx: &ReducerContext, request: CreatePlayerReportRequest) -> Result<PlayerReportState, String> {
     // auth
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

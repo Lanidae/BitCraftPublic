@@ -9,7 +9,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_sign_out_all(ctx: &ReducerContext, region: u8) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -32,7 +32,7 @@ pub fn admin_sign_out_all(ctx: &ReducerContext, region: u8) -> Result<(), String
     log::info!(
         "admin_sign_out_all(): Authorized : Completed sign_out process for {} users as Admin {}",
         ctx.db.user_state().iter().count(),
-        ctx.sender.to_hex()
+        ctx.sender().to_hex()
     );
     Ok(())
 }

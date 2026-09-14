@@ -1,24 +1,20 @@
 use spacetimedb::{ReducerContext, Table};
 
 use crate::{
-    building_state, dimension_description_state, dimension_network_state,
+    building_state, dimension_network_state,
     game::{
-        game_state::{self, game_state_filters},
-        handlers::server::server_teleport_player::TeleportPlayerTimer,
+        game_state,
         reducer_helpers::{building_helpers::delete_building, interior_helpers, timer_helpers::now_plus_secs},
     },
     interior_network_desc,
     messages::{
-        action_request::ServerTeleportReason,
         authentication::ServerIdentity,
-        components::{DimensionNetworkState, InteriorPlayerCountState, PortalState},
+        components::{InteriorPlayerCountState, PortalState},
     },
-    player_state, portal_state, unwrap_or_err,
+    portal_state, unwrap_or_err,
 };
 
-use super::server_teleport_player::teleport_player_timer;
-
-#[spacetimedb::table(name = interior_set_collapsed_timer, scheduled(interior_set_collapsed_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = interior_set_collapsed_timer, scheduled(interior_set_collapsed_scheduled, at = scheduled_at))]
 pub struct InteriorSetCollapsedTimer {
     #[primary_key]
     #[auto_inc]
@@ -66,7 +62,7 @@ pub fn interior_set_collapsed(ctx: &ReducerContext, dimension_network_entity_id:
             .unwrap();
         dimension_network.collapse_respawn_timestamp =
             game_state::unix_ms(ctx.timestamp) + (interior_descriptor.respawn_time as u64 * 1000);
-        incapacitate_and_teleport_players(ctx, &dimension_network);
+        interior_helpers::expel_players_and_deployables_from_collapsed_interior(ctx, &dimension_network);
 
         ctx.db
             .interior_set_collapsed_timer()
@@ -92,38 +88,4 @@ pub fn interior_set_collapsed(ctx: &ReducerContext, dimension_network_entity_id:
     spacetimedb::log::info!("Interior set collapsed {}", is_collapsed);
 
     Ok(())
-}
-
-fn incapacitate_and_teleport_players(ctx: &ReducerContext, dimension_network: &DimensionNetworkState) {
-    let teleport_oc_float = interior_helpers::find_teleport_coordinates_for_interior_destruction(ctx, dimension_network.building_id);
-
-    let dimensions: Vec<u32> = ctx
-        .db
-        .dimension_description_state()
-        .dimension_network_entity_id()
-        .filter(dimension_network.entity_id)
-        .map(|a| a.dimension_id)
-        .collect();
-    let players: Vec<u64> = ctx
-        .db
-        .player_state()
-        .iter()
-        .filter(|a| dimensions.contains(&game_state_filters::coordinates_float(ctx, a.entity_id).dimension))
-        .map(|a| a.entity_id)
-        .collect();
-
-    //This could've been a function call except we need to somehow pass teleport reason to players
-    for player in players {
-        ctx.db
-            .teleport_player_timer()
-            .try_insert(TeleportPlayerTimer {
-                scheduled_at: ctx.timestamp.into(),
-                scheduled_id: 0,
-                player_entity_id: player,
-                location: teleport_oc_float,
-                reason: ServerTeleportReason::RuinCollapse,
-            })
-            .ok()
-            .unwrap();
-    }
 }

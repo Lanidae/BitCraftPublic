@@ -5,7 +5,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_remove_entity_resource(ctx: &ReducerContext, target_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatRemoveEntityResource) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatRemoveEntityResource) {
         return Err("Unauthorized.".into());
     }
 

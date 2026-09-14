@@ -43,7 +43,7 @@ pub fn reduce(
 
     let player_state = unwrap_or_err!(ctx.db.player_state().entity_id().find(&actor_id), "Invalid player");
 
-    UserModerationState::validate_chat_privileges(ctx, &ctx.sender, "Your chat privileges have been suspended")?;
+    UserModerationState::validate_chat_privileges(ctx, &ctx.sender(), "Your chat privileges have been suspended")?;
 
     if target_id > 0 && channel_id != ChatChannel::Local {
         return Err("This regional channel shouldn't have a target".into());
@@ -92,7 +92,7 @@ pub fn reduce(
             let cutoff = game_state::unix(ctx.timestamp) - min_playtime;
             if player_state.sign_in_timestamp > cutoff {
                 let hours = min_playtime / 3600;
-                return Err(format!("Region chat is unlocked after {{0}} hours for new accounts.|~{}", hours));
+                return Err(format!("Region chat is unlocked after {} hours for new accounts.", hours));
             }
         }
         if username.starts_with("player") {
@@ -110,7 +110,7 @@ pub fn reduce(
             .count();
         if msg_count >= max_messages as usize {
             return Err(format!(
-                "You can only send {{0}} messages per {{1}} seconds in Region chat|~{}|~{}",
+                "You can only send {} messages per {} seconds in Region chat",
                 max_messages, rate_limit_window
             ));
         }

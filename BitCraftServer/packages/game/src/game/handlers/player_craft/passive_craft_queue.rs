@@ -70,7 +70,7 @@ pub fn passive_craft_queue(ctx: &ReducerContext, request: PlayerPassiveCraftQueu
     let num_player_crafts = building_crafts.iter().filter(|c| c.owner_entity_id == actor_id).count();
     let max_crafts = BuildingFunction::max_concurrent_crafts(&building_desc);
     if num_player_crafts as i32 >= max_crafts {
-        return Err(format!("You can only have {{0}} passive crafts per building|~{}", max_crafts));
+        return Err(format!("You can only have {} passive crafts per building", max_crafts));
     }
 
     let item_stacks: Vec<ItemStack> = recipe.consumed_item_stacks.iter().map(|x| ItemStack::from(ctx, x)).collect();

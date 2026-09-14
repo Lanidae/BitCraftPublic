@@ -111,16 +111,18 @@ fn build_gamestate_operations() {
     for line in lines {
         if line.trim().contains("#[") {
             if line.to_ascii_lowercase().contains("spacetimedb::table") {
-                if let Some(i) = line[0..].find("name = ").map(|i| i + 0) {
-                    let i = i + 7;
-                    if let Some(j) = line[i..].find(",").map(|k| k + i) {
-                        let table_name = line[i..j].to_string();
-                        next_tables.push(table_name);
-                    } else {
-                        if let Some(j) = line[i..].find(")").map(|k| k + i) {
-                            let table_name = line[i..j].to_string();
-                            next_tables.push(table_name);
-                        }
+                if let Some(value_start) = line
+                    .find("accessor = ")
+                    .map(|index| index + "accessor = ".len())
+                    .or_else(|| line.find("name = ").map(|index| index + "name = ".len()))
+                {
+                    let value_end = line[value_start..]
+                        .find([',', ')'])
+                        .map(|index| value_start + index)
+                        .unwrap_or(line.len());
+                    let table_name = line[value_start..value_end].trim().trim_matches('"');
+                    if !table_name.is_empty() {
+                        next_tables.push(table_name.to_string());
                     }
                 }
                 next_struct_is_table = true;
@@ -142,6 +144,20 @@ fn build_gamestate_operations() {
         if line.contains("pub struct") {
             if next_struct_is_table {
                 next_struct_is_table = false;
+
+                // SpacetimeDB 2.x table declarations use `accessor = ...` rather
+                // than the legacy `name = ...` argument. In that form, use the
+                // table's Rust type name to generate its accessor import and
+                // entity deletion operation.
+                if next_tables.is_empty() {
+                    if let Some(name) = line
+                        .split("pub struct ")
+                        .nth(1)
+                        .and_then(|value| value.split_whitespace().next())
+                    {
+                        next_tables.push(name.to_string());
+                    }
+                }
 
                 if has_delete {
                     for table in &next_tables {
@@ -172,6 +188,7 @@ fn build_gamestate_operations() {
     }
 
     writeln("\n\npub fn delete_entity(ctx: &ReducerContext, entity_id: u64) {");
+    writeln("   let _ = (ctx, entity_id);");
 
     for k in &delete_table {
         writeln(format!("   ctx.db.{}().entity_id().delete(entity_id);", camel_to_snake(&k)).as_str());
@@ -180,6 +197,7 @@ fn build_gamestate_operations() {
 
     writeln("/// Delete entity from ALL tables (even ones that don't have `delete` attribute)");
     writeln("pub fn clear_entity(ctx: &ReducerContext, entity_id: u64) {");
+    writeln("   let _ = (ctx, entity_id);");
 
     for k in &all_entity_tables {
         writeln(format!("   ctx.db.{}().entity_id().delete(entity_id);", camel_to_snake(&k)).as_str());
@@ -452,7 +470,7 @@ fn build_static_data_staging_tables() {
     //clear_staged_static_data
     writeln("#[spacetimedb::reducer]");
     writeln("pub fn clear_staged_static_data(ctx: &ReducerContext) -> Result<(), String> {");
-    writeln("    if !has_role(ctx, &ctx.sender, Role::Admin) {");
+    writeln("    if !has_role(ctx, &ctx.sender(), Role::Admin) {");
     writeln("        return Err(\"Invalid permissions\".into());");
     writeln("    }");
     writeln("");
@@ -470,7 +488,7 @@ fn build_static_data_staging_tables() {
     for (name, _, struct_name) in &all_tables {
         writeln("#[spacetimedb::reducer]");
         writeln(format!("pub fn stage_{name}(ctx: &ReducerContext, records: Vec<{struct_name}>) -> Result<(), String> {{").as_str());
-        writeln("    if !has_role(ctx, &ctx.sender, Role::Admin) {");
+        writeln("    if !has_role(ctx, &ctx.sender(), Role::Admin) {");
         writeln("        return Err(\"Invalid permissions\".into());");
         writeln("    }");
         writeln("    for r in records {");
@@ -498,7 +516,7 @@ fn build_static_data_staging_tables() {
     //for (name, ctx, struct_name) in &all_tables {
     //    writeln("#[spacetimedb::reducer]");
     //    writeln(format!("pub fn import_{name}(ctx: &ReducerContext, records: Vec<{struct_name}>) -> Result<(), String> {{").as_str());
-    //    writeln(format!("    if !has_role(ctx, &ctx.sender, Role::Admin) {{").as_str());
+    //    writeln(format!("    if !has_role(ctx, &ctx.sender(), Role::Admin) {{").as_str());
     //    writeln(format!("        return Err(\"Invalid permissions\".into());").as_str());
     //    writeln(format!("    }}").as_str());
     //    writeln(format!("    import_{name}_internal(ctx, records)?;").as_str());
@@ -528,7 +546,7 @@ fn build_static_data_staging_tables() {
     ////commit_staged_static_data
     //writeln("#[spacetimedb::reducer]");
     //writeln("pub fn commit_staged_static_data(ctx: &ReducerContext) -> Result<(), String> {");
-    //writeln("    if !has_role(ctx, &ctx.sender, Role::Admin) {");
+    //writeln("    if !has_role(ctx, &ctx.sender(), Role::Admin) {");
     //writeln("        return Err(\"Invalid permissions\".into());");
     //writeln("    }");
     //writeln("");

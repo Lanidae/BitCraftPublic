@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_terraform(ctx: &ReducerContext, x: i32, z: i32, dimension: u32, delta: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatTerraform) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatTerraform) {
         return Err("Unauthorized.".into());
     }
 

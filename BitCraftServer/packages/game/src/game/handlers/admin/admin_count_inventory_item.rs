@@ -12,7 +12,7 @@ use std::fmt::Write;
 
 #[spacetimedb::reducer]
 pub fn admin_count_inventory_items(ctx: &ReducerContext, item_id: i32, limit: u32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     // Mapping from player username to total item quantity

@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn enemy_clear_aggro(ctx: &ReducerContext, request: EnemyClearAggroRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

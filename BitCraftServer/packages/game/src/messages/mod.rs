@@ -2,6 +2,7 @@ pub mod action_request;
 pub mod authentication;
 pub mod components;
 pub mod empire_shared;
+pub mod events;
 pub mod extensions;
 pub mod force_generation;
 pub mod game_util;

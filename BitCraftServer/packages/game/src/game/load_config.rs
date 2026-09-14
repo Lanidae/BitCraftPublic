@@ -6,7 +6,7 @@ use crate::messages::generic::{config, Config};
 
 #[spacetimedb::reducer]
 pub fn load_config(ctx: &ReducerContext, environment_names: Vec<String>, contents: Vec<String>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

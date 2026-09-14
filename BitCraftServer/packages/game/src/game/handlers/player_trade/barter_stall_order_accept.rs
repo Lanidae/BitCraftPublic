@@ -128,7 +128,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64, shop_entity_id: u64, trade_o
                         ctx.db.achievement_desc().id().find(&achievement_id),
                         "Required achievement does not exist"
                     );
-                    return Err(format!("You must have completed achievement {{0}} to do this trade|~{}", achievement.name).into());
+                    return Err(format!("You must have completed achievement {} to do this trade", achievement.name).into());
                 }
             }
 
@@ -140,7 +140,7 @@ pub fn reduce(ctx: &ReducerContext, entity_id: u64, shop_entity_id: u64, trade_o
                         "Required skill does not exist."
                     );
                     return Err(format!(
-                        "You must have level {{0}} or higher in {{1}} to do this trade|~{}|~{}",
+                        "You must have level {} or higher in {} to do this trade",
                         level_requirements.level, skill.name
                     )
                     .into());

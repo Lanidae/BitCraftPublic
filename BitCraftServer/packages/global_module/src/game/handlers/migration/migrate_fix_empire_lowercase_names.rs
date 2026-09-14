@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn migrate_fix_empire_lowercase_names(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

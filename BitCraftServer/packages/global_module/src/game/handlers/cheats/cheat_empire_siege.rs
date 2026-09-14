@@ -10,7 +10,7 @@ use spacetimedb::ReducerContext;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 fn cheat_empire_siege_cancel(ctx: &ReducerContext, siege_node_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatEmpireSiegeCancel) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatEmpireSiegeCancel) {
         return Err("Unauthorized.".into());
     }
 
@@ -56,7 +56,7 @@ fn cheat_empire_siege_add_supplies(
     siege_node_entity_id: u64,
     supplies: i32, /* can be negative */
 ) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatEmpireSiegeAddSupplies) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatEmpireSiegeAddSupplies) {
         return Err("Unauthorized.".into());
     }
 

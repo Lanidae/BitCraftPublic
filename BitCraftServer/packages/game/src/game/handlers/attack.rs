@@ -16,6 +16,7 @@ use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::messages::action_request::EntityAttackRequest;
 use crate::messages::authentication::{Role, ServerIdentity};
 use crate::messages::components::*;
+use crate::messages::events::*;
 use crate::messages::static_data::*;
 use crate::unwrap_or_err;
 
@@ -24,7 +25,7 @@ const PLAYER_RADIUS: f32 = 0.5;
 #[spacetimedb::reducer]
 #[feature_gate("combat")]
 pub fn attack_start(ctx: &ReducerContext, request: EntityAttackRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         if request.attacker_entity_id != game_state::actor_id(&ctx, false)? {
             return Err("Unauthorized".into());
         }
@@ -72,6 +73,8 @@ pub fn attack_start(ctx: &ReducerContext, request: EntityAttackRequest) -> Resul
                 })
                 .ok()
                 .unwrap();
+
+            ctx.db.entity_attack_start_event().insert(EntityAttackStartEvent { request });
         }
     } else if request.attacker_type == EntityType::Player {
         // Players will send another attack notification after the wind-up
@@ -104,7 +107,7 @@ pub fn attack_start(ctx: &ReducerContext, request: EntityAttackRequest) -> Resul
         let target = Some(request.defender_entity_id);
 
         // only do the checks for the main target
-        return player_action_helpers::start_action(
+        let result = player_action_helpers::start_action(
             ctx,
             attacker_id,
             PlayerActionType::Attack,
@@ -122,13 +125,17 @@ pub fn attack_start(ctx: &ReducerContext, request: EntityAttackRequest) -> Resul
             ),
             game_state::unix_ms(ctx.timestamp),
         );
+        if result.is_ok() {
+            ctx.db.entity_attack_start_event().insert(EntityAttackStartEvent { request });
+        }
+        return result;
     } else {
         return Err("Neither a Player nor Enemy is attacking.".into());
     }
     Ok(())
 }
 
-#[spacetimedb::table(name = attack_timer, public, scheduled(attack_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = attack_timer, public, scheduled(attack_scheduled, at = scheduled_at))]
 pub struct AttackTimer {
     #[primary_key]
     #[auto_inc]
@@ -259,7 +266,7 @@ fn targetable_entities_in_radius(
 #[spacetimedb::reducer]
 #[feature_gate("combat")]
 pub fn attack(ctx: &ReducerContext, request: EntityAttackRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         if request.attacker_entity_id != game_state::actor_id(&ctx, false)? {
             return Err("Unauthorized".into());
         }
@@ -370,7 +377,7 @@ pub fn attack(ctx: &ReducerContext, request: EntityAttackRequest) -> Result<(), 
 }
 
 // OBSOLETE
-#[spacetimedb::table(name = attack_impact_timer, scheduled(attack_impact, at = scheduled_at))]
+#[spacetimedb::table(accessor = attack_impact_timer, scheduled(attack_impact, at = scheduled_at))]
 pub struct AttackImpactTimer {
     #[primary_key]
     #[auto_inc]
@@ -384,7 +391,7 @@ pub struct AttackImpactTimer {
 }
 
 // [MIGRATION WORK-AROUND] This should be AttackImpactTimer with a main_attack field added
-#[spacetimedb::table(name = attack_impact_timer_migrated, public, scheduled(attack_impact_migrated, at = scheduled_at), index(name = attacker_entity_id, btree(columns = [attacker_entity_id])))]
+#[spacetimedb::table(accessor = attack_impact_timer_migrated, public, scheduled(attack_impact_migrated, at = scheduled_at), index(accessor = attacker_entity_id, btree(columns = [attacker_entity_id])))]
 pub struct AttackImpactTimerMigrated {
     #[primary_key]
     #[auto_inc]
@@ -415,7 +422,7 @@ pub fn attack_impact_migrated(ctx: &ReducerContext, timer: AttackImpactTimerMigr
         return Err("Invalid identity".into());
     }
 
-    attack_impact_reduce(
+    let attack_event = attack_impact_reduce(
         ctx,
         timer.attacker_entity_id,
         timer.defender_entity_id,
@@ -423,7 +430,11 @@ pub fn attack_impact_migrated(ctx: &ReducerContext, timer: AttackImpactTimerMigr
         timer.attacker_type,
         timer.defender_type,
         timer.main_attack,
-    )
+    )?;
+
+    ctx.db.attack_impact_event().insert(AttackImpactEvent { timer });
+    ctx.db.attack_event().insert(attack_event);
+    Ok(())
 }
 
 fn event_delay(ctx: &ReducerContext, combat_action_id: i32) -> f32 {
@@ -568,7 +579,7 @@ fn attack_impact_reduce(
     attacker_type: EntityType,
     defender_type: EntityType,
     main_attack: bool,
-) -> Result<(), String> {
+) -> Result<AttackEvent, String> {
     let combat_action = unwrap_or_err!(
         ctx.db.combat_action_desc().id().find(&combat_action_id),
         "Combat action doesn't exist"
@@ -579,7 +590,14 @@ fn attack_impact_reduce(
     );
     if defender_health.health == 0.0 {
         // Enemy already dead - nothing to do
-        return Ok(());
+        return Ok(AttackEvent {
+            attacker_entity_id,
+            defender_entity_id,
+            combat_action_id,
+            damage: 0,
+            is_crit: false,
+            is_dodge: false,
+        });
     }
     // roll outcome
     let (damage, scaled_damage, dodged, critical) = calculate_hit_outcome(
@@ -750,7 +768,14 @@ fn attack_impact_reduce(
 
         InventoryState::reduce_tool_durability(ctx, attacker_entity_id, tool_type, combat_action.weapon_durability_lost);
     }
-    Ok(())
+    Ok(AttackEvent {
+        attacker_entity_id,
+        defender_entity_id,
+        combat_action_id,
+        damage,
+        is_crit: critical,
+        is_dodge: dodged,
+    })
 }
 
 fn interpolated_position(ctx: &ReducerContext, entity_id: u64) -> FloatHexTile {
@@ -855,7 +880,7 @@ fn base_checks(
                 .as_secs();
 
             return Err(format!(
-                "You have to wait {{0}} {{1}} before attacking this enemy|~{delta}|~{}",
+                "You have to wait {delta} {} before attacking this enemy",
                 if delta > 1 { "seconds" } else { "second" }
             )
             .into());
@@ -958,7 +983,7 @@ fn base_checks(
                 };
             }
             if weapon_tier < enemy_desc.tier {
-                return Err(format!("You need a tier {{0}} weapon to attack this type of enemy|~{}", enemy_desc.tier));
+                return Err(format!("You need a tier {} weapon to attack this type of enemy", enemy_desc.tier));
             }
         }
 

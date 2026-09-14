@@ -2,7 +2,7 @@ use crate::messages::authentication::ServerIdentity;
 use crate::messages::components::PlayerState;
 use spacetimedb::ReducerContext;
 
-#[spacetimedb::table(name = collect_stats_timer, scheduled(collect_stats_reducer, at = scheduled_at))]
+#[spacetimedb::table(accessor = collect_stats_timer, scheduled(collect_stats_reducer, at = scheduled_at))]
 pub struct CollectStatsTimer {
     #[primary_key]
     #[auto_inc]

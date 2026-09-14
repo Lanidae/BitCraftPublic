@@ -16,7 +16,7 @@ pub enum Role {
     Relay,
 }
 
-#[spacetimedb::table(name = user_authentication_state)]
+#[spacetimedb::table(accessor = user_authentication_state)]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct UserAuthenticationState {
@@ -28,7 +28,7 @@ pub struct UserAuthenticationState {
 // NOTE: Ideally this would be a shared table, but because of schema migration
 // limitation it isn't currently. When inserting an identity we need to manually
 // do so in every module, including global.
-#[spacetimedb::table(name = developer)]
+#[spacetimedb::table(accessor = developer)]
 #[derive(Clone, Debug)]
 pub struct Developer {
     #[primary_key]
@@ -39,7 +39,7 @@ pub struct Developer {
     pub is_external: bool,
 }
 
-#[spacetimedb::table(name = identity_role, public)]
+#[spacetimedb::table(accessor = identity_role, public)]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct IdentityRole {
@@ -48,14 +48,14 @@ pub struct IdentityRole {
     pub role: Role,
 }
 
-#[spacetimedb::table(name = server_identity)]
+#[spacetimedb::table(accessor = server_identity)]
 pub struct ServerIdentity {
     #[primary_key]
     pub version: u8,
     pub identity: Identity,
 }
 
-#[spacetimedb::table(name = blocked_identity)]
+#[spacetimedb::table(accessor = blocked_identity)]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, Debug)]
 pub struct BlockedIdentity {
@@ -69,7 +69,7 @@ impl ServerIdentity {
             .server_identity()
             .try_insert(ServerIdentity {
                 version: 0,
-                identity: ctx.identity(),
+                identity: ctx.database_identity(),
             })
             .unwrap();
     }
@@ -77,7 +77,7 @@ impl ServerIdentity {
     pub fn validate_server_or_admin(ctx: &ReducerContext) -> Result<(), String> {
         match ctx.db.server_identity().version().find(0) {
             Some(server_identity) => {
-                if server_identity.identity == ctx.sender || has_role(ctx, &ctx.sender, Role::Admin) {
+                if server_identity.identity == ctx.sender() || has_role(ctx, &ctx.sender(), Role::Admin) {
                     Ok(())
                 } else {
                     Err("Unauthorized".into())
@@ -90,7 +90,7 @@ impl ServerIdentity {
     pub fn validate_server_only(ctx: &ReducerContext) -> Result<(), String> {
         match ctx.db.server_identity().version().find(0) {
             Some(server_identity) => {
-                if server_identity.identity == ctx.sender {
+                if server_identity.identity == ctx.sender() {
                     Ok(())
                 } else {
                     Err("Unauthorized".into())

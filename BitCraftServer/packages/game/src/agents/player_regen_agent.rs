@@ -12,7 +12,7 @@ use crate::{
 };
 use crate::{character_stats_state, health_state, signed_in_player_state, stamina_state};
 
-#[spacetimedb::table(name = player_regen_loop_timer, scheduled(player_regen_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = player_regen_loop_timer, scheduled(player_regen_agent_loop, at = scheduled_at))]
 pub struct PlayerRegenLoopTimer {
     #[primary_key]
     #[auto_inc]

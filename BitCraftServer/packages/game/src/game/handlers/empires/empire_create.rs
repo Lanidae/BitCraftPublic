@@ -24,7 +24,7 @@ use crate::{
 pub fn empire_create(ctx: &ReducerContext, request: EmpireCreateRequest) -> Result<(), String> {
     let actor_id = game_state::actor_id(&ctx, true)?;
 
-    UserModerationState::validate_chat_privileges(ctx, &ctx.sender, "Your naming privileges have been suspended")?;
+    UserModerationState::validate_chat_privileges(ctx, &ctx.sender(), "Your naming privileges have been suspended")?;
 
     if let Err(_) = is_user_text_input_valid(&request.empire_name, 35, true) {
         return Err("Invalid characters in the empire name".into());

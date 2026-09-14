@@ -62,7 +62,7 @@ pub fn equipment_add(ctx: &ReducerContext, request: PlayerEquipmentAddRequest) -
             if skill_name == "ANY" {
                 skill_name = "in any skill".into();
             }
-            return Err(format!("You need to be level {{0}} {{1}}|~{0}|~{1}", level_req.level, skill_name).into());
+            return Err(format!("You need to be level {0} {1}", level_req.level, skill_name).into());
         }
     }
 
@@ -97,7 +97,7 @@ pub fn equipment_add(ctx: &ReducerContext, request: PlayerEquipmentAddRequest) -
     for slot in equipment_info.slots.iter() {
         let equipment_slot = unwrap_or_err!(
             equipment_slots.iter_mut().find(|x| x.primary == *slot),
-            "Unknown equipment slot '{{0}}'|~{:?}",
+            "Unknown equipment slot '{:?}'",
             *slot
         );
         if equipment_slot.item_id() > 0 {

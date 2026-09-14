@@ -4,7 +4,7 @@
 
 /// Per-region chat rate-limit and new-account restriction settings.
 /// Singleton table (id = 0).
-#[spacetimedb::table(name = region_moderation_config_state)]
+#[spacetimedb::table(accessor = region_moderation_config_state)]
 #[derive(Clone, Debug)]
 pub struct RegionModerationConfigState {
     #[primary_key]

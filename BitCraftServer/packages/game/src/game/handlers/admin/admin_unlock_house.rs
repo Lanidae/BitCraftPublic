@@ -8,7 +8,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_unlock_house(ctx: &ReducerContext, player_entity_id: u64) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Unauthorized.");
         return;
     }

@@ -15,7 +15,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn migration_set_building_desc_params(ctx: &ReducerContext, allow_building_health_change: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

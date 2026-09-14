@@ -11,7 +11,7 @@ use crate::{
     parameters_desc,
 };
 
-#[spacetimedb::table(name = building_decay_loop_timer, scheduled(building_decay_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = building_decay_loop_timer, scheduled(building_decay_agent_loop, at = scheduled_at))]
 pub struct BuildingDecayLoopTimer {
     #[primary_key]
     #[auto_inc]

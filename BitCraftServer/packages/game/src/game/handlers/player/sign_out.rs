@@ -19,9 +19,9 @@ use crate::{
 #[shared_table_reducer]
 pub fn sign_out(ctx: &ReducerContext) {
     let now_ms = ctx.timestamp;
-    log::info!("[{:?}] [{:?}] sign_out", now_ms, &ctx.sender.to_hex());
+    log::info!("[{:?}] [{:?}] sign_out", now_ms, &ctx.sender().to_hex());
 
-    sign_out_internal(ctx, ctx.sender, true);
+    sign_out_internal(ctx, ctx.sender(), true);
 }
 
 pub fn sign_out_internal(ctx: &ReducerContext, identity: Identity, insert_grace_period: bool) {

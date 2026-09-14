@@ -8,7 +8,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_project_site_add_all_materials(ctx: &ReducerContext, project_site_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatProjectSiteAddAllMaterials) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatProjectSiteAddAllMaterials) {
         return Err("Unauthorized.".into());
     }
 

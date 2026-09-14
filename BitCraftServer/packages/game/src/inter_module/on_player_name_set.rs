@@ -1,8 +1,8 @@
-use bitcraft_macro::event_table;
 use spacetimedb::ReducerContext;
 
 use crate::messages::{
     components::{player_lowercase_username_state, player_username_state},
+    events::PlayerSetNameOutcomeEvent,
     inter_module::OnPlayerNameSetMsg,
 };
 
@@ -21,9 +21,4 @@ pub fn process_message_on_destination(ctx: &ReducerContext, request: OnPlayerNam
     PlayerSetNameOutcomeEvent::new_event(ctx, entity_id);
 
     Ok(())
-}
-
-#[event_table(name = player_set_name_outcome_event)]
-pub struct PlayerSetNameOutcomeEvent {
-    pub player_entity_id: u64,
 }

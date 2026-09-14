@@ -16,8 +16,9 @@ use crate::{
     mobile_entity_state, player_lowercase_username_state, user_state, InventoryState, PlayerActionLayer, PlayerActionState,
     PlayerActionType, PlayerState,
 };
+use crate::messages::events::{player_signed_out_event, PlayerSignedOutEvent, PlayerSignedOutReason};
 
-#[spacetimedb::table(name = admin_restore_player_state_timer, scheduled(admin_restore_player_state_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = admin_restore_player_state_timer, scheduled(admin_restore_player_state_scheduled, at = scheduled_at))]
 pub struct AdminRestorePlayerStateTimer {
     #[primary_key]
     #[auto_inc]
@@ -61,7 +62,7 @@ pub fn admin_restore_player_state(
     clear_items: bool,
     clear_toolbelt: bool,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Unauthorized.");
         return Ok(());
     }
@@ -80,6 +81,10 @@ pub fn admin_restore_player_state(
         //Sign player out and reschedule this reducer after a short delay
         let identity = ctx.db.user_state().entity_id().find(&entity_id).unwrap().identity;
         sign_out_internal(ctx, identity, true);
+        ctx.db.player_signed_out_event().insert(PlayerSignedOutEvent {
+            identity,
+            reason: PlayerSignedOutReason::AdminAction,
+        });
         ctx.db
             .admin_restore_player_state_timer()
             .try_insert(AdminRestorePlayerStateTimer {

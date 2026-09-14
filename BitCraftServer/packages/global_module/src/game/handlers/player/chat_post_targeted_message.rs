@@ -30,14 +30,14 @@ pub fn reduce(ctx: &ReducerContext, actor_id: u64, text: String, target_entity_i
         return Err("Failed to send chat messages".into());
     }
 
-    UserModerationState::validate_chat_privileges(ctx, &ctx.sender, "Your chat privileges have been suspended")?;
+    UserModerationState::validate_chat_privileges(ctx, &ctx.sender(), "Your chat privileges have been suspended")?;
 
     let username = unwrap_or_err!(ctx.db.player_username_state().entity_id().find(actor_id), "Invalid player").username;
 
     let timestamp = unix(ctx.timestamp);
 
     //TODO: Add a mapping from Role to CollectibleId somewhere
-    let title_id = match ctx.db.identity_role().identity().find(ctx.sender) {
+    let title_id = match ctx.db.identity_role().identity().find(ctx.sender()) {
         Some(identity_role) => match identity_role.role {
             Role::Mod => 3,
             Role::Gm => 2,
@@ -78,7 +78,7 @@ pub fn reduce(ctx: &ReducerContext, actor_id: u64, text: String, target_entity_i
         return Ok(());
     }
 
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         let permissions = ctx
             .db
             .chat_channel_permission_state()

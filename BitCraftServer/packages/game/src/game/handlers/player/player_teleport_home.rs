@@ -1,8 +1,9 @@
 use bitcraft_macro::feature_gate;
 use bitcraft_macro::shared_table_reducer;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 use std::time::Duration;
 
+use crate::messages::events::*;
 use crate::{
     game::{
         game_state::{self, game_state_filters},
@@ -25,7 +26,7 @@ pub fn player_teleport_home_start(ctx: &ReducerContext, request: PlayerTeleportH
     let actor_id = game_state::actor_id(&ctx, true)?;
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
     let delay = event_delay(ctx, actor_id, &request);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Teleport,
@@ -34,7 +35,13 @@ pub fn player_teleport_home_start(ctx: &ReducerContext, request: PlayerTeleportH
         delay,
         reduce(ctx, actor_id, true),
         game_state::unix_ms(ctx.timestamp),
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .player_teleport_home_start_event()
+            .insert(PlayerTeleportHomeStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -47,15 +54,25 @@ pub fn player_teleport_home(ctx: &ReducerContext, _request: PlayerTeleportHomeRe
     let teleport_location = player.teleport_location;
     let teleport_location_tile = SmallHexTile::from(teleport_location.location);
 
-    if sleep::can_sleep(ctx, teleport_location_tile).is_ok() {
+    let result = if sleep::can_sleep(ctx, teleport_location_tile).is_ok() {
         let r = reduce(ctx, actor_id, false);
         if r.is_err() {
-            return player_action_helpers::schedule_clear_player_action(actor_id, PlayerActionType::Teleport.get_layer(ctx), r.clone());
+            player_action_helpers::schedule_clear_player_action(actor_id, PlayerActionType::Teleport.get_layer(ctx), r.clone())
+        } else {
+            r
         }
-        return r;
-    }
+    } else {
+        player_action_helpers::schedule_clear_player_action(
+            actor_id,
+            PlayerActionType::Teleport.get_layer(ctx),
+            reduce(ctx, actor_id, false),
+        )
+    };
 
-    player_action_helpers::schedule_clear_player_action(actor_id, PlayerActionType::Teleport.get_layer(ctx), reduce(ctx, actor_id, false))
+    if result.is_ok() {
+        ctx.db.player_teleport_event().insert(PlayerTeleportEvent { actor_id });
+    }
+    result
 }
 
 pub fn reduce(ctx: &ReducerContext, actor_id: u64, dry_run: bool) -> Result<(), String> {

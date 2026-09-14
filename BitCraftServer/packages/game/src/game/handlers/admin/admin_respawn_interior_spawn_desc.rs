@@ -20,7 +20,7 @@ use crate::game::handlers::authentication::has_role;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_respawn_interior_spawn_desc(ctx: &ReducerContext, interior_spawn_desc_id: i32, commit: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -9,7 +9,7 @@ use spacetimedb::{log, ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn admin_grant_all_claim_supplies(ctx: &ReducerContext, days_of_supplies: i32, dry_run: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

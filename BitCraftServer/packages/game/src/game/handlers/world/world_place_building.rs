@@ -19,7 +19,7 @@ use spacetimedb::{log, ReducerContext, Table};
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn world_place_building(ctx: &ReducerContext, request: WorldPlaceBuildingRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

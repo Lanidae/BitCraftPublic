@@ -527,7 +527,7 @@ pub enum SkillCategory {
 
 #[static_data_staging_table(skill_desc)]
 #[derive(Clone, PartialEq, Debug)]
-#[spacetimedb::table(name = skill_desc, public)]
+#[spacetimedb::table(accessor = skill_desc, public)]
 pub struct SkillDesc {
     #[primary_key]
     pub id: i32,
@@ -543,7 +543,7 @@ pub struct SkillDesc {
 }
 
 #[static_data_staging_table(resource_desc)]
-#[spacetimedb::table(name = resource_desc, public)]
+#[spacetimedb::table(accessor = resource_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ResourceDesc {
     #[primary_key]
@@ -596,7 +596,7 @@ pub struct ResourceDesc {
 }
 
 #[static_data_staging_table(placeable_desc)]
-#[spacetimedb::table(name = placeable_desc, public)]
+#[spacetimedb::table(accessor = placeable_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceableDesc {
     #[primary_key]
@@ -625,7 +625,7 @@ pub struct PlaceableDesc {
 }
 
 #[static_data_staging_table(placeable_group_desc)]
-#[spacetimedb::table(name = placeable_group_desc, public)]
+#[spacetimedb::table(accessor = placeable_group_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceableGroupDesc {
     #[primary_key]
@@ -666,7 +666,7 @@ pub struct ResourceDestroyBuildingOutcome {
 }
 
 #[static_data_staging_table(placeable_growth_desc)]
-#[spacetimedb::table(name = placeable_growth_desc, public)]
+#[spacetimedb::table(accessor = placeable_growth_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceableGrowthDesc {
     #[primary_key]
@@ -681,7 +681,7 @@ pub struct PlaceableGrowthDesc {
 }
 
 #[static_data_staging_table(placeable_placement_desc)]
-#[spacetimedb::table(name = placeable_placement_desc, public)]
+#[spacetimedb::table(accessor = placeable_placement_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceablePlacementDesc {
     #[primary_key]
@@ -721,7 +721,7 @@ pub struct PlaceablePlacementDesc {
 }
 
 #[static_data_staging_table(placeable_interaction_desc)]
-#[spacetimedb::table(name = placeable_interaction_desc, public, index(name = placeable_id, btree(columns = [placeable_id])))]
+#[spacetimedb::table(accessor = placeable_interaction_desc, public, index(accessor = placeable_id, btree(columns = [placeable_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceableInteractionDesc {
     #[primary_key]
@@ -751,7 +751,7 @@ pub struct PlaceableInteractionDesc {
 }
 
 #[static_data_staging_table(cargo_desc)]
-#[spacetimedb::table(name = cargo_desc, public)]
+#[spacetimedb::table(accessor = cargo_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CargoDesc {
     #[primary_key]
@@ -785,7 +785,7 @@ pub struct CargoDesc {
 }
 
 #[static_data_staging_table(pillar_shaping_desc)]
-#[spacetimedb::table(name = pillar_shaping_desc, public)]
+#[spacetimedb::table(accessor = pillar_shaping_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PillarShapingDesc {
     #[primary_key]
@@ -806,7 +806,7 @@ pub struct PillarShapingDesc {
 }
 
 #[static_data_staging_table(paving_tile_desc)]
-#[spacetimedb::table(name = paving_tile_desc, public)]
+#[spacetimedb::table(accessor = paving_tile_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PavingTileDesc {
     #[primary_key]
@@ -828,7 +828,7 @@ pub struct PavingTileDesc {
 }
 
 #[static_data_staging_table(building_type_desc)]
-#[spacetimedb::table(name = building_type_desc, public)]
+#[spacetimedb::table(accessor = building_type_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingTypeDesc {
     #[primary_key]
@@ -839,7 +839,7 @@ pub struct BuildingTypeDesc {
 }
 
 #[static_data_staging_table(building_desc)]
-#[spacetimedb::table(name = building_desc, public)]
+#[spacetimedb::table(accessor = building_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingDesc {
     #[primary_key]
@@ -869,7 +869,7 @@ pub struct BuildingDesc {
 }
 
 #[static_data_staging_table(building_map_icon_desc)]
-#[spacetimedb::table(name = building_map_icon_desc, public)]
+#[spacetimedb::table(accessor = building_map_icon_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingMapIconDesc {
     #[primary_key]
@@ -881,7 +881,7 @@ pub struct BuildingMapIconDesc {
 
 // A table that gets auto-built when static data is uploaded. Maps building function IDs to buildings that have that function.
 // For example, there would be an entry for all smelters, an entry for all looms, and an entry for all kilns etc.
-#[spacetimedb::table(name = building_function_type_mapping_desc, public)]
+#[spacetimedb::table(accessor = building_function_type_mapping_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingFunctionTypeMappingDesc {
     #[primary_key]
@@ -890,7 +890,7 @@ pub struct BuildingFunctionTypeMappingDesc {
 }
 
 #[static_data_staging_table(item_desc)]
-#[spacetimedb::table(name = item_desc, public, index(name = tag, btree(columns = [tag])))]
+#[spacetimedb::table(accessor = item_desc, public, index(accessor = tag, btree(columns = [tag])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ItemDesc {
     #[primary_key]
@@ -911,7 +911,7 @@ pub struct ItemDesc {
 }
 
 #[static_data_staging_table(collectible_desc)]
-#[spacetimedb::table(name = collectible_desc, public, index(name = item_deed_id, btree(columns = [item_deed_id])))]
+#[spacetimedb::table(accessor = collectible_desc, public, index(accessor = item_deed_id, btree(columns = [item_deed_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CollectibleDesc {
     #[primary_key]
@@ -939,7 +939,7 @@ pub struct CollectibleDesc {
 }
 
 #[static_data_staging_table(tool_type_desc)]
-#[spacetimedb::table(name = tool_type_desc, public, index(name = skill_id, btree(columns = [skill_id])))]
+#[spacetimedb::table(accessor = tool_type_desc, public, index(accessor = skill_id, btree(columns = [skill_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ToolTypeDesc {
     #[primary_key]
@@ -950,7 +950,7 @@ pub struct ToolTypeDesc {
 }
 
 #[static_data_staging_table(tool_desc)]
-#[spacetimedb::table(name = tool_desc, public, index(name = item_id, btree(columns = [item_id])))]
+#[spacetimedb::table(accessor = tool_desc, public, index(accessor = item_id, btree(columns = [item_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ToolDesc {
     #[primary_key]
@@ -963,7 +963,7 @@ pub struct ToolDesc {
 }
 
 #[static_data_staging_table(deployable_desc)]
-#[spacetimedb::table(name = deployable_desc, public)]
+#[spacetimedb::table(accessor = deployable_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct DeployableDesc {
     #[primary_key]
@@ -1004,7 +1004,7 @@ pub struct DeployableDesc {
 }
 
 #[static_data_staging_table(deployable_appearance_override_desc)]
-#[spacetimedb::table(name = deployable_appearance_override_desc, public, index(name = collectible_id, btree(columns = [collectible_id])), index(name = affected_model_address, btree(columns = [affected_model_address])))]
+#[spacetimedb::table(accessor = deployable_appearance_override_desc, public, index(accessor = collectible_id, btree(columns = [collectible_id])), index(accessor = affected_model_address, btree(columns = [affected_model_address])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct DeployableAppearanceOverrideDesc {
     #[primary_key]
@@ -1016,21 +1016,21 @@ pub struct DeployableAppearanceOverrideDesc {
     pub icon_asset_name: String,
 }
 
-#[spacetimedb::table(name = crafting_recipe_discovery_item_desc, index(name = item_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = crafting_recipe_discovery_cargo_desc, index(name = cargo_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = crafting_recipe_discovery_knowledge_desc, index(name = knowledge_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = construction_recipe_discovery_item_desc, index(name = item_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = construction_recipe_discovery_cargo_desc, index(name = cargo_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = construction_recipe_discovery_knowledge_desc, index(name = knowledge_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = paving_recipe_discovery_item_desc, index(name = item_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = paving_recipe_discovery_cargo_desc, index(name = cargo_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = paving_recipe_discovery_knowledge_desc, index(name = knowledge_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = resource_placement_recipe_discovery_item_desc, index(name = item_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = resource_placement_recipe_discovery_cargo_desc, index(name = cargo_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = resource_placement_recipe_discovery_knowledge_desc, index(name = knowledge_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = pillar_shaping_recipe_discovery_item_desc, index(name = item_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = pillar_shaping_recipe_discovery_cargo_desc, index(name = cargo_id, btree(columns = [requirement_id])))]
-#[spacetimedb::table(name = pillar_shaping_recipe_discovery_knowledge_desc, index(name = knowledge_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = crafting_recipe_discovery_item_desc, index(accessor = item_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = crafting_recipe_discovery_cargo_desc, index(accessor = cargo_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = crafting_recipe_discovery_knowledge_desc, index(accessor = knowledge_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = construction_recipe_discovery_item_desc, index(accessor = item_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = construction_recipe_discovery_cargo_desc, index(accessor = cargo_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = construction_recipe_discovery_knowledge_desc, index(accessor = knowledge_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = paving_recipe_discovery_item_desc, index(accessor = item_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = paving_recipe_discovery_cargo_desc, index(accessor = cargo_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = paving_recipe_discovery_knowledge_desc, index(accessor = knowledge_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = resource_placement_recipe_discovery_item_desc, index(accessor = item_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = resource_placement_recipe_discovery_cargo_desc, index(accessor = cargo_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = resource_placement_recipe_discovery_knowledge_desc, index(accessor = knowledge_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = pillar_shaping_recipe_discovery_item_desc, index(accessor = item_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = pillar_shaping_recipe_discovery_cargo_desc, index(accessor = cargo_id, btree(columns = [requirement_id])))]
+#[spacetimedb::table(accessor = pillar_shaping_recipe_discovery_knowledge_desc, index(accessor = knowledge_id, btree(columns = [requirement_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct DiscoveryTriggerDesc {
     pub requirement_id: i32,
@@ -1038,7 +1038,7 @@ pub struct DiscoveryTriggerDesc {
 }
 
 #[static_data_staging_table(crafting_recipe_desc)]
-#[spacetimedb::table(name = crafting_recipe_desc, public, index(name = show_in_progression, btree(columns = [show_in_progression])))]
+#[spacetimedb::table(accessor = crafting_recipe_desc, public, index(accessor = show_in_progression, btree(columns = [show_in_progression])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CraftingRecipeDesc {
     #[primary_key]
@@ -1069,7 +1069,7 @@ pub struct CraftingRecipeDesc {
 }
 
 #[static_data_staging_table(construction_recipe_desc)]
-#[spacetimedb::table(name = construction_recipe_desc, public, index(name = building_description_id, btree(columns = [building_description_id])))]
+#[spacetimedb::table(accessor = construction_recipe_desc, public, index(accessor = building_description_id, btree(columns = [building_description_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ConstructionRecipeDesc {
     #[primary_key]
@@ -1098,7 +1098,7 @@ pub struct ConstructionRecipeDesc {
 }
 
 #[static_data_staging_table(resource_placement_recipe_desc)]
-#[spacetimedb::table(name = resource_placement_recipe_desc, public)]
+#[spacetimedb::table(accessor = resource_placement_recipe_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ResourcePlacementRecipeDesc {
     #[primary_key]
@@ -1126,7 +1126,7 @@ pub struct ResourcePlacementRecipeDesc {
 }
 
 #[static_data_staging_table(resource_growth_recipe_desc)]
-#[spacetimedb::table(name = resource_growth_recipe_desc, public, index(name = resource_id, btree(columns = [resource_id])))]
+#[spacetimedb::table(accessor = resource_growth_recipe_desc, public, index(accessor = resource_id, btree(columns = [resource_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ResourceGrowthRecipeDesc {
     #[primary_key]
@@ -1143,7 +1143,7 @@ pub struct ResourceGrowthRecipeDesc {
 }
 
 #[static_data_staging_table(extraction_recipe_desc)]
-#[spacetimedb::table(name = extraction_recipe_desc, public, index(name = resource_id, btree(columns = [resource_id])), index(name = show_in_progression, btree(columns = [show_in_progression])))]
+#[spacetimedb::table(accessor = extraction_recipe_desc, public, index(accessor = resource_id, btree(columns = [resource_id])), index(accessor = show_in_progression, btree(columns = [show_in_progression])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ExtractionRecipeDesc {
     #[primary_key]
@@ -1177,7 +1177,7 @@ pub struct ExtractionRecipeDesc {
 }
 
 #[static_data_staging_table(deconstruction_recipe_desc)]
-#[spacetimedb::table(name = deconstruction_recipe_desc, public, index(name = consumed_building, btree(columns = [consumed_building])))]
+#[spacetimedb::table(accessor = deconstruction_recipe_desc, public, index(accessor = consumed_building, btree(columns = [consumed_building])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct DeconstructionRecipeDesc {
     #[primary_key]
@@ -1194,7 +1194,7 @@ pub struct DeconstructionRecipeDesc {
 }
 
 #[static_data_staging_table(weapon_type_desc)]
-#[spacetimedb::table(name = weapon_type_desc, public)]
+#[spacetimedb::table(accessor = weapon_type_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct WeaponTypeDesc {
     #[primary_key]
@@ -1204,7 +1204,7 @@ pub struct WeaponTypeDesc {
 }
 
 #[static_data_staging_table(weapon_desc)]
-#[spacetimedb::table(name = weapon_desc, public)]
+#[spacetimedb::table(accessor = weapon_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct WeaponDesc {
     #[primary_key]
@@ -1218,7 +1218,7 @@ pub struct WeaponDesc {
 }
 
 #[static_data_staging_table(parameters_desc)]
-#[spacetimedb::table(name = parameters_desc, public)]
+#[spacetimedb::table(accessor = parameters_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ParametersDesc {
     #[primary_key]
@@ -1325,7 +1325,7 @@ pub struct ParametersDesc {
     pub traveler_task_reroll_credit_cost: i32,
 }
 
-#[spacetimedb::table(name = parameters_player_move_desc)]
+#[spacetimedb::table(accessor = parameters_player_move_desc)]
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct ParametersPlayerMoveDesc {
     #[primary_key]
@@ -1334,7 +1334,7 @@ pub struct ParametersPlayerMoveDesc {
 }
 
 #[static_data_staging_table(private_parameters_desc)]
-#[spacetimedb::table(name = private_parameters_desc)]
+#[spacetimedb::table(accessor = private_parameters_desc)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PrivateParametersDesc {
     #[primary_key]
@@ -1356,7 +1356,7 @@ pub struct TravelerWeeklyTaskCredits {
 }
 
 #[static_data_staging_table(clothing_desc)]
-#[spacetimedb::table(name = clothing_desc, public)]
+#[spacetimedb::table(accessor = clothing_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClothingDesc {
     #[primary_key]
@@ -1365,7 +1365,7 @@ pub struct ClothingDesc {
 }
 
 #[static_data_staging_table(knowledge_scroll_desc)]
-#[spacetimedb::table(name = knowledge_scroll_desc, public, index(name = known_by_default, btree(columns = [known_by_default])))]
+#[spacetimedb::table(accessor = knowledge_scroll_desc, public, index(accessor = known_by_default, btree(columns = [known_by_default])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct KnowledgeScrollDesc {
     #[primary_key]
@@ -1380,7 +1380,7 @@ pub struct KnowledgeScrollDesc {
 }
 
 #[static_data_staging_table(knowledge_scroll_type_desc)]
-#[spacetimedb::table(name = knowledge_scroll_type_desc, public)]
+#[spacetimedb::table(accessor = knowledge_scroll_type_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct KnowledgeScrollTypeDesc {
     #[primary_key]
@@ -1389,7 +1389,7 @@ pub struct KnowledgeScrollTypeDesc {
 }
 
 #[static_data_staging_table(equipment_desc)]
-#[spacetimedb::table(name = equipment_desc, public, index(name = show_in_progression, btree(columns = [show_in_progression])))]
+#[spacetimedb::table(accessor = equipment_desc, public, index(accessor = show_in_progression, btree(columns = [show_in_progression])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EquipmentDesc {
     #[primary_key]
@@ -1412,7 +1412,7 @@ pub struct EquipmentDesc {
 }
 
 #[static_data_staging_table(buff_type_desc)]
-#[spacetimedb::table(name = buff_type_desc, public, index(name = category, btree(columns = [category])))]
+#[spacetimedb::table(accessor = buff_type_desc, public, index(accessor = category, btree(columns = [category])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuffTypeDesc {
     #[primary_key]
@@ -1438,7 +1438,7 @@ pub struct PlaceableSelfBuffChance {
 }
 
 #[static_data_staging_table(buff_desc)]
-#[spacetimedb::table(name = buff_desc, public, index(name = buff_type_id, btree(columns = [buff_type_id])))]
+#[spacetimedb::table(accessor = buff_desc, public, index(accessor = buff_type_id, btree(columns = [buff_type_id])))]
 // Index on `buff_type` so that `ActiveBuffState::active_buff_of_type`
 // can do efficient lookups.
 #[derive(Clone, PartialEq, Debug)]
@@ -1460,7 +1460,7 @@ pub struct BuffDesc {
 }
 
 #[static_data_staging_table(teleport_item_desc)]
-#[spacetimedb::table(name = teleport_item_desc, public)]
+#[spacetimedb::table(accessor = teleport_item_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TeleportItemDesc {
     #[primary_key]
@@ -1471,7 +1471,7 @@ pub struct TeleportItemDesc {
 }
 
 #[static_data_staging_table(environment_debuff_desc)]
-#[spacetimedb::table(name = environment_debuff_desc, public)]
+#[spacetimedb::table(accessor = environment_debuff_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EnvironmentDebuffDesc {
     #[primary_key]
@@ -1485,7 +1485,7 @@ pub struct EnvironmentDebuffDesc {
 }
 
 #[static_data_staging_table(food_desc)]
-#[spacetimedb::table(name = food_desc, public)]
+#[spacetimedb::table(accessor = food_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct FoodDesc {
     #[primary_key]
@@ -1505,7 +1505,7 @@ pub struct FoodDesc {
 }
 
 #[static_data_staging_table(enemy_desc)]
-#[spacetimedb::table(name = enemy_desc, public)]
+#[spacetimedb::table(accessor = enemy_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EnemyDesc {
     #[primary_key]
@@ -1552,7 +1552,7 @@ pub struct EnemyDesc {
 }
 
 #[static_data_staging_table(enemy_scaling_desc)]
-#[spacetimedb::table(name = enemy_scaling_desc, public, index(name = enemy_type_id, btree(columns = [enemy_type_id])))]
+#[spacetimedb::table(accessor = enemy_scaling_desc, public, index(accessor = enemy_type_id, btree(columns = [enemy_type_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EnemyScalingDesc {
     #[primary_key]
@@ -1569,7 +1569,7 @@ pub struct EnemyScalingDesc {
 
 
 #[static_data_staging_table(contribution_loot_desc)]
-#[spacetimedb::table(name = contribution_loot_desc, public, index(name = enemy_type_id, btree(columns = [enemy_type_id])))]
+#[spacetimedb::table(accessor = contribution_loot_desc, public, index(accessor = enemy_type_id, btree(columns = [enemy_type_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ContributionLootDesc {
     #[primary_key]
@@ -1581,7 +1581,7 @@ pub struct ContributionLootDesc {
 }
 
 #[static_data_staging_table(npc_desc)]
-#[spacetimedb::table(name = npc_desc, public)]
+#[spacetimedb::table(accessor = npc_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct NpcDesc {
     #[primary_key]
@@ -1598,7 +1598,7 @@ pub struct NpcDesc {
 }
 
 #[static_data_staging_table(enemy_ai_params_desc)]
-#[spacetimedb::table(name = enemy_ai_params_desc, public)]
+#[spacetimedb::table(accessor = enemy_ai_params_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EnemyAiParamsDesc {
     #[primary_key]
@@ -1618,7 +1618,7 @@ pub struct EnemyAiParamsDesc {
 
 // [MIGRATION WORK-AROUND] This is to go around the fact that we can't use migration yet. These should be additional fields to the CombatActionDesc rows.
 #[static_data_staging_table(combat_action_multi_hit_desc)]
-#[spacetimedb::table(name = combat_action_multi_hit_desc, public)]
+#[spacetimedb::table(accessor = combat_action_multi_hit_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CombatActionMultiHitDesc {
     #[primary_key]
@@ -1630,7 +1630,7 @@ pub struct CombatActionMultiHitDesc {
 
 
 #[static_data_staging_table(combat_action_desc)]
-#[spacetimedb::table(name = combat_action_desc, public, index(name = learned_by_player, btree(columns = [learned_by_player])))]
+#[spacetimedb::table(accessor = combat_action_desc, public, index(accessor = learned_by_player, btree(columns = [learned_by_player])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CombatActionDesc {
     pub name: String,
@@ -1671,7 +1671,7 @@ pub struct CombatActionDesc {
 
 
 #[static_data_staging_table(traveler_trade_order_desc)]
-#[spacetimedb::table(name = traveler_trade_order_desc, public)]
+#[spacetimedb::table(accessor = traveler_trade_order_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TravelerTradeOrderDesc {
     #[primary_key]
@@ -1693,7 +1693,7 @@ pub struct TravelerTradeOrderDesc {
 }
 
 #[static_data_staging_table(traveler_task_desc)]
-#[spacetimedb::table(name = traveler_task_desc, public)]
+#[spacetimedb::table(accessor = traveler_task_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TravelerTaskDesc {
     #[primary_key]
@@ -1706,7 +1706,7 @@ pub struct TravelerTaskDesc {
 }
 
 #[static_data_staging_table(traveler_task_knowledge_requirement_desc)]
-#[spacetimedb::table(name = traveler_task_knowledge_requirement_desc, public)]
+#[spacetimedb::table(accessor = traveler_task_knowledge_requirement_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TravelerTaskKnowledgeRequirementDesc {
     #[primary_key]
@@ -1716,7 +1716,7 @@ pub struct TravelerTaskKnowledgeRequirementDesc {
 }
 
 #[static_data_staging_table(character_stat_desc)]
-#[spacetimedb::table(name = character_stat_desc, public)]
+#[spacetimedb::table(accessor = character_stat_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct CharacterStatDesc {
     #[primary_key]
@@ -1730,7 +1730,7 @@ pub struct CharacterStatDesc {
 }
 
 #[static_data_staging_table(building_repairs_desc)]
-#[spacetimedb::table(name = building_repairs_desc, public)]
+#[spacetimedb::table(accessor = building_repairs_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingRepairsDesc {
     #[primary_key]
@@ -1739,7 +1739,7 @@ pub struct BuildingRepairsDesc {
 }
 
 #[static_data_staging_table(building_claim_desc)]
-#[spacetimedb::table(name = building_claim_desc, public)]
+#[spacetimedb::table(accessor = building_claim_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingClaimDesc {
     #[primary_key]
@@ -1750,7 +1750,7 @@ pub struct BuildingClaimDesc {
 }
 
 #[static_data_staging_table(claim_tile_cost)]
-#[spacetimedb::table(name = claim_tile_cost, public)]
+#[spacetimedb::table(accessor = claim_tile_cost, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClaimTileCost {
     #[primary_key]
@@ -1759,7 +1759,7 @@ pub struct ClaimTileCost {
 }
 
 #[static_data_staging_table(terraform_recipe_desc)]
-#[spacetimedb::table(name = terraform_recipe_desc, public)]
+#[spacetimedb::table(accessor = terraform_recipe_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TerraformRecipeDesc {
     #[primary_key]
@@ -1775,8 +1775,8 @@ pub struct TerraformRecipeDesc {
 }
 
 #[static_data_staging_table(emote_desc)]
-#[spacetimedb::table(name = emote_desc, public, 
-    index(name = enabled_by_collectible_id, btree(columns = [enabled_by_collectible_id])))]
+#[spacetimedb::table(accessor = emote_desc, public, 
+    index(accessor = enabled_by_collectible_id, btree(columns = [enabled_by_collectible_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmoteDesc {
     #[primary_key]
@@ -1797,7 +1797,7 @@ pub struct EmoteDesc {
 }
 
 #[static_data_staging_table(empire_notification_desc)]
-#[spacetimedb::table(name = empire_notification_desc, public)]
+#[spacetimedb::table(accessor = empire_notification_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireNotificationDesc {
     #[primary_key]
@@ -1809,7 +1809,7 @@ pub struct EmpireNotificationDesc {
 }
 
 #[static_data_staging_table(empire_territory_desc)]
-#[spacetimedb::table(name = empire_territory_desc, public)]
+#[spacetimedb::table(accessor = empire_territory_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireTerritoryDesc {
     #[auto_inc]
@@ -1821,7 +1821,7 @@ pub struct EmpireTerritoryDesc {
 }
 
 #[static_data_staging_table(empire_supplies_desc)]
-#[spacetimedb::table(name = empire_supplies_desc, public)]
+#[spacetimedb::table(accessor = empire_supplies_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireSuppliesDesc {
     #[primary_key]
@@ -1830,7 +1830,7 @@ pub struct EmpireSuppliesDesc {
 }
 
 #[static_data_staging_table(empire_rank_desc)]
-#[spacetimedb::table(name = empire_rank_desc, public)]
+#[spacetimedb::table(accessor = empire_rank_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireRankDesc {
     #[primary_key]
@@ -1841,7 +1841,7 @@ pub struct EmpireRankDesc {
 }
 
 #[static_data_staging_table(targeting_matrix_desc)]
-#[spacetimedb::table(name = targeting_matrix_desc, public)]
+#[spacetimedb::table(accessor = targeting_matrix_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct TargetingMatrixDesc {
     #[primary_key]
@@ -1852,7 +1852,7 @@ pub struct TargetingMatrixDesc {
 }
 
 #[static_data_staging_table(loot_table_desc)]
-#[spacetimedb::table(name = loot_table_desc, public)]
+#[spacetimedb::table(accessor = loot_table_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct LootTableDesc {
     #[primary_key]
@@ -1862,7 +1862,7 @@ pub struct LootTableDesc {
 }
 
 #[static_data_staging_table(loot_rarity_desc)]
-#[spacetimedb::table(name = loot_rarity_desc, public)]
+#[spacetimedb::table(accessor = loot_rarity_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct LootRarityDesc {
     #[primary_key]
@@ -1871,7 +1871,7 @@ pub struct LootRarityDesc {
 }
 
 #[static_data_staging_table(loot_chest_desc)]
-#[spacetimedb::table(name = loot_chest_desc, public)]
+#[spacetimedb::table(accessor = loot_chest_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct LootChestDesc {
     #[primary_key]
@@ -1883,7 +1883,7 @@ pub struct LootChestDesc {
 }
 
 #[static_data_staging_table(building_spawn_desc)]
-#[spacetimedb::table(name = building_spawn_desc, public, index(name = building_id, btree(columns = [building_id])))]
+#[spacetimedb::table(accessor = building_spawn_desc, public, index(accessor = building_id, btree(columns = [building_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingSpawnDesc {
     #[primary_key]
@@ -1901,7 +1901,7 @@ pub struct BuildingSpawnDesc {
 }
 
 #[static_data_staging_table(resource_clump_desc)]
-#[spacetimedb::table(name = resource_clump_desc, public)]
+#[spacetimedb::table(accessor = resource_clump_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ResourceClumpDesc {
     #[primary_key]
@@ -1912,7 +1912,7 @@ pub struct ResourceClumpDesc {
     pub direction: Vec<i32>,
 }
 
-#[spacetimedb::table(name = single_resource_to_clump_desc)]
+#[spacetimedb::table(accessor = single_resource_to_clump_desc)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct SingleResourceToClumpDesc {
     // DAB Note: technically this isn't unique, as different clumps can have the same single resource, but effectively since they're always centered there's no point for duplicates
@@ -1924,7 +1924,7 @@ pub struct SingleResourceToClumpDesc {
 }
 
 #[static_data_staging_table(chest_rarity_desc)]
-#[spacetimedb::table(name = chest_rarity_desc, public)]
+#[spacetimedb::table(accessor = chest_rarity_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ChestRarityDesc {
     #[primary_key]
@@ -1934,7 +1934,7 @@ pub struct ChestRarityDesc {
 }
 
 #[static_data_staging_table(secondary_knowledge_desc)]
-#[spacetimedb::table(name = secondary_knowledge_desc, public)]
+#[spacetimedb::table(accessor = secondary_knowledge_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct SecondaryKnowledgeDesc {
     #[primary_key]
@@ -1943,7 +1943,7 @@ pub struct SecondaryKnowledgeDesc {
 }
 
 #[static_data_staging_table(skill_level_knowledge_desc)]
-#[spacetimedb::table(name = skill_level_knowledge_desc, public, index(name = skill_id, btree(columns = [skill_id])), index(name = skill_level, btree(columns = [skill_id, level])))]
+#[spacetimedb::table(accessor = skill_level_knowledge_desc, public, index(name = "skill_id", accessor = skill_id, btree(columns = [skill_id])), index(name = "skill_level", accessor = skill_level, btree(columns = [skill_id, level])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct SkillLevelKnowledgeDesc {
     #[primary_key]
@@ -1954,7 +1954,7 @@ pub struct SkillLevelKnowledgeDesc {
 }
 
 #[static_data_staging_table(item_conversion_recipe_desc)]
-#[spacetimedb::table(name = item_conversion_recipe_desc, public)]
+#[spacetimedb::table(accessor = item_conversion_recipe_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ItemConversionRecipeDesc {
     #[primary_key]
@@ -1973,7 +1973,7 @@ pub struct ItemConversionRecipeDesc {
 }
 
 #[static_data_staging_table(interior_shape_desc)]
-#[spacetimedb::table(name = interior_shape_desc, public)]
+#[spacetimedb::table(accessor = interior_shape_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorShapeDesc {
     #[primary_key]
@@ -1987,7 +1987,7 @@ pub struct InteriorShapeDesc {
 }
 
 #[static_data_staging_table(interior_instance_desc)]
-#[spacetimedb::table(name = interior_instance_desc, public)]
+#[spacetimedb::table(accessor = interior_instance_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorInstanceDesc {
     #[primary_key]
@@ -2011,7 +2011,7 @@ pub struct InteriorInstanceDesc {
 }
 
 #[static_data_staging_table(interior_environment_desc)]
-#[spacetimedb::table(name = interior_environment_desc, public)]
+#[spacetimedb::table(accessor = interior_environment_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorEnvironmentDesc {
     #[primary_key]
@@ -2037,7 +2037,7 @@ pub struct InteriorEnvironmentDesc {
 }
 
 #[static_data_staging_table(interior_network_desc)]
-#[spacetimedb::table(name = interior_network_desc, public)]
+#[spacetimedb::table(accessor = interior_network_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorNetworkDesc {
     #[primary_key]
@@ -2054,7 +2054,7 @@ pub struct InteriorNetworkDesc {
 }
 
 #[static_data_staging_table(building_portal_desc)]
-#[spacetimedb::table(name = building_portal_desc, public, index(name = building_id, btree(columns = [building_id])))]
+#[spacetimedb::table(accessor = building_portal_desc, public, index(accessor = building_id, btree(columns = [building_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingPortalDesc {
     #[primary_key]
@@ -2069,7 +2069,7 @@ pub struct BuildingPortalDesc {
 }
 
 #[static_data_staging_table(interior_spawn_desc)]
-#[spacetimedb::table(name = interior_spawn_desc, public, index(name = interior_instance_id, btree(columns = [interior_instance_id])))]
+#[spacetimedb::table(accessor = interior_spawn_desc, public, index(accessor = interior_instance_id, btree(columns = [interior_instance_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorSpawnDesc {
     #[primary_key]
@@ -2093,9 +2093,9 @@ pub struct InteriorSpawnDesc {
 }
 
 #[static_data_staging_table(interior_portal_connections_desc)]
-#[spacetimedb::table(name = interior_portal_connections_desc, public, 
-    index(name = entrance_portal_id, btree(columns = [entrance_portal_id])),
-    index(name = entrance_spawn_id, btree(columns = [entrance_spawn_id])))]
+#[spacetimedb::table(accessor = interior_portal_connections_desc, public, 
+    index(accessor = entrance_portal_id, btree(columns = [entrance_portal_id])),
+    index(accessor = entrance_spawn_id, btree(columns = [entrance_spawn_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct InteriorPortalConnectionsDesc {
     #[primary_key]
@@ -2108,7 +2108,7 @@ pub struct InteriorPortalConnectionsDesc {
 }
 
 #[static_data_staging_table(item_list_desc)]
-#[spacetimedb::table(name = item_list_desc, public)]
+#[spacetimedb::table(accessor = item_list_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ItemListDesc {
     #[primary_key]
@@ -2120,7 +2120,7 @@ pub struct ItemListDesc {
 
 
 #[static_data_staging_table(knowledge_stat_modifier_desc)]
-#[spacetimedb::table(name = knowledge_stat_modifier_desc, public)]
+#[spacetimedb::table(accessor = knowledge_stat_modifier_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct KnowledgeStatModifierDesc {
     #[primary_key]
@@ -2129,7 +2129,7 @@ pub struct KnowledgeStatModifierDesc {
 }
 
 #[static_data_staging_table(achievement_desc)]
-#[spacetimedb::table(name = achievement_desc, public)]
+#[spacetimedb::table(accessor = achievement_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct AchievementDesc {
     #[primary_key]
@@ -2150,7 +2150,7 @@ pub struct AchievementDesc {
 }
 
 #[static_data_staging_table(alert_desc)]
-#[spacetimedb::table(name = alert_desc, public)]
+#[spacetimedb::table(accessor = alert_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct AlertDesc {
     #[primary_key]
@@ -2249,7 +2249,7 @@ pub struct EquipmentSlot {
     pub primary: EquipmentSlotType,
 }
 #[static_data_staging_table(biome_desc)]
-#[spacetimedb::table(name = biome_desc, public, index(name = disallow_player_build, btree(columns = [disallow_player_build])))]
+#[spacetimedb::table(accessor = biome_desc, public, index(accessor = disallow_player_build, btree(columns = [disallow_player_build])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BiomeDesc {
     #[primary_key]
@@ -2268,7 +2268,7 @@ pub struct ChestLootRarity {
 }
 
 #[static_data_staging_table(claim_tech_desc)]
-#[spacetimedb::table(name = claim_tech_desc, public, index(name = tier, btree(columns = [tier])))]
+#[spacetimedb::table(accessor = claim_tech_desc, public, index(accessor = tier, btree(columns = [tier])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClaimTechDesc {
     #[primary_key]
@@ -2322,7 +2322,7 @@ pub enum ClaimTechType {
 }
 
 #[static_data_staging_table(climb_requirement_desc)]
-#[spacetimedb::table(name = climb_requirement_desc, public)]
+#[spacetimedb::table(accessor = climb_requirement_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClimbRequirementDesc {
     #[primary_key]
@@ -2335,7 +2335,7 @@ pub struct ClimbRequirementDesc {
 }
 
 #[static_data_staging_table(onboarding_reward_desc)]
-#[spacetimedb::table(name = onboarding_reward_desc, public)]
+#[spacetimedb::table(accessor = onboarding_reward_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct OnboardingRewardDesc {
     #[primary_key]
@@ -2344,7 +2344,7 @@ pub struct OnboardingRewardDesc {
 }
 
 #[static_data_staging_table(wall_desc)]
-#[spacetimedb::table(name = wall_desc, public)]
+#[spacetimedb::table(accessor = wall_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct WallDesc {
     #[primary_key]
@@ -2355,7 +2355,7 @@ pub struct WallDesc {
 }
 
 #[static_data_staging_table(gate_desc)]
-#[spacetimedb::table(name = gate_desc, public)]
+#[spacetimedb::table(accessor = gate_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct GateDesc {
     #[primary_key]
@@ -2370,7 +2370,7 @@ pub struct PathfindingTraversalOption {
 }
 
 #[static_data_staging_table(pathfinding_desc)]
-#[spacetimedb::table(name = pathfinding_desc, public)]
+#[spacetimedb::table(accessor = pathfinding_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PathfindingDesc {
     #[primary_key]
@@ -2387,7 +2387,7 @@ pub struct PathfindingDesc {
 }
 
 #[static_data_staging_table(elevator_desc)]
-#[spacetimedb::table(name = elevator_desc, public)]
+#[spacetimedb::table(accessor = elevator_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ElevatorDesc {
     #[primary_key]
@@ -2401,7 +2401,7 @@ pub struct ElevatorDesc {
 }
 
 #[static_data_staging_table(player_action_desc)]
-#[spacetimedb::table(name = player_action_desc, public)]
+#[spacetimedb::table(accessor = player_action_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlayerActionDesc {
     #[primary_key]
@@ -2412,7 +2412,7 @@ pub struct PlayerActionDesc {
 
 
 #[static_data_staging_table(distant_visible_entity_desc)]
-#[spacetimedb::table(name = distant_visible_entity_desc, public, index(name = description_id, btree(columns = [description_id])))]
+#[spacetimedb::table(accessor = distant_visible_entity_desc, public, index(accessor = description_id, btree(columns = [description_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct DistantVisibleEntityDesc {
     #[primary_key]
@@ -2422,7 +2422,7 @@ pub struct DistantVisibleEntityDesc {
 }
 
 #[static_data_staging_table(player_housing_desc)]
-#[spacetimedb::table(name = player_housing_desc, public)]
+#[spacetimedb::table(accessor = player_housing_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlayerHousingDesc {
     #[primary_key]
@@ -2433,7 +2433,7 @@ pub struct PlayerHousingDesc {
 }
 
 #[static_data_staging_table(empire_colors_desc)]
-#[spacetimedb::table(name = empire_color_desc, public)]
+#[spacetimedb::table(accessor = empire_color_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireColorDesc {
     #[primary_key]
@@ -2443,7 +2443,7 @@ pub struct EmpireColorDesc {
 }
 
 #[static_data_staging_table(empire_icon_desc)]
-#[spacetimedb::table(name = empire_icon_desc, public)]
+#[spacetimedb::table(accessor = empire_icon_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EmpireIconDesc {
     #[primary_key]
@@ -2474,7 +2474,7 @@ pub enum EmpireNotificationType {
 }
 
 #[static_data_staging_table(hexite_exchange_entry_desc)]
-#[spacetimedb::table(name = hexite_exchange_entry_desc, public)]
+#[spacetimedb::table(accessor = hexite_exchange_entry_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct HexiteExchangeEntryDesc {
     #[primary_key]
@@ -2488,7 +2488,7 @@ pub struct HexiteExchangeEntryDesc {
 }
 
 #[static_data_staging_table(reserved_name_desc)]
-#[spacetimedb::table(name = reserved_name_desc, public)]
+#[spacetimedb::table(accessor = reserved_name_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ReservedNameDesc {
     #[primary_key]
@@ -2496,7 +2496,7 @@ pub struct ReservedNameDesc {
 }
 
 #[static_data_staging_table(wind_params_desc)]
-#[spacetimedb::table(name = wind_params_desc, public)]
+#[spacetimedb::table(accessor = wind_params_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct WindParamsDesc {
     #[primary_key]
@@ -2507,7 +2507,7 @@ pub struct WindParamsDesc {
 }
 
 #[static_data_staging_table(premium_item_desc)]
-#[spacetimedb::table(name = premium_item_desc, public)]
+#[spacetimedb::table(accessor = premium_item_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PremiumItemDesc {
     #[primary_key]
@@ -2524,7 +2524,7 @@ pub struct PremiumItemDesc {
 }
 
 #[static_data_staging_table(premium_service_desc)]
-#[spacetimedb::table(name = premium_service_desc, public)]
+#[spacetimedb::table(accessor = premium_service_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct PremiumServiceDesc {
     #[primary_key]
@@ -2540,7 +2540,7 @@ pub struct PremiumServiceDesc {
 }
 
 //TODO remove?
-#[spacetimedb::table(name = wind_dbg_desc, public)]
+#[spacetimedb::table(accessor = wind_dbg_desc, public)]
 pub struct WindDbgDesc {
     #[primary_key]
     pub id: i32,
@@ -2548,7 +2548,7 @@ pub struct WindDbgDesc {
 }
 
 #[static_data_staging_table(ability_unlock_desc)]
-#[spacetimedb::table(name = ability_unlock_desc, public, index(name = ability_type_enum, btree(columns = [ability_type_enum_id])), index(name = show_in_progression, btree(columns = [show_in_progression])))]
+#[spacetimedb::table(accessor = ability_unlock_desc, public, index(accessor = ability_type_enum, btree(columns = [ability_type_enum_id])), index(accessor = show_in_progression, btree(columns = [show_in_progression])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct AbilityUnlockDesc {
     #[primary_key]
@@ -2563,7 +2563,7 @@ pub struct AbilityUnlockDesc {
 }
 
 #[static_data_staging_table(ability_custom_desc)]
-#[spacetimedb::table(name = ability_custom_desc, public)]
+#[spacetimedb::table(accessor = ability_custom_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct AbilityCustomDesc {
     #[primary_key]
@@ -2593,7 +2593,7 @@ const EMPTY_EXP_STACK: ExperienceStackF32 = ExperienceStackF32 {
 };
 
 #[static_data_staging_table(prospecting_desc)]
-#[spacetimedb::table(name = prospecting_desc, public)]
+#[spacetimedb::table(accessor = prospecting_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct ProspectingDesc {
     #[primary_key]
@@ -2646,7 +2646,7 @@ pub struct ProspectingDesc {
 }
 
 #[static_data_staging_table(equipment_preset_knowledge_desc)]
-#[spacetimedb::table(name = equipment_preset_knowledge_desc, public)]
+#[spacetimedb::table(accessor = equipment_preset_knowledge_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct EquipmentPresetKnowledgeDesc {
     #[primary_key]
@@ -2654,7 +2654,7 @@ pub struct EquipmentPresetKnowledgeDesc {
 }
 
 #[static_data_staging_table(quest_chain_desc)]
-#[spacetimedb::table(name = quest_chain_desc, public)]
+#[spacetimedb::table(accessor = quest_chain_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct QuestChainDesc {
     #[primary_key]
@@ -2695,7 +2695,7 @@ pub enum QuestReward {
 }
 
 #[static_data_staging_table(stage_rewards_desc)]
-#[spacetimedb::table(name = stage_rewards_desc, public)]
+#[spacetimedb::table(accessor = stage_rewards_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct StageRewardsDesc {
     #[primary_key]
@@ -2705,7 +2705,7 @@ pub struct StageRewardsDesc {
 }
 
 #[static_data_staging_table(quest_stage_desc)]
-#[spacetimedb::table(name = quest_stage_desc, public)]
+#[spacetimedb::table(accessor = quest_stage_desc, public)]
 #[derive(Clone, PartialEq, Debug)]
 pub struct QuestStageDesc {
     #[primary_key]
@@ -2716,7 +2716,7 @@ pub struct QuestStageDesc {
 }
 
 #[static_data_staging_table(building_buff_desc)]
-#[spacetimedb::table(name = building_buff_desc, public, index(name = building_id, btree(columns = [building_id])))]
+#[spacetimedb::table(accessor = building_buff_desc, public, index(accessor = building_id, btree(columns = [building_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct BuildingBuffDesc {
     #[primary_key]
@@ -2755,7 +2755,7 @@ pub struct ColumnPad4u64 {
 }
 
 #[static_data_staging_table(quest_drop_desc)]
-#[spacetimedb::table(name = quest_drop_desc, public, index(name = extraction_id, btree(columns = [extraction_id])), index(name = enemy_id, btree(columns = [enemy_id])), index(name = item_list_id, btree(columns = [item_list_id])))]
+#[spacetimedb::table(accessor = quest_drop_desc, public, index(accessor = extraction_id, btree(columns = [extraction_id])), index(accessor = enemy_id, btree(columns = [enemy_id])), index(accessor = item_list_id, btree(columns = [item_list_id])))]
 #[derive(Clone, PartialEq, Debug)]
 pub struct QuestDropDesc {
     #[primary_key]

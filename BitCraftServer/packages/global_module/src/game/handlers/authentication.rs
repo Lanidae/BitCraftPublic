@@ -16,7 +16,7 @@ use crate::{
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn authenticate(ctx: &ReducerContext, identity: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -49,7 +49,7 @@ pub fn authenticate(ctx: &ReducerContext, identity: String) -> Result<(), String
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn set_role_for_identity(ctx: &ReducerContext, identity: String, role: Role) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -74,7 +74,7 @@ pub fn set_role_for_identity(ctx: &ReducerContext, identity: String, role: Role)
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn update_role_for_player(ctx: &ReducerContext, player_entity_id: u64, role: Role) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -99,7 +99,7 @@ pub fn update_role_for_player(ctx: &ReducerContext, player_entity_id: u64, role:
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn block_identity(ctx: &ReducerContext, identity: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

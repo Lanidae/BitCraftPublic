@@ -22,7 +22,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 fn admin_resource_force_regen(ctx: &ReducerContext, resource_id: i32, iterations: i32, ignore_target_count: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -9,7 +9,7 @@ use spacetimedb::{log, ReducerContext};
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn cheat_claim_take_ownership(ctx: &ReducerContext, claim_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimTakeOwnership) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimTakeOwnership) {
         return Err("Unauthorized.".into());
     }
 

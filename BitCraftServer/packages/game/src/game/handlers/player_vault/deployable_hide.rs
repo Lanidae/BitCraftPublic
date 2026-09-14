@@ -1,7 +1,7 @@
 use crate::{deployable_state_v2, game::reducer_helpers::deployable_helpers, messages::authentication::ServerIdentity};
 use spacetimedb::{log, ReducerContext};
 
-#[spacetimedb::table(name = hide_deployable_timer, scheduled(hide_deployable, at = scheduled_at))]
+#[spacetimedb::table(accessor = hide_deployable_timer, scheduled(hide_deployable, at = scheduled_at))]
 pub struct HideDeployableTimer {
     #[primary_key]
     #[auto_inc]

@@ -6,7 +6,8 @@ use crate::{
     messages::{action_request::PlayerDeployableMoveRequest, components::*, static_data::*},
     unwrap_or_err,
 };
-use spacetimedb::ReducerContext;
+use crate::messages::events::*;
+use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 #[feature_gate]
@@ -96,5 +97,11 @@ pub fn deployable_follow(ctx: &ReducerContext, request: PlayerDeployableMoveRequ
         .update(deployable_collectible);
 
     // update deployable location
-    reducer_helpers::deployable_helpers::move_deployable(ctx, deployable_entity_id, origin, dest, request.timestamp, request.duration)
+    reducer_helpers::deployable_helpers::move_deployable(ctx, deployable_entity_id, origin, dest, request.timestamp, request.duration)?;
+    ctx.db.deployable_move_event().insert(DeployableMoveEvent {
+        actor_id,
+        request,
+        is_follow: true,
+    });
+    Ok(())
 }

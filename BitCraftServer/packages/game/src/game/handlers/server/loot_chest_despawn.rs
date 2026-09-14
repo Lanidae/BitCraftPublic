@@ -7,7 +7,7 @@ use crate::game::reducer_helpers::timer_helpers::now_plus_secs_f32;
 use crate::{building_spawn_desc, inventory_state, location_state, loot_chest_state};
 use crate::{messages::authentication::ServerIdentity, unwrap_or_err};
 
-#[spacetimedb::table(name = loot_chest_despawn_timer, scheduled(loot_chest_despawn, at = scheduled_at))]
+#[spacetimedb::table(accessor = loot_chest_despawn_timer, scheduled(loot_chest_despawn, at = scheduled_at))]
 pub struct LootChestDespawnTimer {
     #[primary_key]
     #[auto_inc]

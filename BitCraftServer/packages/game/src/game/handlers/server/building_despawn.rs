@@ -2,7 +2,7 @@ use spacetimedb::ReducerContext;
 
 use crate::{game::reducer_helpers::building_helpers, messages::authentication::ServerIdentity};
 
-#[spacetimedb::table(name = building_despawn_timer, scheduled(building_despawn, at = scheduled_at))]
+#[spacetimedb::table(accessor = building_despawn_timer, scheduled(building_despawn, at = scheduled_at))]
 pub struct BuildingDespawnTimer {
     #[primary_key]
     #[auto_inc]

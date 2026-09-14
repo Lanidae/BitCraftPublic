@@ -162,7 +162,7 @@ pub fn reduce(ctx: &ReducerContext, actor_id: u64, from_pocket: &PocketKey, to_p
                 if let Some(required_cargo_id) = function.allowed_item_id_per_slot.get(to_index) {
                     if from_contents.item_id != *required_cargo_id {
                         let cargo_name = ctx.db.cargo_desc().id().find(required_cargo_id).unwrap().name;
-                        let err_msg = format!("You can only store {{0}} in that slot.|~{}", cargo_name);
+                        let err_msg = format!("You can only store {} in that slot.", cargo_name);
                         return Err(err_msg);
                     }
                 }
@@ -433,7 +433,7 @@ fn validate_equip_on_toolbelt(ctx: &ReducerContext, actor_id: u64, item_id: i32,
             if skill_name == "ANY" {
                 skill_name = "in any skill".into();
             }
-            return Err(format!("You need to be level {{0}} {{1}}|~{0}|~{1}", level_req.level, skill_name).into());
+            return Err(format!("You need to be level {0} {1}", level_req.level, skill_name).into());
         }
     }
     if !AchievementDesc::evaluate_achievements(ctx, actor_id, equipment_info.required_achievements) {

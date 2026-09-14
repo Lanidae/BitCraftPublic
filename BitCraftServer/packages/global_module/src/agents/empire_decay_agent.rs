@@ -9,7 +9,7 @@ use crate::{
     parameters_desc,
 };
 
-#[spacetimedb::table(name = empire_decay_loop_timer, scheduled(empire_decay_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = empire_decay_loop_timer, scheduled(empire_decay_agent_loop, at = scheduled_at))]
 pub struct EmpireDecayLoopTimer {
     #[primary_key]
     #[auto_inc]

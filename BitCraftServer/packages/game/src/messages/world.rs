@@ -1,4 +1,4 @@
-﻿use crate::game::world_gen::resources_log::ResourceClumpInfo;
+use crate::game::world_gen::resources_log::ResourceClumpInfo;
 use crate::messages::util::OffsetCoordinatesSmallMessage;
 use spacetimedb::SpacetimeType;
 
@@ -59,7 +59,7 @@ pub struct WorldEntityPlacement {
     pub placement_type: WorldPlacementType,
 }
 
-#[spacetimedb::table(name = world_entity_placement_results)]
+#[spacetimedb::table(accessor = world_entity_placement_results)]
 #[derive(Clone, Debug)]
 pub struct WorldEntityPlacementResults {
     #[primary_key]

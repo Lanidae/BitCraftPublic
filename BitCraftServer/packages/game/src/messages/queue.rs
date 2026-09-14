@@ -1,4 +1,4 @@
-#[spacetimedb::table(name = player_queue_state, public)]
+#[spacetimedb::table(accessor = player_queue_state, public)]
 pub struct PlayerQueueState {
     #[primary_key]
     #[auto_inc]

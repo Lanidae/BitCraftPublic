@@ -26,7 +26,7 @@ pub fn project_site_place(ctx: &ReducerContext, request: PlayerProjectSitePlaceR
 
     HealthState::check_incapacitated(ctx, actor_id, true)?;
 
-    for existing_state in ctx.db.user_moderation_state().target_identity().filter(&ctx.sender) {
+    for existing_state in ctx.db.user_moderation_state().target_identity().filter(&ctx.sender()) {
         if existing_state.user_moderation_policy == UserModerationPolicy::BlockConstruct && ctx.timestamp < existing_state.expiration_time {
             return Err("Your construction privileges have been suspended".into());
         }
@@ -231,11 +231,11 @@ pub fn project_site_place(ctx: &ReducerContext, request: PlayerProjectSitePlaceR
     }
     if required_interior_tier > 0 {
         if dimension.interior_instance_id == 0 {
-            return Err(format!("Requires Tier {{0}} interior|~{}", required_interior_tier).into());
+            return Err(format!("Requires Tier {} interior", required_interior_tier).into());
         }
         let instance = ctx.db.interior_instance_desc().id().find(&dimension.interior_instance_id).unwrap();
         if instance.tier < required_interior_tier {
-            return Err(format!("Requires Tier {{0}} interior|~{}", required_interior_tier).into());
+            return Err(format!("Requires Tier {} interior", required_interior_tier).into());
         }
     }
 

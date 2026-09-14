@@ -6,6 +6,7 @@ use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::game::PLAYER_MIN_SWIM_DEPTH;
 use crate::messages::action_request::PlayerDeployableMountRequest;
 use crate::messages::components::*;
+use crate::messages::events::*;
 use crate::{deployable_desc, unwrap_or_err, MovementType};
 
 #[spacetimedb::reducer]
@@ -96,6 +97,10 @@ pub fn deployable_mount(ctx: &ReducerContext, request: PlayerDeployableMountRequ
     }
 
     PlayerState::collect_stats(ctx, actor_id);
+    ctx.db.deployable_mount_event().insert(DeployableMountEvent {
+        actor_id,
+        deployable_entity_id,
+    });
 
     Ok(())
 }

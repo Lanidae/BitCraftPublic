@@ -11,7 +11,7 @@ use crate::{
 
 const SECONDS_IN_A_DAY: i32 = 24 * 60 * 60;
 
-#[spacetimedb::table(name = rent_collector_loop_timer, scheduled(rent_collector_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = rent_collector_loop_timer, scheduled(rent_collector_agent_loop, at = scheduled_at))]
 pub struct RentCollectorLoopTimer {
     #[primary_key]
     #[auto_inc]

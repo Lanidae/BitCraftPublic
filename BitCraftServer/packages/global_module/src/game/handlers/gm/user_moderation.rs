@@ -14,7 +14,7 @@ use crate::{chat_message_state, user_moderation_state, user_state};
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 fn user_moderation_create(ctx: &ReducerContext, request: UserModerationCreateUserPolicyRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Mod) {
+    if !has_role(ctx, &ctx.sender(), Role::Mod) {
         return Err("Unauthorized".into());
     }
 
@@ -22,7 +22,7 @@ fn user_moderation_create(ctx: &ReducerContext, request: UserModerationCreateUse
     let user_moderation = UserModerationState {
         entity_id: create_entity(ctx),
         target_identity: request.target_identity,
-        created_by_identity: ctx.sender,
+        created_by_identity: ctx.sender(),
         user_moderation_policy: request.user_moderation_policy,
         created_time: ctx.timestamp,
         expiration_time: ctx.timestamp + TimeDuration::from(duration),
@@ -85,7 +85,7 @@ fn user_moderation_create(ctx: &ReducerContext, request: UserModerationCreateUse
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 fn user_moderation_delete(ctx: &ReducerContext, policy_entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Mod) {
+    if !has_role(ctx, &ctx.sender(), Role::Mod) {
         return Err("Unauthorized".into());
     }
 
@@ -101,7 +101,7 @@ fn user_moderation_delete(ctx: &ReducerContext, policy_entity_id: u64) -> Result
 // This is implemented for debugging purposes
 #[spacetimedb::reducer]
 fn user_moderation_clear_all(ctx: &ReducerContext, request: UserModerationCreateUserPolicyRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Mod) {
+    if !has_role(ctx, &ctx.sender(), Role::Mod) {
         return Err("Unauthorized".into());
     }
 

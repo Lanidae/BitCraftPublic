@@ -6,7 +6,7 @@ use spacetimedb::{ReducerContext, Table};
 // Similar to pillar_shaping_add_pillar::reduce()
 #[spacetimedb::reducer]
 pub fn cheat_pillar_shaping_add_pillar(ctx: &ReducerContext, request: PlayerPillarShapingPlaceRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatPavingAddTile) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatPavingAddTile) {
         return Err("Unauthorized.".into());
     }
 

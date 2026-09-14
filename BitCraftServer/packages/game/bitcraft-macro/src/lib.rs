@@ -28,7 +28,7 @@ pub fn static_data_staging_table(attr: TokenStream, input: TokenStream) -> Token
     ast.attrs.insert(
         0,
         syn::parse_quote! {
-            #[spacetimedb::table(name = #table_name)]
+            #[spacetimedb::table(accessor = #table_name)]
         },
     );
     TokenStream::from(quote!(#ast))
@@ -217,7 +217,7 @@ pub fn feature_gate(args: TokenStream, input: TokenStream) -> TokenStream {
     let gen_start = quote! {{
         if !crate::game::handlers::authentication::has_role(
             #ctx_ident,
-            &#ctx_ident.sender,
+            &#ctx_ident.sender(),
             crate::messages::authentication::Role::Gm,
         ) {
             let __feature_gate_reducer_key = format!("reducer:{}", #reducer_name);
@@ -301,7 +301,7 @@ pub fn event_table(args: TokenStream, input: TokenStream) -> TokenStream {
     };
     //Generate struct, impl and reducer
     let gen = quote! {
-        #[spacetimedb::table(name = #table_name, public, scheduled(#reducer_name, at = scheduled_at))]
+        #[spacetimedb::table(accessor = #table_name, public, scheduled(#reducer_name, at = scheduled_at))]
         pub struct #name {
             //Fields are added later on
         }

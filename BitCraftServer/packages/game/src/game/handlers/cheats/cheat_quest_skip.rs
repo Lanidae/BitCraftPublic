@@ -3,7 +3,7 @@ use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn cheat_quest_skip(ctx: &ReducerContext, player_entity_id: u64, quest_desc_id: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatSkipQuest) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatSkipQuest) {
         return Err("Unauthorized.".into());
     }
 

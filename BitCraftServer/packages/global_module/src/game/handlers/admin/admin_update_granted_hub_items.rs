@@ -19,7 +19,7 @@ pub fn admin_update_granted_hub_item_state(
     item_id: i32,
     balance: u32,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

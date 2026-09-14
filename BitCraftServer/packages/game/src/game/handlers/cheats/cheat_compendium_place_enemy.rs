@@ -13,7 +13,7 @@ use spacetimedb::{log, Table};
 // Getting Herd : enemy_spawner_agent.reduce()
 #[spacetimedb::reducer]
 pub fn cheat_compendium_place_enemy(ctx: &ReducerContext, request: CheatCompendiumEnemyPlaceRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatCompendiumPlaceEnemy) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatCompendiumPlaceEnemy) {
         return Err("Unauthorized.".into());
     }
 

@@ -6,7 +6,7 @@ use spacetimedb::ReducerContext;
 // Similar to pillar_shaping_destroy::reduce()
 #[spacetimedb::reducer]
 pub fn cheat_pillar_shaping_destroy(ctx: &ReducerContext, request: PlayerPillarShapingDestroyRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatPillarShapingDestroy) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatPillarShapingDestroy) {
         return Err("Unauthorized.".into());
     }
 

@@ -9,7 +9,7 @@ use crate::{messages::action_request::CheatToggleActiveCollectibleRequest, unwra
 
 #[spacetimedb::reducer]
 fn cheat_toggle_active_collectible(ctx: &ReducerContext, request: CheatToggleActiveCollectibleRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatToggleActiveCollectible) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatToggleActiveCollectible) {
         return Err("Unauthorized.".into());
     }
 

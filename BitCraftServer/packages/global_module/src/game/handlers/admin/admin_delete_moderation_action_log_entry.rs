@@ -8,7 +8,7 @@ pub fn admin_delete_moderation_action_log_entry(
     ctx: &ReducerContext,
     entity_id: u64,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

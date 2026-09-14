@@ -15,7 +15,7 @@ fn cost_for_next_tick(empire_siege_tick: i32, empire_siege_raise_pct: f32, start
     cost as i32
 }
 
-#[spacetimedb::table(name = empire_siege_loop_timer, scheduled(empire_siege_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = empire_siege_loop_timer, scheduled(empire_siege_agent_loop, at = scheduled_at))]
 pub struct EmpireSiegeLoopTimer {
     #[primary_key]
     #[auto_inc]

@@ -4,7 +4,7 @@
 
 /// Boolean flags controlling which moderation features are active.
 /// Singleton table (id = 0).
-#[spacetimedb::table(name = mod_enforcement_config_state)]
+#[spacetimedb::table(accessor = mod_enforcement_config_state)]
 #[derive(Clone, Debug)]
 pub struct ModEnforcementConfigState {
     #[primary_key]
@@ -30,8 +30,8 @@ pub struct ModEnforcementConfigState {
 /// Individual moderation threshold entries, filterable by type.
 /// Suggested threshold_type values:
 ///   0 = Category, 1 = ModifyReplace, 2 = Global, 3 = EntityName
-#[spacetimedb::table(name = mod_threshold_state,
-    index(name = threshold_type, btree(columns = [threshold_type])))]
+#[spacetimedb::table(accessor = mod_threshold_state,
+    index(accessor = threshold_type, btree(columns = [threshold_type])))]
 #[derive(Clone, Debug)]
 pub struct ModThresholdState {
     #[primary_key]
@@ -51,8 +51,8 @@ pub struct ModThresholdState {
 ///   0 = Flagged, 1 = ContextFlagged, 2 = EntityName, 3 = KnownTld, 4 = WhitelistedUrl
 ///   5 = WhitelistUsername, 6 = WhitelistBuildingName, 7 = WhitelistClaimName
 ///   8 = WhitelistEmpireName, 9 = WhitelistEmpireRankName, 10 = WhitelistSignPost
-#[spacetimedb::table(name = mod_flagged_word_state,
-    index(name = word_type, btree(columns = [word_type])))]
+#[spacetimedb::table(accessor = mod_flagged_word_state,
+    index(accessor = word_type, btree(columns = [word_type])))]
 #[derive(Clone, Debug)]
 pub struct ModFlaggedWordState {
     #[primary_key]
@@ -69,7 +69,7 @@ pub struct ModFlaggedWordState {
 /// Individual word replacement entries for text preparation.
 /// When is_developer_url_replacement is true, this row represents the
 /// DeveloperURLWordReplacement (singleton); otherwise it is a SafeWordReplacement.
-#[spacetimedb::table(name = mod_word_replacement_state)]
+#[spacetimedb::table(accessor = mod_word_replacement_state)]
 #[derive(Clone, Debug)]
 pub struct ModWordReplacementState {
     #[primary_key]
@@ -87,7 +87,7 @@ pub struct ModWordReplacementState {
 /// Individual replacement text entries, keyed by type.
 /// Suggested text_type values:
 ///   0 = FlaggedMessage, 1 = FlaggedMessageLinks
-#[spacetimedb::table(name = mod_replacement_text_state)]
+#[spacetimedb::table(accessor = mod_replacement_text_state)]
 #[derive(Clone, Debug)]
 pub struct ModReplacementTextState {
     #[primary_key]
@@ -101,7 +101,7 @@ pub struct ModReplacementTextState {
 
 /// Report handling scalar configuration.
 /// Singleton table (id = 0).
-#[spacetimedb::table(name = mod_report_config_state)]
+#[spacetimedb::table(accessor = mod_report_config_state)]
 #[derive(Clone, Debug)]
 pub struct ModReportConfigState {
     #[primary_key]
@@ -121,7 +121,7 @@ pub struct ModReportConfigState {
 // ============================================================================
 
 /// Individual consequence entries for report moderation.
-#[spacetimedb::table(name = mod_consequence_state)]
+#[spacetimedb::table(accessor = mod_consequence_state)]
 #[derive(Clone, Debug)]
 pub struct ModConsequenceState {
     #[primary_key]
@@ -138,7 +138,7 @@ pub struct ModConsequenceState {
 // ============================================================================
 
 /// Individual violation type entries for report moderation.
-#[spacetimedb::table(name = mod_violation_state)]
+#[spacetimedb::table(accessor = mod_violation_state)]
 #[derive(Clone, Debug)]
 pub struct ModViolationState {
     #[primary_key]
@@ -152,7 +152,7 @@ pub struct ModViolationState {
 // ============================================================================
 
 /// Individual flag level threshold entries for report moderation.
-#[spacetimedb::table(name = mod_flag_level_threshold_state)]
+#[spacetimedb::table(accessor = mod_flag_level_threshold_state)]
 #[derive(Clone, Debug)]
 pub struct ModFlagLevelThresholdState {
     #[primary_key]

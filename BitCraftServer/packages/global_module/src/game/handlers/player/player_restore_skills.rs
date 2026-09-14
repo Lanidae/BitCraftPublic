@@ -17,7 +17,7 @@ use spacetimedb::ReducerContext;
 pub fn player_restore_skills(ctx: &ReducerContext, player_entity_id: u64) -> Result<(), String> {
     let actor_id = game_state::actor_id(&ctx, true)?;
 
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         if actor_id != player_entity_id {
             return Err("Unauthorized".into());
         }

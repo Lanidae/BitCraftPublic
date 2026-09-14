@@ -11,7 +11,7 @@ use crate::messages::components::*;
 use crate::{parameters_desc, unwrap_or_err};
 use spacetimedb::ReducerContext;
 
-#[spacetimedb::table(name = deployable_dismount_timer, scheduled(deployable_dismount_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = deployable_dismount_timer, scheduled(deployable_dismount_scheduled, at = scheduled_at))]
 pub struct DeployableDismountTimer {
     #[primary_key]
     #[auto_inc]

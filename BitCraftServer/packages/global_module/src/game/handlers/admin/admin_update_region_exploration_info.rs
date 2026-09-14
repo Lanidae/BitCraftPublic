@@ -14,7 +14,7 @@ use crate::{
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_update_region_exploration_info(ctx: &ReducerContext, region_id: u8, counts_toward_achievements: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

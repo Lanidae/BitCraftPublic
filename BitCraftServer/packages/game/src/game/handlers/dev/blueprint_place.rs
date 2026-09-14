@@ -21,10 +21,10 @@ pub fn blueprint_place(
     rotation: i32,
     elevation_offset: i16,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
-    spacetimedb::log::info!("blueprint_place triggered by {}", ctx.sender);
+    spacetimedb::log::info!("blueprint_place triggered by {}", ctx.sender());
 
     let center_small = SmallHexTile::from(center);
     let center_large = center_small.parent_large_tile();

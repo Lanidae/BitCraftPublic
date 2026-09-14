@@ -13,7 +13,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 fn admin_skip_queue_identity(ctx: &ReducerContext, identity: Identity) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -22,7 +22,7 @@ fn admin_skip_queue_identity(ctx: &ReducerContext, identity: Identity) -> Result
 
 #[spacetimedb::reducer]
 fn admin_skip_queue_entity(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -32,7 +32,7 @@ fn admin_skip_queue_entity(ctx: &ReducerContext, entity_id: u64) -> Result<(), S
 
 #[spacetimedb::reducer]
 fn admin_skip_queue_name(ctx: &ReducerContext, name: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

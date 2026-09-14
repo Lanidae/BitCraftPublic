@@ -19,7 +19,7 @@ fn normalize_feature_key(feature: String) -> Result<String, String> {
 
 #[spacetimedb::reducer]
 pub fn admin_gated_feature_add(ctx: &ReducerContext, feature: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -35,7 +35,7 @@ pub fn admin_gated_feature_add(ctx: &ReducerContext, feature: String) -> Result<
 
 #[spacetimedb::reducer]
 pub fn admin_gated_feature_remove(ctx: &ReducerContext, feature: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

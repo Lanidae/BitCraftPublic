@@ -15,13 +15,14 @@ use crate::{
     messages::{
         action_request::PlayerBuildingDeconstructRequest,
         components::*,
+        events::{building_deconstruct_start_event, BuildingDeconstructStartEvent},
         game_util::{DimensionType, ItemType},
         static_data::{DeconstructionRecipeDesc, ToolDesc},
     },
     parameters_desc, unwrap_or_err, unwrap_or_return, BuildingCategory, ItemListDesc,
 };
 use bitcraft_macro::shared_table_reducer;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 pub fn event_delay_recipe_id(
     ctx: &ReducerContext,
@@ -64,7 +65,7 @@ pub fn building_deconstruct_start(ctx: &ReducerContext, request: PlayerBuildingD
     let stats = unwrap_or_err!(ctx.db.character_stats_state().entity_id().find(&actor_id), "Player doesn't exist");
     let target = Some(request.building_entity_id);
     let (delay, recipe_id) = event_delay_recipe_id(ctx, actor_id, &request, stats);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Deconstruct,
@@ -73,7 +74,13 @@ pub fn building_deconstruct_start(ctx: &ReducerContext, request: PlayerBuildingD
         delay,
         reduce(ctx, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .building_deconstruct_start_event()
+            .insert(BuildingDeconstructStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

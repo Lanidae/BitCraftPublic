@@ -2,7 +2,7 @@ use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
 use entities::resource_clump::SmallHexTile;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::{
     building_desc,
@@ -10,7 +10,7 @@ use crate::{
         entities,
         game_state::{self, game_state_filters},
     },
-    messages::{action_request::PlayerSleepRequest, components::*, static_data::BuildingCategory},
+    messages::{action_request::PlayerSleepRequest, components::*, events::*, static_data::BuildingCategory},
     unwrap_or_err,
 };
 
@@ -20,10 +20,14 @@ pub fn event_delay(_actor_id: u64, _request: &PlayerSleepRequest) -> Duration {
 
 #[spacetimedb::reducer]
 #[feature_gate]
-pub fn sleep(ctx: &ReducerContext, _request: PlayerSleepRequest) -> Result<(), String> {
+pub fn sleep(ctx: &ReducerContext, request: PlayerSleepRequest) -> Result<(), String> {
     let actor_id = game_state::actor_id(&ctx, true)?;
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
-    reduce(ctx, actor_id)
+    let result = reduce(ctx, actor_id);
+    if result.is_ok() {
+        ctx.db.sleep_event().insert(SleepEvent { actor_id, request });
+    }
+    result
 }
 
 pub fn reduce(ctx: &ReducerContext, actor_id: u64) -> Result<(), String> {

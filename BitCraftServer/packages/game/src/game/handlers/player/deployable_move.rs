@@ -11,8 +11,9 @@ use crate::{
     messages::{action_request::PlayerDeployableMoveRequest, components::*, static_data::*},
     unwrap_or_err,
 };
+use crate::messages::events::*;
 use bitcraft_macro::feature_gate;
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 const FULL_WIND_BONUS_ANGLE_RAD: f32 = std::f32::consts::PI / 3.0;
 const PARTIAL_WIND_BONUS_ANGLE_RAD: f32 = std::f32::consts::PI * 2.0 / 3.0;
@@ -82,7 +83,7 @@ pub fn deployable_move(ctx: &ReducerContext, request: PlayerDeployableMoveReques
     };
     let speed = game_state_filters::get_speed_on_water_type(&desc.speed, water_body_type, None, false);
 
-    if !has_role_no_dev(ctx, &ctx.sender, Role::Gm) {
+    if !has_role_no_dev(ctx, &ctx.sender(), Role::Gm) {
         move_validation_helpers::validate_move_timestamp(prev_mobile_entity.timestamp, request.timestamp, ctx.timestamp)?;
         move_validation_helpers::validate_move_basic(
             ctx,
@@ -165,7 +166,13 @@ pub fn deployable_move(ctx: &ReducerContext, request: PlayerDeployableMoveReques
     }
 
     // update deployable location
-    reducer_helpers::deployable_helpers::move_deployable(ctx, deployable_entity_id, origin, dest, request.timestamp, request.duration)
+    reducer_helpers::deployable_helpers::move_deployable(ctx, deployable_entity_id, origin, dest, request.timestamp, request.duration)?;
+    ctx.db.deployable_move_event().insert(DeployableMoveEvent {
+        actor_id,
+        request,
+        is_follow: false,
+    });
+    Ok(())
 }
 
 fn validate_move(
@@ -206,7 +213,7 @@ fn validate_move(
                 actor_id,
                 deployable_entity_id,
                 prev_origin,
-                format!("Player {{0}} (vehicle {{1}})|~{actor_id}|~{deployable_entity_id}"),
+                format!("Player {actor_id} (vehicle {deployable_entity_id})"),
                 error,
             );
         }

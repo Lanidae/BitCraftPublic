@@ -12,7 +12,7 @@ use std::str::FromStr;
 
 #[spacetimedb::reducer]
 pub fn admin_notify_player_by_identity(ctx: &ReducerContext, identity: String, title: String, message: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -30,7 +30,7 @@ pub fn admin_notify_player_by_identity(ctx: &ReducerContext, identity: String, t
 
 #[spacetimedb::reducer]
 pub fn admin_notify_player(ctx: &ReducerContext, username: String, title: String, message: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -6,7 +6,7 @@ use crate::game::reducer_helpers::loot_chest_helpers;
 use crate::messages::authentication::ServerIdentity;
 use crate::{building_spawn_desc, building_state};
 
-#[spacetimedb::table(name = loot_chest_spawn_timer, scheduled(loot_chest_spawn, at = scheduled_at))]
+#[spacetimedb::table(accessor = loot_chest_spawn_timer, scheduled(loot_chest_spawn, at = scheduled_at))]
 pub struct LootChestSpawnTimer {
     #[primary_key]
     #[auto_inc]

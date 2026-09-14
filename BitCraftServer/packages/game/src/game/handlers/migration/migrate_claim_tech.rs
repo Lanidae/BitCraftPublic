@@ -7,7 +7,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn migrate_claim_tech(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

@@ -227,9 +227,9 @@ pub enum PermissionGroup {
     Everyone,
 }
 
-#[spacetimedb::table(name = location_state, public,
-    index(name = x_z_chunk_index, btree(columns = [x, z, chunk_index])),
-    index(name = chunk_index, btree(columns = [chunk_index]))
+#[spacetimedb::table(accessor = location_state, public,
+    index(accessor = x_z_chunk_index, btree(columns = [x, z, chunk_index])),
+    index(accessor = chunk_index, btree(columns = [chunk_index]))
     //DO NOT add dimension index - it leads to massive perf degradation. Use dimension_filter() and dimension_delete() instead
 )]
 #[shared_table]
@@ -251,9 +251,9 @@ pub struct LocationState {
 // Ensure that we don't have hidden padding in the struct
 const _: () = assert!(size_of::<LocationState>() == 32);
 
-#[spacetimedb::table(name = mobile_entity_state, public, 
-    index(name = chunk_index, btree(columns = [chunk_index])),
-    index(name = dimension, btree(columns = [dimension]))
+#[spacetimedb::table(accessor = mobile_entity_state, public, 
+    index(accessor = chunk_index, btree(columns = [chunk_index])),
+    index(accessor = dimension, btree(columns = [dimension]))
 )]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)] // IMPORTANT: MOBILE_ENTITIES SHOULD NOT HAVE THE COMMIT ATTRIBUTE
@@ -282,7 +282,7 @@ pub struct MobileEntityState {
 // Ensure that we don't have hidden padding in the struct
 const _: () = assert!(size_of::<MobileEntityState>() == 48);
 
-#[spacetimedb::table(name = move_validation_strike_counter_state)]
+#[spacetimedb::table(accessor = move_validation_strike_counter_state)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct MoveValidationStrikeCounterState {
@@ -291,7 +291,7 @@ pub struct MoveValidationStrikeCounterState {
     pub validation_failure_timestamps: Vec<Timestamp>,
 }
 
-#[spacetimedb::table(name = health_state, public)]
+#[spacetimedb::table(accessor = health_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct HealthState {
@@ -305,7 +305,7 @@ pub struct HealthState {
     pub died_timestamp: i32,
 }
 
-#[spacetimedb::table(name = resource_health_state, public)]
+#[spacetimedb::table(accessor = resource_health_state, public)]
 #[derive(Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct ResourceHealthState {
@@ -316,7 +316,7 @@ pub struct ResourceHealthState {
     pub health: i32,
 }
 
-#[spacetimedb::table(name = user_moderation_state, index(name = target_identity, btree(columns = [target_identity])))]
+#[spacetimedb::table(accessor = user_moderation_state, index(accessor = target_identity, btree(columns = [target_identity])))]
 #[shared_table] //Owned by global module, replicated to regions
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
@@ -330,7 +330,7 @@ pub struct UserModerationState {
     pub expiration_time: Timestamp,
 }
 
-#[spacetimedb::table(name = stamina_state, public)]
+#[spacetimedb::table(accessor = stamina_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct StaminaState {
@@ -343,7 +343,7 @@ pub struct StaminaState {
     pub stamina: f32,
 }
 
-#[spacetimedb::table(name = teleportation_energy_state, public)]
+#[spacetimedb::table(accessor = teleportation_energy_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct TeleportationEnergyState {
@@ -354,7 +354,7 @@ pub struct TeleportationEnergyState {
     pub energy: f32,
 }
 
-#[spacetimedb::table(name = experience_state, public)]
+#[spacetimedb::table(accessor = experience_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ExperienceState {
@@ -364,7 +364,7 @@ pub struct ExperienceState {
     pub experience_stacks: Vec<ExperienceStack>,
 }
 
-#[spacetimedb::table(name = partial_experience_state)]
+#[spacetimedb::table(accessor = partial_experience_state)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PartialExperienceState {
@@ -377,7 +377,7 @@ pub struct PartialExperienceState {
 }
 
 
-#[spacetimedb::table(name = active_buff_state, public)]
+#[spacetimedb::table(accessor = active_buff_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ActiveBuffState {
@@ -387,7 +387,7 @@ pub struct ActiveBuffState {
     pub active_buffs: Vec<ActiveBuff>,
 }
 
-#[spacetimedb::table(name = knowledge_achievement_state, public)]
+#[spacetimedb::table(accessor = knowledge_achievement_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeAchievementState {
@@ -397,7 +397,7 @@ pub struct KnowledgeAchievementState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_battle_action_state, public)]
+#[spacetimedb::table(accessor = knowledge_battle_action_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeBattleActionState {         // [FINAL RELEASE] I'm 99.9% sure this is obsolete
@@ -407,7 +407,7 @@ pub struct KnowledgeBattleActionState {         // [FINAL RELEASE] I'm 99.9% sur
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_building_state, public)]
+#[spacetimedb::table(accessor = knowledge_building_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeBuildingState {
@@ -417,7 +417,7 @@ pub struct KnowledgeBuildingState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_cargo_state, public)]
+#[spacetimedb::table(accessor = knowledge_cargo_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_on_acquire_callback, achievement)]
 pub struct KnowledgeCargoState {
@@ -427,7 +427,7 @@ pub struct KnowledgeCargoState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_construction_state, public)]
+#[spacetimedb::table(accessor = knowledge_construction_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe)]
 pub struct KnowledgeConstructionState {
@@ -437,7 +437,7 @@ pub struct KnowledgeConstructionState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_resource_placement_state, public)]
+#[spacetimedb::table(accessor = knowledge_resource_placement_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe)]
 pub struct KnowledgeResourcePlacementState {
@@ -447,7 +447,7 @@ pub struct KnowledgeResourcePlacementState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_craft_state, public)]
+#[spacetimedb::table(accessor = knowledge_craft_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe, achievement)]
 pub struct KnowledgeCraftState {
@@ -457,7 +457,7 @@ pub struct KnowledgeCraftState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_enemy_state, public)]
+#[spacetimedb::table(accessor = knowledge_enemy_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeEnemyState {
@@ -467,7 +467,7 @@ pub struct KnowledgeEnemyState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_extract_state, public)]
+#[spacetimedb::table(accessor = knowledge_extract_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe)]
 pub struct KnowledgeExtractState {
@@ -477,7 +477,7 @@ pub struct KnowledgeExtractState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_item_state, public)]
+#[spacetimedb::table(accessor = knowledge_item_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_on_acquire_callback, achievement)]
 pub struct KnowledgeItemState {
@@ -487,7 +487,7 @@ pub struct KnowledgeItemState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_lore_state, public)]
+#[spacetimedb::table(accessor = knowledge_lore_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeLoreState {
@@ -497,7 +497,7 @@ pub struct KnowledgeLoreState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_npc_state, public)]
+#[spacetimedb::table(accessor = knowledge_npc_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeNpcState {
@@ -507,7 +507,7 @@ pub struct KnowledgeNpcState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_resource_state, public)]
+#[spacetimedb::table(accessor = knowledge_resource_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge, achievement)]
 pub struct KnowledgeResourceState {
@@ -517,7 +517,7 @@ pub struct KnowledgeResourceState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_ruins_state, public)]
+#[spacetimedb::table(accessor = knowledge_ruins_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_location)]
 pub struct KnowledgeRuinsState {
@@ -527,7 +527,7 @@ pub struct KnowledgeRuinsState {
     pub entries: Vec<KnowledgeLocationEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_claim_state, public)]
+#[spacetimedb::table(accessor = knowledge_claim_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_entity)]
 pub struct KnowledgeClaimState {
@@ -536,7 +536,7 @@ pub struct KnowledgeClaimState {
     pub entries: Vec<KnowledgeEntityEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_secondary_state, public)]
+#[spacetimedb::table(accessor = knowledge_secondary_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_on_acquire_callback)]
 pub struct KnowledgeSecondaryState {
@@ -546,7 +546,7 @@ pub struct KnowledgeSecondaryState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_vault_state, public)]
+#[spacetimedb::table(accessor = knowledge_vault_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeVaultState {
@@ -556,7 +556,7 @@ pub struct KnowledgeVaultState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_deployable_state, public)]
+#[spacetimedb::table(accessor = knowledge_deployable_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge)]
 pub struct KnowledgeDeployableState {
@@ -566,7 +566,7 @@ pub struct KnowledgeDeployableState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = knowledge_pillar_shaping_state, public)]
+#[spacetimedb::table(accessor = knowledge_pillar_shaping_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe)]
 pub struct KnowledgePillarShapingState {
@@ -577,7 +577,7 @@ pub struct KnowledgePillarShapingState {
 }
 
 
-#[spacetimedb::table(name = knowledge_paving_state, public)]
+#[spacetimedb::table(accessor = knowledge_paving_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete, knowledge_recipe)]
 pub struct KnowledgePavingState {
@@ -587,13 +587,13 @@ pub struct KnowledgePavingState {
     pub entries: Vec<KnowledgeEntry>,
 }
 
-#[spacetimedb::table(name = chat_message_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = channel_id, btree(columns = [channel_id, timestamp])),
-    index(name = target_id, btree(columns = [target_id, timestamp])),
-    index(name = just_target_id, btree(columns = [target_id])),
-    index(name = channel_and_target_id, btree(columns = [channel_id, target_id, timestamp])),
-    //index(name = language_code, btree(columns = [language_code])), //I18N
+#[spacetimedb::table(accessor = chat_message_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = channel_id, btree(columns = [channel_id, timestamp])),
+    index(accessor = target_id, btree(columns = [target_id, timestamp])),
+    index(accessor = just_target_id, btree(columns = [target_id])),
+    index(accessor = channel_and_target_id, btree(columns = [channel_id, target_id, timestamp])),
+    //index(accessor = language_code, btree(columns = [language_code])), //I18N
 )]
 #[derive(Clone, Debug)]
 pub struct ChatMessageState {
@@ -609,7 +609,7 @@ pub struct ChatMessageState {
     //pub language_code: Option<String>, //I18N
 }
 
-#[spacetimedb::table(name = equipment_state, public)]
+#[spacetimedb::table(accessor = equipment_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct EquipmentState {
@@ -619,9 +619,9 @@ pub struct EquipmentState {
     pub equipment_slots: Vec<EquipmentSlot>,
 }
 
-#[spacetimedb::table(name = equipment_preset_state, public,
-    index(name = player_entity_id, btree(columns = [player_entity_id])),
-    index(name = player_and_index, btree(columns = [player_entity_id, index])))]
+#[spacetimedb::table(accessor = equipment_preset_state, public,
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+    index(accessor = player_and_index, btree(columns = [player_entity_id, index])))]
 
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
@@ -634,9 +634,9 @@ pub struct EquipmentPresetState {
     pub equipment_slots: Vec<EquipmentSlot>,
 }
 
-#[spacetimedb::table(name = inventory_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = player_owner_entity_id, btree(columns = [player_owner_entity_id])))]
+#[spacetimedb::table(accessor = inventory_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = player_owner_entity_id, btree(columns = [player_owner_entity_id])))]
 #[derive(Clone, PartialEq, Debug, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct InventoryState {
@@ -650,7 +650,7 @@ pub struct InventoryState {
     pub player_owner_entity_id: u64, // Used to enforce player permissions for owners with multiple inventories, e.g. banks
 }
 
-#[spacetimedb::table(name = footprint_tile_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = footprint_tile_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct FootprintTileState {
@@ -664,7 +664,7 @@ pub struct FootprintTileState {
     pub footprint_type: FootprintType,
 }
 
-#[spacetimedb::table(name = claim_tile_state, public, index(name = claim_id, btree(columns = [claim_id])))]
+#[spacetimedb::table(accessor = claim_tile_state, public, index(accessor = claim_id, btree(columns = [claim_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Copy, PartialEq)]
 #[operations(delete)]
 pub struct ClaimTileState {
@@ -674,7 +674,7 @@ pub struct ClaimTileState {
     pub claim_id: u64,
 }
 
-#[spacetimedb::table(name = pillar_shaping_state, public)]
+#[spacetimedb::table(accessor = pillar_shaping_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct PillarShapingState {
@@ -684,7 +684,7 @@ pub struct PillarShapingState {
 }
 
 
-#[spacetimedb::table(name = paved_tile_state, public)]
+#[spacetimedb::table(accessor = paved_tile_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct PavedTileState {
@@ -697,8 +697,8 @@ pub struct PavedTileState {
     pub related_entity_id: u64, // optional : when this related entitiy is deleted, delete this paving instance as well
 }
 
-#[spacetimedb::table(name = user_state, public,
-    index(name = entity_id, btree(columns = [entity_id])))]
+#[spacetimedb::table(accessor = user_state, public,
+    index(accessor = entity_id, btree(columns = [entity_id])))]
 #[shared_table] //Owned by region module
 #[derive(Clone, Debug)]
 pub struct UserState {
@@ -709,9 +709,9 @@ pub struct UserState {
     pub can_sign_in: bool,
 }
 
-#[spacetimedb::table(name = trade_session_state, public,
-    index(name = initiator_entity_id, btree(columns = [initiator_entity_id])),
-    index(name = acceptor_entity_id, btree(columns = [acceptor_entity_id])),)]
+#[spacetimedb::table(accessor = trade_session_state, public,
+    index(accessor = initiator_entity_id, btree(columns = [initiator_entity_id])),
+    index(accessor = acceptor_entity_id, btree(columns = [acceptor_entity_id])),)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct TradeSessionState {
@@ -727,7 +727,7 @@ pub struct TradeSessionState {
     pub resolution_message: String,
 }
 
-#[spacetimedb::table(name = character_stats_state, public)]
+#[spacetimedb::table(accessor = character_stats_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct CharacterStatsState {
@@ -737,9 +737,9 @@ pub struct CharacterStatsState {
     pub values: Vec<f32>,
 }
 
-#[spacetimedb::table(name = progressive_action_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = building_entity_id, btree(columns = [building_entity_id])))]
+#[spacetimedb::table(accessor = progressive_action_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = building_entity_id, btree(columns = [building_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct ProgressiveActionState {
@@ -758,7 +758,7 @@ pub struct ProgressiveActionState {
     pub preparation: bool, // Whether this is a start_action or the outcome of the action
 }
 
-#[spacetimedb::table(name = terraform_progress_state, public)]
+#[spacetimedb::table(accessor = terraform_progress_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct TerraformProgressState {
@@ -769,7 +769,7 @@ pub struct TerraformProgressState {
     pub progress: i32,            // the action progress towards the next_height_target
 }
 
-#[spacetimedb::table(name = project_site_state, public, index(name = owner_id, btree(columns = [owner_id])))]
+#[spacetimedb::table(accessor = project_site_state, public, index(accessor = owner_id, btree(columns = [owner_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct ProjectSiteState {
@@ -786,7 +786,7 @@ pub struct ProjectSiteState {
     pub last_hit_timestamp: Timestamp,
 }
 
-#[spacetimedb::table(name = player_state, public)]
+#[spacetimedb::table(accessor = player_state, public)]
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PlayerState {
@@ -801,7 +801,7 @@ pub struct PlayerState {
     pub traveler_tasks_expiration: i32, // [FINAL RELEASE] Obsolete, replaced by TravelerTaskCreditState
 }
 
-#[spacetimedb::table(name = player_username_state, public)]
+#[spacetimedb::table(accessor = player_username_state, public)]
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PlayerUsernameState { //Replicated on player region and global module
@@ -811,7 +811,7 @@ pub struct PlayerUsernameState { //Replicated on player region and global module
     pub username: String,
 }
 
-#[spacetimedb::table(name = player_lowercase_username_state, public)]
+#[spacetimedb::table(accessor = player_lowercase_username_state, public)]
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PlayerLowercaseUsernameState { //Replicated on player region and global module
@@ -829,9 +829,9 @@ pub enum PlayerActionLayer {
     UpperBody,
 }
 
-#[spacetimedb::table(name = player_action_state, public,
-    index(name = entity_id, btree(columns = [entity_id])),
-    index(name = chunk_index, btree(columns = [chunk_index])))]
+#[spacetimedb::table(accessor = player_action_state, public,
+    index(accessor = entity_id, btree(columns = [entity_id])),
+    index(accessor = chunk_index, btree(columns = [chunk_index])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 #[repr(C)]
@@ -861,7 +861,7 @@ pub struct PlayerActionState {
 // Ensure that we don't have hidden padding in the struct
 const _: () = assert!(size_of::<PlayerActionState>() == 72);
 
-#[spacetimedb::table(name = enemy_state, public, index(name = herd_entity_id, btree(columns = [herd_entity_id])))]
+#[spacetimedb::table(accessor = enemy_state, public, index(accessor = herd_entity_id, btree(columns = [herd_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct EnemyState {
@@ -878,7 +878,7 @@ pub struct EnemyState {
     pub enemy_type: EnemyType,
 }
 
-#[spacetimedb::table(name = enemy_scaling_state)]
+#[spacetimedb::table(accessor = enemy_scaling_state)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct EnemyScalingState {
@@ -888,7 +888,7 @@ pub struct EnemyScalingState {
 }
 
 // This is tied to the player's (id and location), but contains the information about the player's deployable
-#[spacetimedb::table(name = deployable_collectible_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = deployable_collectible_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct DeployableCollectibleState {
     #[primary_key]
@@ -901,9 +901,9 @@ pub struct DeployableCollectibleState {
 }
 
 
-#[spacetimedb::table(name = deployable_state, public, 
-    index(name = owner_id, btree(columns = [owner_id])), 
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = deployable_state, public, 
+    index(accessor = owner_id, btree(columns = [owner_id])), 
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct DeployableState {
@@ -920,9 +920,9 @@ pub struct DeployableState {
     pub hidden: bool,
 }
 
-#[spacetimedb::table(name = deployable_state_v2, public,
-    index(name = owner_id, btree(columns = [owner_id])),
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = deployable_state_v2, public,
+    index(accessor = owner_id, btree(columns = [owner_id])),
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct DeployableStateV2 {
@@ -940,7 +940,7 @@ pub struct DeployableStateV2 {
     pub appearance_override_id: i32,
 }
 
-#[spacetimedb::table(name = mounting_state, public, index(name = deployable_entity_id, btree(columns = [deployable_entity_id])))]
+#[spacetimedb::table(accessor = mounting_state, public, index(accessor = deployable_entity_id, btree(columns = [deployable_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct MountingState {
@@ -953,7 +953,7 @@ pub struct MountingState {
     pub deployable_slot: i32,
 }
 
-#[spacetimedb::table(name = npc_state, public, index(name = building_entity_id, btree(columns = [building_entity_id])))]
+#[spacetimedb::table(accessor = npc_state, public, index(accessor = building_entity_id, btree(columns = [building_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct NpcState {
@@ -970,7 +970,7 @@ pub struct NpcState {
     pub traveling: bool,
 }
 
-#[spacetimedb::table(name = trade_order_state, public, index(name = shop_entity_id, btree(columns = [shop_entity_id])))]
+#[spacetimedb::table(accessor = trade_order_state, public, index(accessor = shop_entity_id, btree(columns = [shop_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct TradeOrderState {
@@ -986,7 +986,7 @@ pub struct TradeOrderState {
     pub traveler_trade_order_id: Option<i32>,
 }
 
-#[spacetimedb::table(name = claim_recruitment_state, public)]
+#[spacetimedb::table(accessor = claim_recruitment_state, public)]
 #[derive(Clone, Debug)]
 pub struct ClaimRecruitmentState {
     // Sort fields in order of decreasing size/alignment
@@ -1001,7 +1001,7 @@ pub struct ClaimRecruitmentState {
 }
 
 // index is added for client as it's in a potential hot loop and is a heavy table
-#[spacetimedb::table(name = resource_state, public, index(name = resource_id, btree(columns = [resource_id])))]
+#[spacetimedb::table(accessor = resource_state, public, index(accessor = resource_id, btree(columns = [resource_id])))]
 #[derive(Default, Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct ResourceState {
@@ -1014,9 +1014,9 @@ pub struct ResourceState {
     pub direction_index: i32,
 }
 
-#[spacetimedb::table(name = placeable_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = placeable_id, btree(columns = [placeable_id])))]
+#[spacetimedb::table(accessor = placeable_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = placeable_id, btree(columns = [placeable_id])))]
 #[derive(Clone, Debug, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct PlaceableState {
@@ -1027,9 +1027,9 @@ pub struct PlaceableState {
     pub direction_index: i32,
 }
 
-#[spacetimedb::table(name = building_state, public, 
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])), 
-    index(name = building_description_id, btree(columns = [building_description_id])))]
+#[spacetimedb::table(accessor = building_state, public, 
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])), 
+    index(accessor = building_description_id, btree(columns = [building_description_id])))]
 #[shared_table]
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 pub struct BuildingState {
@@ -1042,7 +1042,7 @@ pub struct BuildingState {
     pub constructed_by_player_entity_id: u64,
 }
 
-#[spacetimedb::table(name = building_nickname_state, public)]
+#[spacetimedb::table(accessor = building_nickname_state, public)]
 #[shared_table] //Owned by region, replicated to global
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 pub struct BuildingNicknameState {
@@ -1051,7 +1051,7 @@ pub struct BuildingNicknameState {
     pub nickname: String,
 }
 
-#[spacetimedb::table(name = claim_tech_state, public)]
+#[spacetimedb::table(accessor = claim_tech_state, public)]
 #[derive(Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct ClaimTechState {
@@ -1063,7 +1063,7 @@ pub struct ClaimTechState {
     pub scheduled_id: Option<u64>,
 }
 
-#[spacetimedb::table(name = target_state, public, index(name = target_entity_id, btree(columns = [target_entity_id])))]
+#[spacetimedb::table(accessor = target_state, public, index(accessor = target_entity_id, btree(columns = [target_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct TargetState {
@@ -1073,7 +1073,7 @@ pub struct TargetState {
     pub target_entity_id: u64,
 }
 
-#[spacetimedb::table(name = combat_state, public)]
+#[spacetimedb::table(accessor = combat_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct CombatState {
@@ -1084,7 +1084,7 @@ pub struct CombatState {
     pub global_cooldown: Option<ActionCooldown>,
 }
 
-#[spacetimedb::table(name = combat_immunity_state, public)]
+#[spacetimedb::table(accessor = combat_immunity_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct CombatImmunityState {
@@ -1094,9 +1094,9 @@ pub struct CombatImmunityState {
     pub crumb_trail_entity_id: Option<u64>,     // If set, only players prospecting this crumb trail can hit the target
 }
 
-#[spacetimedb::table(name = threat_state, public, 
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])), 
-    index(name = target_entity_id, btree(columns = [target_entity_id])))]
+#[spacetimedb::table(accessor = threat_state, public, 
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])), 
+    index(accessor = target_entity_id, btree(columns = [target_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct ThreatState {
     #[primary_key]
@@ -1106,7 +1106,7 @@ pub struct ThreatState {
     pub threat: f32,
 }
 
-#[spacetimedb::table(name = action_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = action_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct ActionState {
     #[primary_key]
@@ -1116,7 +1116,7 @@ pub struct ActionState {
     pub cooldown: ActionCooldown,
 }
 
-#[spacetimedb::table(name = toolbar_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = toolbar_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct ToolbarState {
     #[primary_key]
@@ -1126,7 +1126,7 @@ pub struct ToolbarState {
     pub actions: Vec<u64>,
 }
 
-#[spacetimedb::table(name = attack_outcome_state, public)]
+#[spacetimedb::table(accessor = attack_outcome_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct AttackOutcomeState {
@@ -1140,7 +1140,7 @@ pub struct AttackOutcomeState {
     pub dodge_result: bool,
 }
 
-#[spacetimedb::table(name = extract_outcome_state_v1, public)]  // [FINAL RELEASE] Obsolete, remove.
+#[spacetimedb::table(accessor = extract_outcome_state_v1, public)]  // [FINAL RELEASE] Obsolete, remove.
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ExtractOutcomeState {
@@ -1151,7 +1151,7 @@ pub struct ExtractOutcomeState {
     pub damage: i32,
 }
 
-#[spacetimedb::table(name = extract_outcome_state, public)]
+#[spacetimedb::table(accessor = extract_outcome_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ExtractOutcomeStateV2 {
@@ -1166,7 +1166,7 @@ pub struct ExtractOutcomeStateV2 {
 
 
 
-#[spacetimedb::table(name = targetable_state, public)]
+#[spacetimedb::table(accessor = targetable_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct TargetableState {
@@ -1176,9 +1176,9 @@ pub struct TargetableState {
     pub entity_id: u64,
 }
 
-#[spacetimedb::table(name = claim_state, public, 
-    index(name = owner_player_entity_id, btree(columns = [owner_player_entity_id])),
-    index(name = neutral, btree(columns = [neutral])))]
+#[spacetimedb::table(accessor = claim_state, public, 
+    index(accessor = owner_player_entity_id, btree(columns = [owner_player_entity_id])),
+    index(accessor = neutral, btree(columns = [neutral])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[shared_table] //Owned by region, replicated to global module
 #[operations(delete)]
@@ -1193,7 +1193,7 @@ pub struct ClaimState {
     pub neutral: bool,
 }
 
-#[spacetimedb::table(name = claim_lowercase_name_state, public)]
+#[spacetimedb::table(accessor = claim_lowercase_name_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[shared_table] //Owned by global, replicated to regions
 #[operations(delete)]
@@ -1204,7 +1204,7 @@ pub struct ClaimLowercaseNameState {
     pub name_lowercase: String,
 }
 
-#[spacetimedb::table(name = claim_local_state, public)]
+#[spacetimedb::table(accessor = claim_local_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct ClaimLocalState {
@@ -1222,7 +1222,7 @@ pub struct ClaimLocalState {
     pub building_description_id: i32, //used for trackers since BuildingState is not globally subscribed.
 }
 
-#[spacetimedb::table(name = claim_local_supply_security_threshold_state, public)]
+#[spacetimedb::table(accessor = claim_local_supply_security_threshold_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct ClaimLocalSupplySecurityThresholdState {
@@ -1232,10 +1232,10 @@ pub struct ClaimLocalSupplySecurityThresholdState {
 }
 
 
-#[spacetimedb::table(name = claim_member_state, public, 
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])),
-    index(name = player_entity_id, btree(columns = [player_entity_id])),
-    index(name = player_claim, btree(columns = [player_entity_id, claim_entity_id])))]
+#[spacetimedb::table(accessor = claim_member_state, public, 
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])),
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+    index(accessor = player_claim, btree(columns = [player_entity_id, claim_entity_id])))]
 #[shared_table] //Owned by region, replicated to global module
 #[derive(Clone, Debug)]
 pub struct ClaimMemberState {
@@ -1250,7 +1250,7 @@ pub struct ClaimMemberState {
     pub co_owner_permission: bool,
 }
 
-#[spacetimedb::table(name = vault_state, public)]
+#[spacetimedb::table(accessor = vault_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct VaultState {
@@ -1260,7 +1260,7 @@ pub struct VaultState {
     pub collectibles: Vec<VaultCollectible>,
 }
 
-#[spacetimedb::table(name = exploration_chunks_state, public)]
+#[spacetimedb::table(accessor = exploration_chunks_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ExplorationChunksState {
@@ -1271,7 +1271,7 @@ pub struct ExplorationChunksState {
     pub explored_chunks_count: i32,
 }
 
-#[spacetimedb::table(name = exploration_chunks_state_v2, public)]
+#[spacetimedb::table(accessor = exploration_chunks_state_v2, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct ExplorationChunksStateV2 {
@@ -1283,7 +1283,7 @@ pub struct ExplorationChunksStateV2 {
     pub achievement_explored_chunks_count: i32,
 }
 
-#[spacetimedb::table(name = loot_chest_state, public)]
+#[spacetimedb::table(accessor = loot_chest_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct LootChestState {
@@ -1299,7 +1299,7 @@ pub struct LootChestState {
 }
 
 #[derive(Clone)]
-#[spacetimedb::table(name = dropped_inventory_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = dropped_inventory_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 pub struct DroppedInventoryState {
     #[primary_key]
     pub entity_id: u64,
@@ -1308,7 +1308,7 @@ pub struct DroppedInventoryState {
 }
 
 
-#[spacetimedb::table(name = dimension_description_state, public, index(name = dimension_network_entity_id, btree(columns = [dimension_network_entity_id])))]
+#[spacetimedb::table(accessor = dimension_description_state, public, index(accessor = dimension_network_entity_id, btree(columns = [dimension_network_entity_id])))]
 #[derive(Default, Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct DimensionDescriptionState {
@@ -1331,7 +1331,7 @@ pub struct DimensionDescriptionState {
     pub dimension_type: DimensionType,
 }
 
-#[spacetimedb::table(name = dimension_network_state, public)]
+#[spacetimedb::table(accessor = dimension_network_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct DimensionNetworkState {
@@ -1350,7 +1350,7 @@ pub struct DimensionNetworkState {
     pub is_collapsed: bool,
 }
 
-#[spacetimedb::table(name = terrain_chunk_state, public, index(name = dimension, btree(columns = [dimension])))]
+#[spacetimedb::table(accessor = terrain_chunk_state, public, index(accessor = dimension, btree(columns = [dimension])))]
 #[derive(Default, Clone)]
 pub struct TerrainChunkState {
     #[primary_key]
@@ -1370,9 +1370,9 @@ pub struct TerrainChunkState {
     pub original_elevations: Vec<i16>,
 }
 
-#[spacetimedb::table(name = portal_state, public, 
-    index(name = destination_dimension, btree(columns = [destination_dimension])),
-    index(name = target_building_entity_id, btree(columns = [target_building_entity_id])))]
+#[spacetimedb::table(accessor = portal_state, public, 
+    index(accessor = destination_dimension, btree(columns = [destination_dimension])),
+    index(accessor = target_building_entity_id, btree(columns = [target_building_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct PortalState {
@@ -1390,7 +1390,7 @@ pub struct PortalState {
     pub allow_deployables: bool,
 }
 
-#[spacetimedb::table(name = interior_collapse_trigger_state, public)]
+#[spacetimedb::table(accessor = interior_collapse_trigger_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct InteriorCollapseTriggerState {
@@ -1400,7 +1400,7 @@ pub struct InteriorCollapseTriggerState {
     pub dimension_network_entity_id: u64,
 }
 
-#[spacetimedb::table(name = rent_state, public, index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = rent_state, public, index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct RentState {
     #[primary_key]
@@ -1416,7 +1416,7 @@ pub struct RentState {
     pub eviction_timestamp: Option<Timestamp>,
 }
 
-#[spacetimedb::table(name = satiation_state, public)]
+#[spacetimedb::table(accessor = satiation_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct SatiationState {
@@ -1488,9 +1488,9 @@ pub struct ProspectingParticipant {
     pub node: i32,
 }
 
-#[spacetimedb::table(name = passive_craft_state, public, 
-    index(name = building_entity_id, btree(columns = [building_entity_id])), 
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = passive_craft_state, public, 
+    index(accessor = building_entity_id, btree(columns = [building_entity_id])), 
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct PassiveCraftState {
     #[primary_key]
@@ -1503,7 +1503,7 @@ pub struct PassiveCraftState {
     pub slot: Option<u32>,
 }
 
-#[spacetimedb::table(name = growth_state, public)]
+#[spacetimedb::table(accessor = growth_state, public)]
 #[derive(bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct GrowthState {
@@ -1513,7 +1513,7 @@ pub struct GrowthState {
     pub growth_recipe_id: i32,
 }
 
-#[spacetimedb::table(name = player_prefs_state, public)]
+#[spacetimedb::table(accessor = player_prefs_state, public)]
 #[derive(bitcraft_macro::Operations, Debug, Clone)]
 #[operations(delete)]
 pub struct PlayerPrefsState {
@@ -1524,7 +1524,7 @@ pub struct PlayerPrefsState {
     pub default_deployable_collectible_id: i32,
 }
 
-#[spacetimedb::table(name = alert_state, public, index(name = player_entity_id, btree(columns = [player_entity_id])))]
+#[spacetimedb::table(accessor = alert_state, public, index(accessor = player_entity_id, btree(columns = [player_entity_id])))]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct AlertState {
@@ -1540,7 +1540,7 @@ pub struct AlertState {
     pub alert_type: AlertType,
 }
 
-#[spacetimedb::table(name = onboarding_state, public)]
+#[spacetimedb::table(accessor = onboarding_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct OnboardingState {
@@ -1551,7 +1551,7 @@ pub struct OnboardingState {
     pub completed_quests: Vec<u16>,
 }
 
-#[spacetimedb::table(name = signed_in_player_state, public)]
+#[spacetimedb::table(accessor = signed_in_player_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct SignedInPlayerState {
@@ -1562,7 +1562,7 @@ pub struct SignedInPlayerState {
 // The newest connection opened by a player's identity.  reducer calls
 // from any other connection are rejected as stale.
 // Disconnects from stale connections are ignored.
-#[spacetimedb::table(name = active_connection_state)]
+#[spacetimedb::table(accessor = active_connection_state)]
 #[derive(Clone, Debug)]
 pub struct ActiveConnectionState {
     #[primary_key]
@@ -1570,7 +1570,7 @@ pub struct ActiveConnectionState {
     pub connection_id: ConnectionId,
 }
 
-#[spacetimedb::table(name = unclaimed_shards_state)]
+#[spacetimedb::table(accessor = unclaimed_shards_state)]
 #[derive(Clone, Debug)]
 pub struct UnclaimedShardsState {
     #[primary_key]
@@ -1578,7 +1578,7 @@ pub struct UnclaimedShardsState {
     pub shards: u32,
 }
 
-#[spacetimedb::table(name = unclaimed_collectibles_state)]
+#[spacetimedb::table(accessor = unclaimed_collectibles_state)]
 #[derive(Clone, Debug)]
 pub struct UnclaimedCollectiblesState {
     #[primary_key]
@@ -1586,7 +1586,7 @@ pub struct UnclaimedCollectiblesState {
     pub collectibles: Vec<i32>,
 }
 
-#[spacetimedb::table(name = player_timestamp_state)]
+#[spacetimedb::table(accessor = player_timestamp_state)]
 #[derive(Clone)]
 #[repr(C)]
 pub struct PlayerTimestampState {
@@ -1597,14 +1597,14 @@ pub struct PlayerTimestampState {
 // Ensure that we don't have hidden padding in the struct
 const _: () = assert!(size_of::<PlayerTimestampState>() == 16);
 
-#[spacetimedb::table(name = auto_claim_state)]
+#[spacetimedb::table(accessor = auto_claim_state)]
 pub struct AutoClaimState {
     #[primary_key]
     pub entity_id: u64,
     pub owner_entity_id: u64,
 }
 
-#[spacetimedb::table(name = herd_state, public, index(name = enemy_ai_params_desc_id, btree(columns = [enemy_ai_params_desc_id])))]
+#[spacetimedb::table(accessor = herd_state, public, index(accessor = enemy_ai_params_desc_id, btree(columns = [enemy_ai_params_desc_id])))]
 #[derive(Clone, Debug, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct HerdState {
@@ -1619,7 +1619,7 @@ pub struct HerdState {
 }
 
 // This table is required because you can have multiple herds (1 for each type of enemy) attached to a single entity and herds need an unique entity_id.
-#[spacetimedb::table(name = attached_herds_state, public)]
+#[spacetimedb::table(accessor = attached_herds_state, public)]
 #[derive(Debug, Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct AttachedHerdsState {
@@ -1629,7 +1629,7 @@ pub struct AttachedHerdsState {
 }
 
 // This table is required because you can have multiple herds (1 for each type of enemy) attached to a single entity and herds need an unique entity_id.
-#[spacetimedb::table(name = enemy_mob_monitor_state, public)]
+#[spacetimedb::table(accessor = enemy_mob_monitor_state, public)]
 #[derive(Debug, Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct EnemyMobMonitorState {
@@ -1640,13 +1640,13 @@ pub struct EnemyMobMonitorState {
     pub herd_location: OffsetCoordinatesSmallMessage,
 }
 
-#[spacetimedb::table(name = starving_player_state)]
+#[spacetimedb::table(accessor = starving_player_state)]
 pub struct StarvingPlayerState {
     #[primary_key]
     pub entity_id: u64,
 }
 
-#[spacetimedb::table(name = barter_stall_state, public)]
+#[spacetimedb::table(accessor = barter_stall_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct BarterStallState {
@@ -1655,7 +1655,7 @@ pub struct BarterStallState {
     pub market_mode_enabled: bool, //This has been discontinued
 }
 
-#[spacetimedb::table(name = player_note_state, public)]
+#[spacetimedb::table(accessor = player_note_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PlayerNoteState {
@@ -1664,7 +1664,7 @@ pub struct PlayerNoteState {
     pub text: String,
 }
 
-#[spacetimedb::table(name = light_source_state, public)]
+#[spacetimedb::table(accessor = light_source_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct LightSourceState {
@@ -1673,7 +1673,7 @@ pub struct LightSourceState {
     pub radius: f32,
 }
 
-#[spacetimedb::table(name = a_i_debug_state, public)]
+#[spacetimedb::table(accessor = a_i_debug_state, public)]
 pub struct AIDebugState {
     #[primary_key]
     pub entity_id: u64,
@@ -1686,7 +1686,7 @@ pub struct AIDebugState {
 
 // Sometimes (like in onboarding) we need to search the whole world for a particular building and we call a reducer like search_for_closest_building.
 // A reducer like that will output the result into this table, keyed by the calling player's entity id.
-#[spacetimedb::table(name = global_search_state, public)]
+#[spacetimedb::table(accessor = global_search_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct GlobalSearchState {
@@ -1702,7 +1702,7 @@ pub struct GlobalSearchState {
 // If a type is not included in a table or a reducer, it is not generated on the client.
 // Enums can't be indexed as of version 1.0.0, and need to be represented as a native type.
 // Therefore, until this feature is supported once more, we have to add those types in a table so they get auto-generated.
-#[spacetimedb::table(name = the_great_placeholder_table, public)]
+#[spacetimedb::table(accessor = the_great_placeholder_table, public)]
 pub struct TheGreatPlaceHolderTable {
     #[primary_key]
     pub placeholder_id: u64,
@@ -1717,9 +1717,9 @@ pub struct TheGreatPlaceHolderTable {
     pub ability_type: AbilityTypeEnum,
 }
 
-#[spacetimedb::table(name = traveler_task_state, public, 
-    index(name = player_entity_id, btree(columns = [player_entity_id])),
-    index(name = per_player_and_traveler_id, btree(columns = [player_entity_id, traveler_id])))]
+#[spacetimedb::table(accessor = traveler_task_state, public, 
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+    index(accessor = per_player_and_traveler_id, btree(columns = [player_entity_id, traveler_id])))]
 #[derive(Clone, Debug)]
 pub struct TravelerTaskState {
     #[primary_key]
@@ -1730,9 +1730,9 @@ pub struct TravelerTaskState {
     pub completed: bool,
 }
 
-#[spacetimedb::table(name = traveler_task_credit_state, public,
-    index(name = player_entity_id, btree(columns = [player_entity_id])),
-    index(name = player_and_traveler_id, btree(columns = [player_entity_id, traveler_id])))]
+#[spacetimedb::table(accessor = traveler_task_credit_state, public,
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+    index(accessor = player_and_traveler_id, btree(columns = [player_entity_id, traveler_id])))]
 #[derive(Clone, Debug)]
 pub struct TravelerTaskCreditState {
     #[primary_key]
@@ -1743,14 +1743,14 @@ pub struct TravelerTaskCreditState {
     pub last_reset: i32,
 }
 
-#[spacetimedb::table(name = sell_order_state, public, 
-    index(name = item_for_claim, btree(columns = [item_id, item_type, claim_entity_id])),
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])),
-    index(name = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])))]
-#[spacetimedb::table(name = buy_order_state, public,
-    index(name = item_for_claim, btree(columns = [item_id, item_type, claim_entity_id])),
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])),
-    index(name = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])))]
+#[spacetimedb::table(accessor = sell_order_state, public, 
+    index(accessor = item_for_claim, btree(columns = [item_id, item_type, claim_entity_id])),
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])),
+    index(accessor = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])))]
+#[spacetimedb::table(accessor = buy_order_state, public,
+    index(accessor = item_for_claim, btree(columns = [item_id, item_type, claim_entity_id])),
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])),
+    index(accessor = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct AuctionListingState {
     #[primary_key]
@@ -1765,9 +1765,9 @@ pub struct AuctionListingState {
     pub stored_coins: i32,
 }
 
-#[spacetimedb::table(name = closed_listing_state, public, 
-    index(name = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])),
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = closed_listing_state, public, 
+    index(accessor = owner_for_claim, btree(columns = [owner_entity_id, claim_entity_id])),
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 pub struct ClosedListingState {
     #[primary_key]
     pub entity_id: u64,
@@ -1777,7 +1777,7 @@ pub struct ClosedListingState {
     pub timestamp: Timestamp,
 }
 
-#[spacetimedb::table(name = distant_visible_entity, public)]
+#[spacetimedb::table(accessor = distant_visible_entity, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct DistantVisibleEntity {
@@ -1787,7 +1787,7 @@ pub struct DistantVisibleEntity {
 }
 
 // Keep all players affected by long term rez sickness to improve player_move
-#[spacetimedb::table(name = rez_sick_long_term_state)]
+#[spacetimedb::table(accessor = rez_sick_long_term_state)]
 #[derive(Clone, bitcraft_macro::Operations)]
 #[operations(delete)]
 pub struct RezSickLongTermState {
@@ -1795,7 +1795,7 @@ pub struct RezSickLongTermState {
     pub entity_id: u64,
 }
 
-#[spacetimedb::table(name = duel_state, public)]
+#[spacetimedb::table(accessor = duel_state, public)]
 pub struct DuelState {
     #[primary_key]
     pub entity_id: u64,
@@ -1810,10 +1810,10 @@ pub struct DuelState {
 
 // Keep all players affected by long term rez sickness to improve player_move
 #[derive(Clone, Copy, Debug)]
-#[spacetimedb::table(name = permission_state, public,
-    index(name = ordained_entity_id, btree(columns = [ordained_entity_id])),
-    index(name = allowed_entity_id, btree(columns = [allowed_entity_id])),
-    index(name = ordained_and_allowed_entity_id, btree(columns = [ordained_entity_id, allowed_entity_id])))]
+#[spacetimedb::table(accessor = permission_state, public,
+    index(accessor = ordained_entity_id, btree(columns = [ordained_entity_id])),
+    index(accessor = allowed_entity_id, btree(columns = [allowed_entity_id])),
+    index(accessor = ordained_and_allowed_entity_id, btree(columns = [ordained_entity_id, allowed_entity_id])))]
 pub struct PermissionState {
     #[primary_key]
     pub entity_id: u64,
@@ -1825,7 +1825,7 @@ pub struct PermissionState {
 
 #[derive(Clone, Debug)]
 #[shared_table] //Owned by regions, replicated to global module
-#[spacetimedb::table(name = player_housing_state, public, index(name = entrance_building_entity_id, btree(columns = [entrance_building_entity_id])))]
+#[spacetimedb::table(accessor = player_housing_state, public, index(accessor = entrance_building_entity_id, btree(columns = [entrance_building_entity_id])))]
 pub struct PlayerHousingState {
     #[primary_key]
     pub entity_id: u64,
@@ -1840,7 +1840,7 @@ pub struct PlayerHousingState {
 }
 
 #[derive(Clone, Debug)]
-#[spacetimedb::table(name = player_housing_customization_state, public)]
+#[spacetimedb::table(accessor = player_housing_customization_state, public)]
 pub struct PlayerHousingCustomizationState {
     #[primary_key]
     pub entity_id: u64,
@@ -1849,14 +1849,14 @@ pub struct PlayerHousingCustomizationState {
 }
 
 #[derive(Clone, Debug)]
-#[spacetimedb::table(name = player_housing_moving_cost_state, public)]
+#[spacetimedb::table(accessor = player_housing_moving_cost_state, public)]
 pub struct PlayerHousingMovingCostState {
     #[primary_key]
     pub entity_id: u64,
     pub moving_time_cost_minutes: i32,
 }
 
-#[spacetimedb::table(name = lost_items_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = lost_items_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone)]
 pub struct LostItemsState {
     #[primary_key]
@@ -1874,14 +1874,9 @@ pub enum NotificationSeverity {
     ReducerError, // Something went very wrong in the reducer, e.g. This player doesn't have a HealthState.
 }
 
-#[event_table(name = player_notification_event)]
-pub struct PlayerNotificationEvent {
-    pub player_entity_id: u64,
-    pub message: String,
-    pub severity: NotificationSeverity,
-}
+pub use crate::messages::events::PlayerNotificationEvent;
 
-#[spacetimedb::table(name = user_previous_region_state)]
+#[spacetimedb::table(accessor = user_previous_region_state)]
 #[derive(Clone, Debug)]
 pub struct UserPreviousRegionState {
     #[primary_key]
@@ -1892,9 +1887,9 @@ pub struct UserPreviousRegionState {
     pub teleport_energy_cost: f32,
 }
 
-#[spacetimedb::table(name = contribution_state, public, 
-    index(name = player_enemy_entity_id, btree(columns = [player_entity_id, enemy_entity_id])),
-    index(name = enemy_entity_id, btree(columns = [enemy_entity_id])))]
+#[spacetimedb::table(accessor = contribution_state, public, 
+    index(accessor = player_enemy_entity_id, btree(columns = [player_entity_id, enemy_entity_id])),
+    index(accessor = enemy_entity_id, btree(columns = [enemy_entity_id])))]
 pub struct ContributionState {
     #[primary_key]
     pub entity_id: u64,
@@ -1904,7 +1899,7 @@ pub struct ContributionState {
 }
 
 
-#[spacetimedb::table(name = player_report_state)]
+#[spacetimedb::table(accessor = player_report_state)]
 #[shared_table] //Created by regions and collected on global module
 #[custom_inter_module_insert]
 #[derive(Clone, Debug)]
@@ -1922,7 +1917,7 @@ pub struct PlayerReportState {
     pub actioned: bool,
 }
 
-#[spacetimedb::table(name = player_report_state_timestamp)]
+#[spacetimedb::table(accessor = player_report_state_timestamp)]
 #[derive(Clone, Debug)]
 pub struct PlayerReportStateTimestamp {
     #[primary_key]
@@ -1931,16 +1926,16 @@ pub struct PlayerReportStateTimestamp {
 }
 
 
-#[spacetimedb::table(name = combat_dimension_state, public)]
+#[spacetimedb::table(accessor = combat_dimension_state, public)]
 pub struct CombatDimensionState {
     #[primary_key]
     pub dimension_id: u32,
 }
 
 
-#[spacetimedb::table(name = moderation_action_log_entry,
-    index(name = report_entity_id, btree(columns = [report_entity_id])),
-    index(name = reported_player_entity_id, btree(columns = [reported_player_entity_id])))]
+#[spacetimedb::table(accessor = moderation_action_log_entry,
+    index(accessor = report_entity_id, btree(columns = [report_entity_id])),
+    index(accessor = reported_player_entity_id, btree(columns = [reported_player_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct ModerationActionLogEntry {
     #[primary_key]
@@ -1955,7 +1950,7 @@ pub struct ModerationActionLogEntry {
     pub timestamp: i32
 }
 
-#[spacetimedb::table(name = public_progressive_action_state, public, index(name = building_entity_id, btree(columns = [building_entity_id])))]
+#[spacetimedb::table(accessor = public_progressive_action_state, public, index(accessor = building_entity_id, btree(columns = [building_entity_id])))]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct PublicProgressiveActionState {   // [FINAL RELEASE] this should just be a "is_public" field in ProgressiveActionState
@@ -1965,7 +1960,7 @@ pub struct PublicProgressiveActionState {   // [FINAL RELEASE] this should just 
     pub owner_entity_id: u64,
 }
 
-#[spacetimedb::table(name = dungeon_state, public)]
+#[spacetimedb::table(accessor = dungeon_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct DungeonState {
@@ -1974,7 +1969,7 @@ pub struct DungeonState {
     pub location: OffsetCoordinatesSmallMessage, //Makes things easier on client
 }
 
-#[spacetimedb::table(name = interior_player_count_state, public)]
+#[spacetimedb::table(accessor = interior_player_count_state, public)]
 #[derive(bitcraft_macro::Operations, Clone, Debug)]
 #[operations(delete)]
 pub struct InteriorPlayerCountState {
@@ -2006,9 +2001,9 @@ pub enum ActionLogSubjectType {
     Player = 0,
 }
 
-#[spacetimedb::table(name = storage_log_state, public, 
-    index(name = object_entity_id, btree(columns = [object_entity_id])),
-    index(name = days_since_epoch, btree(columns = [days_since_epoch])))]
+#[spacetimedb::table(accessor = storage_log_state, public, 
+    index(accessor = object_entity_id, btree(columns = [object_entity_id])),
+    index(accessor = days_since_epoch, btree(columns = [days_since_epoch])))]
 #[derive(Clone, Debug)]
 pub struct ActionLogState {
     #[primary_key]
@@ -2023,8 +2018,8 @@ pub struct ActionLogState {
     pub days_since_epoch: i32
 }
 
-#[spacetimedb::table(name = waystone_state, public, 
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = waystone_state, public, 
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct WaystoneState {
     #[primary_key]
@@ -2033,8 +2028,8 @@ pub struct WaystoneState {
     pub coordinates: SmallHexTileMessage,
 }
 
-#[spacetimedb::table(name = bank_state, public, 
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = bank_state, public, 
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct BankState {
     #[primary_key]
@@ -2044,8 +2039,8 @@ pub struct BankState {
 
 }
 
-#[spacetimedb::table(name = marketplace_state, public,
-    index(name = claim_entity_id, btree(columns = [claim_entity_id])))]
+#[spacetimedb::table(accessor = marketplace_state, public,
+    index(accessor = claim_entity_id, btree(columns = [claim_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct MarketplaceState {
     #[primary_key]
@@ -2054,7 +2049,7 @@ pub struct MarketplaceState {
     pub coordinates: SmallHexTileMessage,
 }
 
-#[spacetimedb::table(name = player_settings_state, public)]
+#[spacetimedb::table(accessor = player_settings_state, public)]
 #[derive(Clone, Debug)]
 pub struct PlayerSettingsState {
     #[primary_key]
@@ -2099,9 +2094,9 @@ pub enum AbilityTypeEnum {
     EquipPreset,
 }
 
-#[spacetimedb::table(name = action_bar_state, public,
-     index(name = player_entity_id, btree(columns = [player_entity_id])),
-     index(name = by_player_slot, btree(columns = [player_entity_id, action_bar_index, local_ability_index])))]
+#[spacetimedb::table(accessor = action_bar_state, public,
+     index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+     index(accessor = by_player_slot, btree(columns = [player_entity_id, action_bar_index, local_ability_index])))]
 #[derive(Clone, Debug)]
 pub struct ActionBarState {
     #[primary_key]
@@ -2112,7 +2107,7 @@ pub struct ActionBarState {
     pub ability_entity_id: u64,
 }
 
-#[spacetimedb::table(name = ability_state, public, index(name = owner_entity_id, btree(columns = [owner_entity_id])))]
+#[spacetimedb::table(accessor = ability_state, public, index(accessor = owner_entity_id, btree(columns = [owner_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct AbilityState {
     #[primary_key]
@@ -2122,7 +2117,7 @@ pub struct AbilityState {
     pub cooldown: ActionCooldown,      
 }
 
-#[spacetimedb::table(name = prospecting_state, public, index(name = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])))]
+#[spacetimedb::table(accessor = prospecting_state, public, index(accessor = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct ProspectingState {
     #[primary_key]
@@ -2139,7 +2134,7 @@ pub struct ProspectingState {
     pub to_next_node: f32,     // for now, tiles. We can change this for a percentage if we want to obfuscate the destination
 }
 
-#[spacetimedb::table(name = crumb_trail_exposed_state, public)]
+#[spacetimedb::table(accessor = crumb_trail_exposed_state, public)]
 #[derive(Clone, Debug)]
 pub struct CrumbTrailExposedState {
     #[primary_key]
@@ -2149,7 +2144,7 @@ pub struct CrumbTrailExposedState {
 }
 
 
-#[spacetimedb::table(name = crumb_trail_state)]
+#[spacetimedb::table(accessor = crumb_trail_state)]
 #[derive(Clone, Debug)]
 pub struct CrumbTrailState {
     #[primary_key]
@@ -2164,7 +2159,7 @@ pub struct CrumbTrailState {
     pub clean_up_counter: i32, // delete trail when it reaches 3
 }
 
-#[spacetimedb::table(name = crumb_trail_contribution_lock_state, public, index(name = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])))]
+#[spacetimedb::table(accessor = crumb_trail_contribution_lock_state, public, index(accessor = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct CrumbTrailContributionLockState {
     #[primary_key]
@@ -2173,9 +2168,9 @@ pub struct CrumbTrailContributionLockState {
 }
 
 // A bit sad, but this is needed to have a different error message to act as a memory that the player is out of contribution
-#[spacetimedb::table(name = crumb_trail_contribution_spent_state, public, 
-    index(name = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])),
-    index(name = player_and_crumb_entity_id, btree(columns = [player_entity_id, crumb_trail_entity_id])))]
+#[spacetimedb::table(accessor = crumb_trail_contribution_spent_state, public, 
+    index(accessor = crumb_trail_entity_id, btree(columns = [crumb_trail_entity_id])),
+    index(accessor = player_and_crumb_entity_id, btree(columns = [player_entity_id, crumb_trail_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct CrumbTrailContributionSpentState {
     #[primary_key]
@@ -2184,8 +2179,8 @@ pub struct CrumbTrailContributionSpentState {
     pub crumb_trail_entity_id: u64,
 }
 
-#[spacetimedb::table(name = quest_chain_state, public,
-    index(name = player_entity_id, btree(columns = [player_entity_id])))]
+#[spacetimedb::table(accessor = quest_chain_state, public,
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct QuestChainState {
     #[primary_key]
@@ -2199,8 +2194,8 @@ pub struct QuestChainState {
     pub tracked: bool,
 }
 
-#[spacetimedb::table(name = previous_player_username_state,
-    index(name = lower_case_name, btree(columns = [lower_case_name])))]
+#[spacetimedb::table(accessor = previous_player_username_state,
+    index(accessor = lower_case_name, btree(columns = [lower_case_name])))]
 #[derive(Clone, Debug)]
 pub struct PreviousPlayerUsernameState {
     #[unique]
@@ -2212,7 +2207,7 @@ pub struct PreviousPlayerUsernameState {
 }
 
 
-#[spacetimedb::table(name = previous_player_skills_state)]
+#[spacetimedb::table(accessor = previous_player_skills_state)]
 #[derive(Debug)]
 pub struct PreviousPlayerSkillsState {
     #[primary_key]
@@ -2220,8 +2215,8 @@ pub struct PreviousPlayerSkillsState {
     pub experience_stacks: Vec<ExperienceStack>,
 }
 
-#[spacetimedb::table(name = previous_empire_name_state,
-    index(name = empire_lower_case_name, btree(columns = [empire_lower_case_name])))]
+#[spacetimedb::table(accessor = previous_empire_name_state,
+    index(accessor = empire_lower_case_name, btree(columns = [empire_lower_case_name])))]
 #[derive(Debug)]
 pub struct PreviousEmpireNameState {
     #[primary_key]

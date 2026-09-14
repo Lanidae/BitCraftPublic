@@ -14,7 +14,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn cheat_claim_delete_walls(ctx: &ReducerContext, claim_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimDeleteWalls) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimDeleteWalls) {
         return Err("Unauthorized".into());
     }
 

@@ -6,6 +6,7 @@ use crate::{
     game::handlers::{authentication::has_role, empires::*, player::sign_out::sign_out_internal, queue::player_queue},
     messages::{
         authentication::{Role, ServerIdentity},
+        events::{player_signed_out_event, PlayerSignedOutEvent, PlayerSignedOutReason},
         inter_module::{
             inter_module_message_counter, inter_module_message_errors, inter_module_message_v5, InterModuleMessageCounter,
             InterModuleMessageErrors, InterModuleMessageV5, MessageContentsV5,
@@ -79,6 +80,10 @@ pub fn process_inter_module_message(ctx: &ReducerContext, sender: u8, message: I
         MessageContentsV5::EmpireRemoveCrown(r) => empire_remove_crown::process_message_on_destination(ctx, r),
         MessageContentsV5::SignPlayerOut(r) => {
             sign_out_internal(ctx, r.player_identity, false);
+            ctx.db.player_signed_out_event().insert(PlayerSignedOutEvent {
+                identity: r.player_identity,
+                reason: PlayerSignedOutReason::ServerAction,
+            });
             Ok(())
         }
         MessageContentsV5::AdminBroadcastMessage(_) => panic!("Region module should never receive AdminBroadcastMessage message"),
@@ -123,7 +128,7 @@ pub fn on_inter_module_message_processed(ctx: &ReducerContext, id: u64, error: O
         Some(m) => m,
         None => {
             return Err(format!(
-                "No inter_module_message for id {{0}}. Is there more than one relay running?|~{id}",
+                "No inter_module_message for id {id}. Is there more than one relay running?",
             ))
         }
     };
@@ -152,7 +157,7 @@ pub fn on_inter_module_message_processed(ctx: &ReducerContext, id: u64, error: O
 }
 
 fn validate_relay_identity(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     return Ok(());

@@ -11,7 +11,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_cap_skill(ctx: &ReducerContext, skill_id: i32, level: i32, new_level: i32, commit: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

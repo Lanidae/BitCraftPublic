@@ -4,7 +4,7 @@ use crate::{game::handlers::authentication::has_role, messages::authentication::
 
 #[spacetimedb::reducer]
 pub fn admin_complete_all_passive_crafts(ctx: &ReducerContext) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         log::error!("Unauthorized.");
         return;
     }

@@ -130,7 +130,7 @@ pub fn validate_interact(
         dropped_inventory.validate_interact_and_get_inventory_coordinates(ctx, actor_id)?;
         return Ok(InventoryType::Dropped);
     }
-    return Err(format!("Unknown entity type for owner_entity_id {{0}}|~{}", owner_entity_id));
+    return Err(format!("Unknown entity type for owner_entity_id {}", owner_entity_id));
 }
 
 pub fn validate_move(target_inventory_type: &InventoryType) -> Result<(), String> {

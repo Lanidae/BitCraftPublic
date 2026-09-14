@@ -1,12 +1,13 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::game::claim_helper;
 use crate::game::handlers::inventory::inventory_helper;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::messages::action_request::ClaimResupplyRequest;
+use crate::messages::events::*;
 use crate::messages::game_util::ItemType;
 use crate::{building_repairs_desc, parameters_desc};
 use crate::{
@@ -31,7 +32,7 @@ pub fn claim_resupply_start(ctx: &ReducerContext, request: ClaimResupplyRequest)
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
     let target = Some(request.building_entity_id);
     let delay = event_delay(ctx);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::ResupplyClaim,
@@ -40,7 +41,13 @@ pub fn claim_resupply_start(ctx: &ReducerContext, request: ClaimResupplyRequest)
         delay,
         reduce(ctx, actor_id, game_state::unix_ms(ctx.timestamp), &request, true),
         game_state::unix_ms(ctx.timestamp),
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .claim_resupply_start_event()
+            .insert(ClaimResupplyStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

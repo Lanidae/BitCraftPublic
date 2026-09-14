@@ -1,4 +1,3 @@
-use bitcraft_macro::feature_gate;
 use crate::game::game_state;
 use crate::game::game_state::game_state_filters;
 use crate::game::reducer_helpers::cargo_helpers::spawn_cargo;
@@ -6,11 +5,13 @@ use crate::game::reducer_helpers::player_action_helpers::post_reducer_update_car
 use crate::game::reducer_helpers::{deployable_helpers, player_action_helpers};
 use crate::messages::authentication::ServerIdentity;
 use crate::messages::components::PlayerActionType;
+use crate::messages::events::{player_death_event, player_death_start_event, PlayerDeathEvent, PlayerDeathStartEvent};
 use crate::{inventory_state, parameters_desc, unwrap_or_err, InventoryState, ThreatState};
-use spacetimedb::ReducerContext;
+use bitcraft_macro::feature_gate;
+use spacetimedb::{ReducerContext, Table};
 use std::time::Duration;
 
-#[spacetimedb::table(name = player_death_timer, scheduled(player_death_start, at = scheduled_at))]
+#[spacetimedb::table(accessor = player_death_timer, scheduled(player_death_start, at = scheduled_at))]
 pub struct PlayerDeathTimer {
     #[primary_key]
     #[auto_inc]
@@ -44,6 +45,10 @@ fn player_death_start(ctx: &ReducerContext, timer: PlayerDeathTimer) -> Result<(
         game_state::unix_ms(ctx.timestamp),
     )
     .unwrap();
+    ctx.db.player_death_start_event().insert(PlayerDeathStartEvent {
+        actor_id: player_entity_id,
+        timer,
+    });
 
     // IMPORTANT:
     // Don't remove the player from the quad - we want to see the enemies continue moving around while dead.
@@ -69,6 +74,7 @@ fn player_death_start(ctx: &ReducerContext, timer: PlayerDeathTimer) -> Result<(
     }
 
     post_reducer_update_cargo(ctx, player_entity_id);
+    ctx.db.player_death_event().insert(PlayerDeathEvent { player_entity_id });
 
     Ok(())
 }

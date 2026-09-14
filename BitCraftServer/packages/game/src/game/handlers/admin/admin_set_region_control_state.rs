@@ -13,7 +13,7 @@ use crate::{
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_set_region_control_state(ctx: &ReducerContext, allow_players: bool, allow_player_spawn: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

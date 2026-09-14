@@ -8,17 +8,20 @@ use crate::{
     game::{
         coordinates::*,
         game_state::{self, game_state_filters},
+        handlers::player_vault::deployable_move_off_bounds::move_deployable_off_bounds,
         handlers::server::{
             enemy_despawn,
             interior_set_collapsed::{interior_set_collapsed_timer, InteriorSetCollapsedTimer},
+            server_teleport_player::{teleport_player_timer, TeleportPlayerTimer},
         },
     },
     herd_state, interior_collapse_trigger_state, interior_instance_desc, interior_network_desc, interior_portal_connections_desc,
     interior_shape_desc, interior_spawn_desc, loot_chest_state,
     messages::{
+        action_request::ServerTeleportReason,
         components::{
-            combat_dimension_state, deployable_state_v2, dungeon_state, CombatDimensionState, DungeonState, InteriorPlayerCountState,
-            LostItemsState, MobileEntityState,
+            combat_dimension_state, deployable_collectible_state, deployable_state_v2, dungeon_state, mobile_entity_state, mounting_state,
+            player_state, CombatDimensionState, DungeonState, InteriorPlayerCountState, LostItemsState, MobileEntityState,
         },
         game_util::DimensionType,
     },
@@ -110,6 +113,69 @@ pub fn find_teleport_coordinates_for_interior_destruction(ctx: &ReducerContext, 
         }
     }
     return OffsetCoordinatesFloat::from(OffsetCoordinatesSmall::from(teleport_destination));
+}
+
+pub fn expel_players_and_deployables_from_collapsed_interior(ctx: &ReducerContext, dimension_network: &DimensionNetworkState) {
+    let teleport_oc_float = find_teleport_coordinates_for_interior_destruction(ctx, dimension_network.building_id);
+    let dimensions: Vec<u32> = ctx
+        .db
+        .dimension_description_state()
+        .dimension_network_entity_id()
+        .filter(dimension_network.entity_id)
+        .map(|dimension| dimension.dimension_id)
+        .collect();
+
+    let players: Vec<u64> = ctx
+        .db
+        .player_state()
+        .iter()
+        .filter(|player| dimensions.contains(&game_state_filters::coordinates_float(ctx, player.entity_id).dimension))
+        .map(|player| player.entity_id)
+        .collect();
+    for player_entity_id in players {
+        ctx.db
+            .teleport_player_timer()
+            .try_insert(TeleportPlayerTimer {
+                scheduled_at: ctx.timestamp.into(),
+                scheduled_id: 0,
+                player_entity_id,
+                location: teleport_oc_float,
+                reason: ServerTeleportReason::RuinCollapse,
+            })
+            .ok()
+            .unwrap();
+    }
+
+    let deployables: Vec<u64> = dimensions
+        .iter()
+        .flat_map(|dimension_id| MobileEntityState::select_all_in_interior_dimension_iter(ctx, *dimension_id))
+        .filter(|mobile| ctx.db.deployable_state_v2().entity_id().find(mobile.entity_id).is_some())
+        .map(|mobile| mobile.entity_id)
+        .collect();
+    let teleport_oc_small: OffsetCoordinatesSmall = teleport_oc_float.into();
+    for deployable_entity_id in deployables {
+        ctx.db.mounting_state().deployable_entity_id().delete(deployable_entity_id);
+        ctx.db.mobile_entity_state().entity_id().update(MobileEntityState::for_location(
+            deployable_entity_id,
+            teleport_oc_float,
+            ctx.timestamp,
+        ));
+
+        if let Some(mut deployable_collectible) = ctx
+            .db
+            .deployable_collectible_state()
+            .deployable_entity_id()
+            .find(deployable_entity_id)
+        {
+            deployable_collectible.location = Some(teleport_oc_small.into());
+            ctx.db
+                .deployable_collectible_state()
+                .deployable_entity_id()
+                .update(deployable_collectible);
+        }
+
+        let _ = move_deployable_off_bounds(ctx, deployable_entity_id, None);
+    }
 }
 
 pub fn delete_dimension_network(
@@ -261,7 +327,7 @@ pub fn respawn_interior(ctx: &ReducerContext, dimension_network_description_id: 
                     {
                         // Despawn all enemies from that herd
                         for despawned_enemy in ctx.db.enemy_state().herd_entity_id().filter(herd_location.entity_id) {
-                            enemy_despawn::reduce(ctx, despawned_enemy.entity_id);
+                            enemy_despawn::reduce(ctx, despawned_enemy.entity_id, false);
                         }
                         // Despawn Herd
                         ctx.db.herd_state().entity_id().delete(herd_location.entity_id);
@@ -355,7 +421,7 @@ fn create_building_interior_internal(
             collapse_timestamp: 0,
         };
         if let Err(error) = ctx.db.dimension_description_state().try_insert(dimension_desc) {
-            return Err(format!("Failed to insert dimension description: {{0}}|~{}", error));
+            return Err(format!("Failed to insert dimension description: {}", error));
         }
         dimension_map.insert(*interior_instance, dimension);
         let interior_instance_desc = ctx.db.interior_instance_desc().id().find(*interior_instance).unwrap();

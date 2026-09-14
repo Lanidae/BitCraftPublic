@@ -6,7 +6,7 @@ use crate::{
     terrain_chunk_state,
 };
 
-#[spacetimedb::table(name = reset_chunk_index_timer, scheduled(reset_chunk_index_with_dimension, at = scheduled_at))]
+#[spacetimedb::table(accessor = reset_chunk_index_timer, scheduled(reset_chunk_index_with_dimension, at = scheduled_at))]
 pub struct ResetChunkIndexTimer {
     #[primary_key]
     #[auto_inc]
@@ -17,7 +17,7 @@ pub struct ResetChunkIndexTimer {
 
 #[spacetimedb::reducer]
 pub fn reset_chunk_index_with_dimension(ctx: &ReducerContext, timer: ResetChunkIndexTimer) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
     if let Some(mut chunk) = ctx.db.terrain_chunk_state().dimension().filter(timer.dimension).next() {
@@ -40,7 +40,7 @@ pub fn reset_chunk_index_with_dimension(ctx: &ReducerContext, timer: ResetChunkI
 
 #[spacetimedb::reducer]
 pub fn reset_chunk_index(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

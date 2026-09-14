@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_flip_interior_instance_doors(ctx: &ReducerContext, interior_instance_id: i32) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

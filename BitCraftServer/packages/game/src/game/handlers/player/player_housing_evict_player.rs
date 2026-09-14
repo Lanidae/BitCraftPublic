@@ -13,7 +13,7 @@ use crate::{
     params, unwrap_or_err,
 };
 
-#[spacetimedb::table(name = player_housing_evict_player_timer, public, scheduled(player_housing_evict_player_complete, at = scheduled_at), index(name = player_entity_id, btree(columns = [player_entity_id])))]
+#[spacetimedb::table(accessor = player_housing_evict_player_timer, public, scheduled(player_housing_evict_player_complete, at = scheduled_at), index(accessor = player_entity_id, btree(columns = [player_entity_id])))]
 pub struct PlayerHousingEvictPlayerTimer {
     #[primary_key]
     #[auto_inc]

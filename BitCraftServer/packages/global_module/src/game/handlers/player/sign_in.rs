@@ -34,11 +34,11 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
     }
 
     // Claim pending shards
-    if let Some(unclaimed_shards) = ctx.db.unclaimed_shards_state().identity().find(&ctx.sender) {
+    if let Some(unclaimed_shards) = ctx.db.unclaimed_shards_state().identity().find(&ctx.sender()) {
         let mut vault = ctx.db.player_shard_state().entity_id().find(&actor_id).unwrap();
         vault.shards += unclaimed_shards.shards;
         ctx.db.player_shard_state().entity_id().update(vault);
-        ctx.db.unclaimed_shards_state().identity().delete(&ctx.sender);
+        ctx.db.unclaimed_shards_state().identity().delete(&ctx.sender());
     }
 
     Ok(())
@@ -50,7 +50,7 @@ pub fn sign_in(ctx: &ReducerContext, _request: PlayerSignInRequest) -> Result<()
 pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
     // Newest connection wins. Updated on every connect so a stale connection's
     // disconnect can be told apart from the active one's.
-    if let (Some(user), Some(connection_id)) = (ctx.db.user_state().identity().find(&ctx.sender), ctx.connection_id) {
+    if let (Some(user), Some(connection_id)) = (ctx.db.user_state().identity().find(&ctx.sender()), ctx.connection_id()) {
         let active = ActiveConnectionState {
             entity_id: user.entity_id,
             connection_id,
@@ -62,7 +62,7 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
         }
     }
 
-    if let Some(developer) = ctx.db.developer().identity().find(ctx.sender) {
+    if let Some(developer) = ctx.db.developer().identity().find(ctx.sender()) {
         log::info!(
             "Developer identity connected for developer: {}, service: {}",
             developer.developer_name,
@@ -71,12 +71,12 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
         return Ok(());
     }
 
-    if has_role(ctx, &ctx.sender, Role::SkipQueue) {
+    if has_role(ctx, &ctx.sender(), Role::SkipQueue) {
         return Ok(());
     }
 
-    if ctx.db.blocked_identity().identity().find(ctx.sender).is_some() || !is_authenticated(ctx, &ctx.sender) {
-        log::info!("Blocking identity {}", ctx.sender.to_hex());
+    if ctx.db.blocked_identity().identity().find(ctx.sender()).is_some() || !is_authenticated(ctx, &ctx.sender()) {
+        log::info!("Blocking identity {}", ctx.sender().to_hex());
         return Err("Unauthorized".into());
     }
 
@@ -85,13 +85,13 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
 
 #[spacetimedb::reducer(client_disconnected)]
 pub fn identity_disconnected(ctx: &ReducerContext) {
-    if let Some(user) = ctx.db.user_state().identity().find(&ctx.sender) {
+    if let Some(user) = ctx.db.user_state().identity().find(&ctx.sender()) {
         if let Some(active) = ctx.db.active_connection_state().entity_id().find(user.entity_id) {
             // Stale: the identity already opened a newer connection, i.e. the player
             // reconnected before this disconnect was processed. Signing out now would
             // end the live session.
-            if ctx.connection_id != Some(active.connection_id) {
-                log::info!("Stale connection disconnected for {:?}", ctx.sender.to_hex());
+            if ctx.connection_id() != Some(active.connection_id) {
+                log::info!("Stale connection disconnected for {:?}", ctx.sender().to_hex());
                 return;
             }
             ctx.db.active_connection_state().entity_id().delete(user.entity_id);

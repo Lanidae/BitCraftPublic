@@ -8,7 +8,7 @@ use crate::{
     },
 };
 
-#[spacetimedb::table(name = admin_clear_resource_timer, scheduled(admin_clear_chunk_resources, at = scheduled_at))]
+#[spacetimedb::table(accessor = admin_clear_resource_timer, scheduled(admin_clear_chunk_resources, at = scheduled_at))]
 pub struct AdminClearResourceTimer {
     #[primary_key]
     #[auto_inc]
@@ -19,7 +19,7 @@ pub struct AdminClearResourceTimer {
 
 #[spacetimedb::reducer]
 pub fn admin_clear_all_resources(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 
@@ -39,7 +39,7 @@ pub fn admin_clear_all_resources(ctx: &ReducerContext) -> Result<(), String> {
 
 #[spacetimedb::reducer]
 pub fn admin_clear_chunk_resources(ctx: &ReducerContext, timer: AdminClearResourceTimer) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

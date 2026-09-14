@@ -12,7 +12,7 @@ use crate::{
     parameters_desc, placeable_growth_desc, placeable_state, resource_growth_recipe_desc, resource_state,
 };
 
-#[spacetimedb::table(name = growth_loop_timer, scheduled(growth_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = growth_loop_timer, scheduled(growth_agent_loop, at = scheduled_at))]
 pub struct GrowthLoopTimer {
     #[primary_key]
     #[auto_inc]

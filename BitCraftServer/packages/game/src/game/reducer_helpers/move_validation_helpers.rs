@@ -448,7 +448,7 @@ pub fn move_validation_strike(
 
 pub fn action_validation_strike(ctx: &ReducerContext, actor_id: u64, action_type: PlayerActionType) -> Result<(), String> {
     if validation_strike(ctx, actor_id, format!("Player {actor_id}"), format!("{:?}", action_type)).is_err() {
-        return player_action_helpers::fail_timing(ctx, actor_id, action_type, format!("Tried to {{0}} too quickly|~{:?}", action_type));
+        return player_action_helpers::fail_timing(ctx, actor_id, action_type, format!("Tried to {:?} too quickly", action_type));
     }
 
     Ok(())

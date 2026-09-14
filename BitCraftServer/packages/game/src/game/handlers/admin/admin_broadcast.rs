@@ -8,7 +8,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_broadcast_msg_region(ctx: &ReducerContext, title: String, message: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     reduce(ctx, title, message, false);

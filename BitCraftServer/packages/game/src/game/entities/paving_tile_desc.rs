@@ -12,7 +12,7 @@ impl PavingTileDesc {
                 //CharacterStatType::SprintStaminaDrain => true,
                 _ => false,
             },
-            "Stat {{0}} is not supported in pavement|~{:?}",
+            "Stat {:?} is not supported in pavement",
             stat_type
         );
 

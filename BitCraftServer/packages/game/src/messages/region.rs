@@ -14,7 +14,7 @@ pub enum PlayerVoteAnswer {
     Yes,
 }
 
-#[spacetimedb::table(name = player_vote_state, public)]
+#[spacetimedb::table(accessor = player_vote_state, public)]
 #[derive(Clone)]
 pub struct PlayerVoteState {
     #[primary_key]
@@ -34,7 +34,7 @@ pub struct PlayerVoteState {
     pub outcome_str: String,
 }
 
-#[spacetimedb::table(name = migration_achievements_params)]
+#[spacetimedb::table(accessor = migration_achievements_params)]
 pub struct MigrationAchievementsParams {
     #[primary_key]
     pub id: i32,
@@ -42,7 +42,7 @@ pub struct MigrationAchievementsParams {
     pub grant_if_already_owned: bool,
 }
 
-#[spacetimedb::table(name = migration_building_desc_params)]
+#[spacetimedb::table(accessor = migration_building_desc_params)]
 pub struct MigrationBuildingDescParams {
     #[primary_key]
     pub id: i32,

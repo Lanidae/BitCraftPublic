@@ -21,7 +21,7 @@ pub fn admin_resources_delete_percentage(
     percentage: f32,
     update_resources_log: bool,
 ) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

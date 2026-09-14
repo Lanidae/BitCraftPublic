@@ -5,7 +5,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 fn cheat_claim_totem_complete_current_research(ctx: &ReducerContext, claim_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClaimTotemCurrentResearch) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClaimTotemCurrentResearch) {
         return Err("Unauthorized.".into());
     }
 

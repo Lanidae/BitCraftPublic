@@ -1,11 +1,12 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::game::coordinates::FloatHexTile;
 use crate::game::game_state::game_state_filters::coordinates_float;
 use crate::game::terrain_chunk::TerrainChunkCache;
+use crate::messages::events::*;
 use crate::{deployable_desc, emote_desc};
 use crate::{
     game::{game_state, reducer_helpers::player_action_helpers},
@@ -34,7 +35,7 @@ pub fn emote_start(ctx: &ReducerContext, request: PlayerEmoteRequest) -> Result<
         PlayerActionType::StationaryEmote
     };
 
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         action_type,
@@ -43,7 +44,11 @@ pub fn emote_start(ctx: &ReducerContext, request: PlayerEmoteRequest) -> Result<
         delay,
         reduce(ctx, actor_id, request.emote_id, true),
         game_state::unix_ms(ctx.timestamp),
-    )
+    );
+    if result.is_ok() {
+        ctx.db.emote_start_event().insert(EmoteStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

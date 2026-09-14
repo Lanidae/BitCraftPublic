@@ -17,7 +17,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_replace_identity(ctx: &ReducerContext, old_identity: String, new_identity: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     let old_identity = match Identity::from_str(&old_identity) {

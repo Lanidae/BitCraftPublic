@@ -15,7 +15,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_set_sign_text(ctx: &ReducerContext, deployable_name: String, new_name: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -35,7 +35,7 @@ pub fn admin_set_sign_text(ctx: &ReducerContext, deployable_name: String, new_na
 
 #[spacetimedb::reducer]
 pub fn admin_set_sign_text_coord(ctx: &ReducerContext, coord: OffsetCoordinatesSmall, new_name: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -53,7 +53,7 @@ pub fn admin_set_sign_text_coord(ctx: &ReducerContext, coord: OffsetCoordinatesS
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_set_sign_text_entity(ctx: &ReducerContext, entity_id: u64, new_name: String) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

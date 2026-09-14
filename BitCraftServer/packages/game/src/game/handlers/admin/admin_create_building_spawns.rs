@@ -9,7 +9,7 @@ use crate::{
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn admin_create_building_spawns(ctx: &ReducerContext, building_description_id: i32, commit: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
 

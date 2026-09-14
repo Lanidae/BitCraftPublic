@@ -12,7 +12,7 @@ use crate::messages::action_request::CheatGrantKnowledgeRequest;
 
 #[spacetimedb::reducer]
 fn cheat_grant_knowledge(ctx: &ReducerContext, request: CheatGrantKnowledgeRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatGrantKnowledge) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatGrantKnowledge) {
         return Err("Unauthorized.".into());
     }
 

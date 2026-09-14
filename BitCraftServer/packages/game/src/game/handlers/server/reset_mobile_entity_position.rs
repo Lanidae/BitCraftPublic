@@ -5,7 +5,7 @@ use crate::{
 };
 use spacetimedb::ReducerContext;
 
-#[spacetimedb::table(name = reset_mobile_entity_timer, scheduled(reset_mobile_entity_position, at = scheduled_at))]
+#[spacetimedb::table(accessor = reset_mobile_entity_timer, scheduled(reset_mobile_entity_position, at = scheduled_at))]
 pub struct ResetMobileEntityTimer {
     #[primary_key]
     #[auto_inc]

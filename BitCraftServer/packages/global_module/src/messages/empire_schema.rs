@@ -5,7 +5,7 @@ use super::static_data::EmpireNotificationType;
 
 // === Tables ========================================================================
 
-#[spacetimedb::table(name = empire_emblem_state, public)]
+#[spacetimedb::table(accessor = empire_emblem_state, public)]
 #[derive(Clone, Debug)]
 pub struct EmpireEmblemState {
     #[primary_key]
@@ -16,7 +16,7 @@ pub struct EmpireEmblemState {
     pub color2_id: i32,
 }
 
-#[spacetimedb::table(name = empire_directive_state, public)]
+#[spacetimedb::table(accessor = empire_directive_state, public)]
 #[derive(Clone, Debug)]
 pub struct EmpireDirectiveState {
     #[primary_key]
@@ -25,7 +25,7 @@ pub struct EmpireDirectiveState {
     pub directive_message_timestamp: Option<Timestamp>,
 }
 
-#[spacetimedb::table(name = empire_player_log_state, public, index(name = empire_entity_id, btree(columns = [empire_entity_id])))]
+#[spacetimedb::table(accessor = empire_player_log_state, public, index(accessor = empire_entity_id, btree(columns = [empire_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct EmpirePlayerLogState {
     #[primary_key]
@@ -34,7 +34,7 @@ pub struct EmpirePlayerLogState {
     pub last_viewed: u64,
 }
 
-#[spacetimedb::table(name = empire_log_state)]
+#[spacetimedb::table(accessor = empire_log_state)]
 #[derive(Clone, Debug)]
 pub struct EmpireLogState {
     #[primary_key]
@@ -42,7 +42,7 @@ pub struct EmpireLogState {
     pub last_posted: u64,
 }
 
-#[spacetimedb::table(name = empire_foundry_state, public, index(name = empire_entity_id, btree(columns = [empire_entity_id])))]
+#[spacetimedb::table(accessor = empire_foundry_state, public, index(accessor = empire_entity_id, btree(columns = [empire_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct EmpireFoundryState {
     #[primary_key]
@@ -53,7 +53,7 @@ pub struct EmpireFoundryState {
     pub started: Timestamp,
 }
 
-#[spacetimedb::table(name = empire_notification_state, public, index(name = empire_entity_id, btree(columns = [empire_entity_id])))]
+#[spacetimedb::table(accessor = empire_notification_state, public, index(accessor = empire_entity_id, btree(columns = [empire_entity_id])))]
 #[derive(Clone, Debug)]
 pub struct EmpireNotificationState {
     #[primary_key]
@@ -64,7 +64,7 @@ pub struct EmpireNotificationState {
     pub timestamp: i32, // DAB Note: for future cleanup (eg agent that cleans up logs older than 1 week every day at midnight). Possibly to display on the client too if required.
 }
 
-#[spacetimedb::table(name = empire_siege_engine_state, public)]
+#[spacetimedb::table(accessor = empire_siege_engine_state, public)]
 #[derive(Clone, Debug)]
 pub struct EmpireSiegeEngineState {
     #[primary_key]

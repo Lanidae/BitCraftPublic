@@ -7,7 +7,7 @@ use spacetimedb::ReducerContext;
 #[spacetimedb::reducer]
 #[shared_table_reducer]
 pub fn cheat_building_move(ctx: &ReducerContext, request: PlayerBuildingMoveRequest) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatBuildingMove) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatBuildingMove) {
         return Err("Unauthorized.".into());
     }
 

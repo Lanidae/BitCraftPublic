@@ -14,7 +14,7 @@ use strum::IntoEnumIterator;
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_update_empire_ranks(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 
@@ -38,7 +38,7 @@ pub fn admin_update_empire_ranks(ctx: &ReducerContext) -> Result<(), String> {
 #[shared_table_reducer]
 #[spacetimedb::reducer]
 pub fn admin_push_empire_ranks_to_regions(ctx: &ReducerContext) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Gm) {
+    if !has_role(ctx, &ctx.sender(), Role::Gm) {
         return Err("Unauthorized".into());
     }
 

@@ -1,11 +1,12 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 use crate::game::game_state;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
+use crate::messages::events::*;
 use crate::{
     game::{discovery::Discovery, entities::building_state::InventoryState, game_state::game_state_filters},
     messages::{action_request::PlayerItemConvertRequest, components::*, game_util::ToolRequirement, static_data::*},
@@ -34,7 +35,7 @@ pub fn item_convert_start(ctx: &ReducerContext, request: PlayerItemConvertReques
     PlayerTimestampState::refresh(ctx, actor_id, ctx.timestamp);
 
     let (delay, recipe_id) = event_delay_recipe_id(ctx, &request);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::ConvertItems,
@@ -43,7 +44,13 @@ pub fn item_convert_start(ctx: &ReducerContext, request: PlayerItemConvertReques
         delay,
         reduce(ctx, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .item_convert_start_event()
+            .insert(ItemConvertStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -83,7 +90,7 @@ fn reduce(ctx: &ReducerContext, actor_id: u64, request: &PlayerItemConvertReques
             _default => ItemConversionLocationContext::None,
         };
 
-        return Err(String::from(format!("Cannot perform item conversion, you must be in {{0}}|~{:?}", location_context)).into());
+        return Err(String::from(format!("Cannot perform item conversion, you must be in {:?}", location_context)).into());
     }
 
     let player_large_tile = game_state_filters::coordinates_any(ctx, actor_id).parent_large_tile();

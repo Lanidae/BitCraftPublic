@@ -9,7 +9,7 @@ use spacetimedb::ReducerContext;
 // Similar to paving_destroy::reduce()
 #[spacetimedb::reducer]
 pub fn cheat_paving_destroy(ctx: &ReducerContext, x: i32, z: i32, dimension: u32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatPavingDestroy) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatPavingDestroy) {
         return Err("Unauthorized.".into());
     }
 

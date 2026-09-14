@@ -83,7 +83,7 @@ pub fn convert_collectible_to_deed(ctx: &ReducerContext, request: PlayerConvertC
                 .find(|x| x.deployable_description_id == deployable_desc.id)
             {
                 if ctx.db.mobile_entity_state().entity_id().find(deployable.entity_id).is_some() {
-                    return Err(format!("Recover your {{0}} first|~{}", deployable_desc.name).into());
+                    return Err(format!("Recover your {} first", deployable_desc.name).into());
                 }
                 ctx.db.deployable_state_v2().entity_id().delete(&deployable.entity_id);
                 ctx.db

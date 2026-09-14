@@ -7,7 +7,7 @@ use crate::messages::generic::{world_region_state, RegionPopulationInfo};
 use crate::messages::queue::player_queue_state;
 use crate::{agents, messages::authentication::ServerIdentity, signed_in_player_state};
 
-#[spacetimedb::table(name = region_popuplation_loop_timer, scheduled(region_popuplation_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = region_popuplation_loop_timer, scheduled(region_popuplation_agent_loop, at = scheduled_at))]
 pub struct RegionPopulationLoopTimer {
     #[primary_key]
     #[auto_inc]

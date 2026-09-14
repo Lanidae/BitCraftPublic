@@ -137,6 +137,7 @@ use crate::vault_state;
 
 
 pub fn delete_entity(ctx: &ReducerContext, entity_id: u64) {
+   let _ = (ctx, entity_id);
    ctx.db.active_buff_state().entity_id().delete(entity_id);
    ctx.db.alert_state().entity_id().delete(entity_id);
    ctx.db.attached_herds_state().entity_id().delete(entity_id);
@@ -235,6 +236,7 @@ pub fn delete_entity(ctx: &ReducerContext, entity_id: u64) {
 
 /// Delete entity from ALL tables (even ones that don't have `delete` attribute)
 pub fn clear_entity(ctx: &ReducerContext, entity_id: u64) {
+   let _ = (ctx, entity_id);
    ctx.db.a_i_debug_state().entity_id().delete(entity_id);
    ctx.db.ability_state().entity_id().delete(entity_id);
    ctx.db.action_bar_state().entity_id().delete(entity_id);

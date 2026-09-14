@@ -5,7 +5,7 @@ use crate::{
     messages::{authentication::ServerIdentity, components::*},
 };
 
-#[spacetimedb::table(name = trade_session_loop_timer, scheduled(trade_sessions_agent_loop, at = scheduled_at))]
+#[spacetimedb::table(accessor = trade_session_loop_timer, scheduled(trade_sessions_agent_loop, at = scheduled_at))]
 pub struct TradeSessionLoopTimer {
     #[primary_key]
     #[auto_inc]

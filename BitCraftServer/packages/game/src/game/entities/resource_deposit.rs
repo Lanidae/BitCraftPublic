@@ -21,7 +21,7 @@ use crate::{AttachedHerdsState, HerdState};
 use spacetimedb::rand::Rng;
 use spacetimedb::{log, ReducerContext, Table};
 
-#[spacetimedb::table(name = resource_spawn_timer, scheduled(resource_spawn_scheduled, at = scheduled_at))]
+#[spacetimedb::table(accessor = resource_spawn_timer, scheduled(resource_spawn_scheduled, at = scheduled_at))]
 pub struct ResourceSpawnTimer {
     #[primary_key]
     #[auto_inc]

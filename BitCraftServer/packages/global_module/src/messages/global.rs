@@ -7,7 +7,7 @@ use crate::{
 
 use super::generic::HubItemType;
 
-#[spacetimedb::table(name = user_region_state, index(name = region_id, btree(columns =[region_id])), public)]
+#[spacetimedb::table(accessor = user_region_state, index(accessor = region_id, btree(columns =[region_id])), public)]
 pub struct UserRegionState {
     #[primary_key]
     pub identity: Identity,
@@ -32,7 +32,7 @@ pub enum PlayerVoteAnswer {
     Yes,
 }
 
-#[spacetimedb::table(name = player_vote_state, public)]
+#[spacetimedb::table(accessor = player_vote_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct PlayerVoteState {
@@ -53,7 +53,7 @@ pub struct PlayerVoteState {
     pub outcome_str: String,
 }
 
-#[spacetimedb::table(name = player_shard_state, public)]
+#[spacetimedb::table(accessor = player_shard_state, public)]
 #[derive(bitcraft_macro::Operations, Clone)]
 #[operations(delete)]
 pub struct PlayerShardState {
@@ -63,7 +63,7 @@ pub struct PlayerShardState {
     pub last_shard_claim: i32, // Timestamp doesn't implement Default. Also, might as well save a few bytes since we don't care about milliseconds
 }
 
-#[spacetimedb::table(name = granted_hub_item_state, index(name = identity_and_item_id, btree(columns = [identity, item_id])))]
+#[spacetimedb::table(accessor = granted_hub_item_state, index(accessor = identity_and_item_id, btree(columns = [identity, item_id])))]
 #[derive(Clone, Debug)]
 pub struct GrantedHubItemState {
     #[primary_key]
@@ -75,7 +75,7 @@ pub struct GrantedHubItemState {
     pub balance: u32,
 }
 
-#[spacetimedb::table(name = player_developer_notification_state, public)]
+#[spacetimedb::table(accessor = player_developer_notification_state, public)]
 #[derive(Clone, bitcraft_macro::Operations, Debug)]
 #[operations(delete)]
 pub struct PlayerDeveloperNotificationState {
@@ -89,9 +89,9 @@ pub struct PlayerDeveloperNotificationState {
     pub message: String,
 }
 
-#[spacetimedb::table(name = direct_message_state, public,
-    index(name = sender_entity_id, btree(columns = [sender_entity_id])),
-    index(name = receiver_entity_id, btree(columns = [receiver_entity_id])))]
+#[spacetimedb::table(accessor = direct_message_state, public,
+    index(accessor = sender_entity_id, btree(columns = [sender_entity_id])),
+    index(accessor = receiver_entity_id, btree(columns = [receiver_entity_id])))]
 #[derive(Clone, Debug)]
 // TODO: We can get rid of this once we fix RLS (or use Views) and use ChatMessageState for DMs
 pub struct DirectMessageState {
@@ -129,8 +129,8 @@ impl DirectMessageState {
     }
 }
 
-#[spacetimedb::table(name = chat_channel_state, public,
-    index(name = lowercase_name, btree(columns = [lowercase_name]))
+#[spacetimedb::table(accessor = chat_channel_state, public,
+    index(accessor = lowercase_name, btree(columns = [lowercase_name]))
 )]
 #[derive(Clone, Debug)]
 pub struct ChatChannelState {
@@ -143,12 +143,12 @@ pub struct ChatChannelState {
     pub visibility: ChatChannelVisibility,
 }
 
-#[spacetimedb::table(name = chat_channel_permission_state, public,
-    index(name = chat_channel_entity_id, btree(columns = [chat_channel_entity_id])),
-    index(name = player_entity_id, btree(columns = [player_entity_id])),
-    index(name = chat_channel_and_player_entity_id, btree(columns = [chat_channel_entity_id, player_entity_id])),
-    index(name = identity, btree(columns = [identity])),
-    index(name = rank, btree(columns = [rank]))
+#[spacetimedb::table(accessor = chat_channel_permission_state, public,
+    index(accessor = chat_channel_entity_id, btree(columns = [chat_channel_entity_id])),
+    index(accessor = player_entity_id, btree(columns = [player_entity_id])),
+    index(accessor = chat_channel_and_player_entity_id, btree(columns = [chat_channel_entity_id, player_entity_id])),
+    index(accessor = identity, btree(columns = [identity])),
+    index(accessor = rank, btree(columns = [rank]))
 )]
 #[derive(Clone, Debug)]
 pub struct ChatChannelPermissionState {
@@ -184,10 +184,10 @@ pub enum ChatChannelPermission {
     Owner,
 }
 
-#[spacetimedb::table(name = blocked_player_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = blocked_entity_id, btree(columns = [blocked_entity_id])),
-    index(name = owner_blocked_entity_id, btree(columns = [owner_entity_id, blocked_entity_id]))
+#[spacetimedb::table(accessor = blocked_player_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = blocked_entity_id, btree(columns = [blocked_entity_id])),
+    index(accessor = owner_blocked_entity_id, btree(columns = [owner_entity_id, blocked_entity_id]))
 )]
 #[derive(Clone, Debug)]
 pub struct BlockedPlayerState {
@@ -195,9 +195,9 @@ pub struct BlockedPlayerState {
     pub blocked_entity_id: u64,
 }
 
-#[spacetimedb::table(name = friends_state, public,
-    index(name = owner_entity_id, btree(columns = [owner_entity_id])),
-    index(name = owner_friend_entity_id, btree(columns = [owner_entity_id, friend_entity_id]))
+#[spacetimedb::table(accessor = friends_state, public,
+    index(accessor = owner_entity_id, btree(columns = [owner_entity_id])),
+    index(accessor = owner_friend_entity_id, btree(columns = [owner_entity_id, friend_entity_id]))
 )]
 #[derive(Clone, Debug)]
 pub struct FriendsState {
@@ -218,7 +218,7 @@ pub enum VisibilityType {
     Private,
 }
 
-#[spacetimedb::table(name = visibility_state, public)]
+#[spacetimedb::table(accessor = visibility_state, public)]
 #[derive(Clone, Debug)]
 pub struct VisibilityState {
     #[primary_key]
@@ -226,7 +226,7 @@ pub struct VisibilityState {
     pub visibility: VisibilityType,
 }
 
-#[spacetimedb::table(name = user_creation_timestamp_state)]
+#[spacetimedb::table(accessor = user_creation_timestamp_state)]
 #[derive(Clone, Debug)]
 pub struct UserCreationTimestampState {
     #[primary_key]
@@ -234,7 +234,7 @@ pub struct UserCreationTimestampState {
     pub timestamp: Timestamp,
 }
 
-#[spacetimedb::table(name = premium_purchase_state, public)]
+#[spacetimedb::table(accessor = premium_purchase_state, public)]
 #[derive(Clone, Debug)]
 pub struct PremiumPurchaseState {
     #[primary_key]
@@ -249,7 +249,7 @@ pub struct PremiumPurchaseState {
     pub quantity: u32,
 }
 
-#[spacetimedb::table(name = minimum_client_version, public, index(name = platform, btree(columns = [platform])))]
+#[spacetimedb::table(accessor = minimum_client_version, public, index(accessor = platform, btree(columns = [platform])))]
 #[derive(Clone, Debug)]
 pub struct MinimumClientVersion {
     #[primary_key]

@@ -93,7 +93,7 @@ impl PlayerState {
                     >= dimension_desc_start.dimension_position_large_z as i32 + dimension_desc_start.dimension_size_large_z as i32)
             {
                 return Err(format!(
-                    "Move origin outside of world bounds! Origin: ({{0}} {{1}})|~{}|~{}",
+                    "Move origin outside of world bounds! Origin: ({} {})",
                     start_coordinates.x, start_coordinates.z
                 ));
             }
@@ -106,7 +106,7 @@ impl PlayerState {
                 >= dimension_desc_target.dimension_position_large_z as i32 + dimension_desc_target.dimension_size_large_z as i32)
         {
             return Err(format!(
-                "Move origin target of world bounds! Target: ({{0}} {{1}})|~{}|~{}",
+                "Move origin target of world bounds! Target: ({} {})",
                 target_coordinates.x, target_coordinates.z
             ));
         }

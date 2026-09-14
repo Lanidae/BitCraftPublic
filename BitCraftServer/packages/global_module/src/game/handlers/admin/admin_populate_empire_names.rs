@@ -10,7 +10,7 @@ pub fn admin_populate_empire_names(ctx: &ReducerContext, identity_empire_name_ro
     // This will return rows under the form of:
     //  0x13679cea332c56f468f6e79b9ed9e8a4d01999ced1ced3e1f0c6ecc9f92f2dfe | 12345678 | "My Empire"
     // use each of these rows for the 'identity_empire_name_row'
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

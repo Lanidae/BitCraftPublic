@@ -250,7 +250,7 @@ impl EmpireState {
         }
 
         // All aligned player ranks must be deleted
-        let region = ctx.db.user_region_state().identity().find(ctx.sender).unwrap().region_id;
+        let region = ctx.db.user_region_state().identity().find(ctx.sender()).unwrap().region_id;
         for rank in ctx.db.empire_player_data_state().empire_entity_id().filter(self.entity_id) {
             let rank_entity_id = rank.entity_id;
             EmpirePlayerDataState::delete_shared(ctx, rank, crate::inter_module::InterModuleDestination::AllOtherRegions);
@@ -959,7 +959,7 @@ impl EmpireNodeSiegeState {
 impl EmpireNotificationState {
     pub fn coord_to_string(coord: SmallHexTile) -> String {
         let large_tile = coord.parent_large_tile().to_offset_coordinates();
-        format!("N:{{0}}, E:{{1}}|~{}|~{}", large_tile.z, large_tile.x)
+        format!("N:{}, E:{}", large_tile.z, large_tile.x)
     }
 
     pub fn new_with_nickname_and_coord(

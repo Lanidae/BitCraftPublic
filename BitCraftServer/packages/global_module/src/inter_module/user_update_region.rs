@@ -8,7 +8,7 @@ use crate::{
 pub fn process_message_on_destination(ctx: &ReducerContext, user_update_region_request: UserUpdateRegionMsg) -> Result<(), String> {
     let mut user_region_state = unwrap_or_err!(
         ctx.db.user_region_state().identity().find(user_update_region_request.identity),
-        "UserRegionState does not exist for identity: {{0}}|~{}",
+        "UserRegionState does not exist for identity: {}",
         user_update_region_request.identity
     );
 

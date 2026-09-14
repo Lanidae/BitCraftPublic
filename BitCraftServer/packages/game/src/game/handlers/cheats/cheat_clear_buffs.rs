@@ -4,7 +4,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_clear_buffs_and_debuffs(ctx: &ReducerContext, player_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatClearBuffsAndDebuffs) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatClearBuffsAndDebuffs) {
         return Err("Unauthorized.".into());
     }
 

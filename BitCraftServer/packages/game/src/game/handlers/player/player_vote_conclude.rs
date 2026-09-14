@@ -3,7 +3,7 @@ use spacetimedb::ReducerContext;
 
 use crate::messages::{authentication::ServerIdentity, region::player_vote_state};
 
-#[spacetimedb::table(name = player_vote_conclude_timer, scheduled(player_vote_conclude, at = scheduled_at))]
+#[spacetimedb::table(accessor = player_vote_conclude_timer, scheduled(player_vote_conclude, at = scheduled_at))]
 pub struct PlayerVoteConcludeTimer {
     #[primary_key]
     #[auto_inc]

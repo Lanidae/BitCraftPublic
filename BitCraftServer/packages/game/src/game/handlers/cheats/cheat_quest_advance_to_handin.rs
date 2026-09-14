@@ -3,7 +3,7 @@ use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn cheat_quest_advance_to_handin(ctx: &ReducerContext, player_entity_id: u64, quest_desc_id: i32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatAdvanceQuestToHandIn) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatAdvanceQuestToHandIn) {
         return Err("Unauthorized.".into());
     }
 

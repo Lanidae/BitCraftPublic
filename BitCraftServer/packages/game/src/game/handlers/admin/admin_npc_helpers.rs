@@ -10,7 +10,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn delete_all_npcs(ctx: &ReducerContext) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return;
     }
 
@@ -24,7 +24,7 @@ pub fn delete_all_npcs(ctx: &ReducerContext) {
 
 #[spacetimedb::reducer]
 pub fn respawn_interior_npcs(ctx: &ReducerContext) {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return;
     }
 

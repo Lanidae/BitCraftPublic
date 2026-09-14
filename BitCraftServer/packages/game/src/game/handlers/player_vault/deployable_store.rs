@@ -1,8 +1,9 @@
 use bitcraft_macro::feature_gate;
 use std::time::Duration;
 
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
+use crate::messages::events::*;
 use crate::{
     deployable_desc,
     game::{
@@ -42,7 +43,7 @@ pub fn deployable_store_start(ctx: &ReducerContext, request: DeployableStoreRequ
     let delay = event_delay(ctx, &request);
 
     let target = Some(request.deployable_entity_id);
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::StoreDeployable,
@@ -51,7 +52,13 @@ pub fn deployable_store_start(ctx: &ReducerContext, request: DeployableStoreRequ
         delay,
         reduce(ctx, actor_id, &request, true),
         game_state::unix_ms(ctx.timestamp),
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .deployable_store_start_event()
+            .insert(DeployableStoreStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

@@ -5,7 +5,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_remove_entity_enemy(ctx: &ReducerContext, enemy_entity_id: u64) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatRemoveEntityEnemy) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatRemoveEntityEnemy) {
         return Err("Unauthorized.".into());
     }
 

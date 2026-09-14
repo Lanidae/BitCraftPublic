@@ -5,6 +5,7 @@ use crate::game::coordinates::*;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::messages::components::PlayerActionState;
+use crate::messages::events::*;
 use crate::messages::game_util::ItemStack;
 use crate::{
     game::{
@@ -27,7 +28,7 @@ pub fn pillar_shaping_place_pillar_start(ctx: &ReducerContext, request: PlayerPi
     let target = Some(request.pillar_type_id as u64);
     let delay = event_delay(ctx, &request);
     let mut terrain_cache = TerrainChunkCache::empty();
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::PlacePillarShaping,
@@ -36,7 +37,13 @@ pub fn pillar_shaping_place_pillar_start(ctx: &ReducerContext, request: PlayerPi
         delay,
         self::reduce(ctx, &mut terrain_cache, actor_id, &request, true),
         request.timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db
+            .pillar_shaping_place_pillar_start_event()
+            .insert(PillarShapingPlacePillarStartEvent { actor_id, request });
+    }
+    result
 }
 
 #[spacetimedb::reducer]

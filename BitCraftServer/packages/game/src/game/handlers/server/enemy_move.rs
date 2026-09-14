@@ -1,13 +1,17 @@
 use crate::{
     game::{entities::location::MobileEntityState, game_state::unix_ms, handlers::authentication::has_role},
-    messages::{action_request::EnemyMoveRequest, authentication::Role},
+    messages::{
+        action_request::EnemyMoveRequest,
+        authentication::Role,
+        events::{enemy_move_event, EnemyMoveEvent},
+    },
     mobile_entity_state,
 };
-use spacetimedb::ReducerContext;
+use spacetimedb::{ReducerContext, Table};
 
 #[spacetimedb::reducer]
 pub fn enemy_move(ctx: &ReducerContext, request: EnemyMoveRequest) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -18,7 +22,7 @@ pub fn enemy_move(ctx: &ReducerContext, request: EnemyMoveRequest) -> Result<(),
 
 #[spacetimedb::reducer]
 pub fn enemy_move_batch(ctx: &ReducerContext, requests: Vec<EnemyMoveRequest>) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -50,5 +54,6 @@ fn reduce(ctx: &ReducerContext, request: EnemyMoveRequest) {
     };
     if ctx.db.mobile_entity_state().entity_id().find(request.entity_id).is_some() {
         ctx.db.mobile_entity_state().entity_id().update(mobile_entity);
+        ctx.db.enemy_move_event().insert(EnemyMoveEvent { request });
     }
 }

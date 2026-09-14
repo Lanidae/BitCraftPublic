@@ -1,7 +1,7 @@
-use bitcraft_macro::feature_gate;
 use crate::game::reducer_helpers::player_action_helpers;
 use crate::game::terrain_chunk::TerrainChunkCache;
 use crate::messages::components::PlayerActionState;
+use crate::messages::events::*;
 use crate::messages::game_util::ItemStack;
 use crate::messages::util::SmallHexTileMessage;
 use crate::{
@@ -10,6 +10,7 @@ use crate::{
     messages::static_data::*,
     unwrap_or_err,
 };
+use bitcraft_macro::feature_gate;
 use spacetimedb::{ReducerContext, Table};
 use std::time::Duration;
 
@@ -29,7 +30,7 @@ pub fn prospect_start(ctx: &ReducerContext, prospecting_id: i32, timestamp: u64)
     let target = None;
     let delay = event_delay(ctx, prospecting_id);
     let mut terrain_cache = TerrainChunkCache::empty();
-    player_action_helpers::start_action(
+    let result = player_action_helpers::start_action(
         ctx,
         actor_id,
         PlayerActionType::Prospect,
@@ -38,7 +39,15 @@ pub fn prospect_start(ctx: &ReducerContext, prospecting_id: i32, timestamp: u64)
         delay,
         self::reduce(ctx, &mut terrain_cache, actor_id, prospecting_id, timestamp, true),
         timestamp,
-    )
+    );
+    if result.is_ok() {
+        ctx.db.prospect_start_event().insert(ProspectStartEvent {
+            actor_id,
+            prospecting_id,
+            timestamp,
+        });
+    }
+    result
 }
 
 #[spacetimedb::reducer]
@@ -62,11 +71,7 @@ fn event_delay(ctx: &ReducerContext, prospecting_id: i32) -> Duration {
     Duration::from_secs_f32(prospecting.unwrap().prospecting_duration)
 }
 
-fn reveal_reward_for_zero_crumb_trail(
-    ctx: &ReducerContext,
-    crumb_trail: &mut CrumbTrailState,
-    prospecting_desc: &ProspectingDesc,
-) {
+fn reveal_reward_for_zero_crumb_trail(ctx: &ReducerContext, crumb_trail: &mut CrumbTrailState, prospecting_desc: &ProspectingDesc) {
     let mut exposed = ctx
         .db
         .crumb_trail_exposed_state()
@@ -230,7 +235,7 @@ fn reduce(
                 contribution: 0,
                 to_next_node: 0.0, // this will be updated below
             });
-            log!("* Joining existing CrumbTrail {{0}}|~{}", trail.entity_id);
+            log!("* Joining existing CrumbTrail {}", trail.entity_id);
         } else {
             if let Some(mut new_trail) = CrumbTrailState::create(ctx, player_location, prospecting_id) {
                 let mut contribution = 0;
@@ -300,21 +305,21 @@ fn reduce(
     let is_heading_torwards_reward = step >= num_crumbs;
 
     log!("* PROSPECTING RESULT");
-    log!("* Step # {{0}} / {{1}}|~{}|~{}", step, num_crumbs);
+    log!("* Step # {} / {}", step, num_crumbs);
     if is_heading_torwards_reward {
-        log!("* Target Location: {{0}}|~{:?}", target_location,);
+        log!("* Target Location: {:?}", target_location,);
     } else {
         log!(
-            "* Target Location: {{0}} Radius: {{1}}|~{:?}|~{}",
+            "* Target Location: {:?} Radius: {}",
             target_location,
             crumb_trail.crumb_radiuses[step]
         );
     }
-    log!("* Player Location: {{0}}|~{:?}", player_location);
-    log!("* Distance: {{0}}|~{:?}", target_location.distance_to(player_location));
+    log!("* Player Location: {:?}", player_location);
+    log!("* Distance: {:?}", target_location.distance_to(player_location));
     if !is_heading_torwards_reward {
         log!(
-            "* Success => {{0}}|~{}",
+            "* Success => {}",
             target_location.distance_to(player_location) < crumb_trail.crumb_radiuses[step]
         );
     }
@@ -355,8 +360,7 @@ fn reduce(
                 ctx.db.crumb_trail_exposed_state().crumb_trail_entity_id().update(exposed);
             }
             player_prospecting.completed_steps += 1;
-            player_prospecting.contribution =
-                contribution_for_uncovered_breadcrumb(&prospecting_desc, player_prospecting.contribution);
+            player_prospecting.contribution = contribution_for_uncovered_breadcrumb(&prospecting_desc, player_prospecting.contribution);
             player_prospecting.ongoing_step += 1; //crumb_trail.active_step;           // for now, fast-track to the end but don't skip any step
             updated_trail = true;
 

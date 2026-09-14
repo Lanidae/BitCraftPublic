@@ -5,7 +5,7 @@ use spacetimedb::ReducerContext;
 
 #[spacetimedb::reducer]
 pub fn cheat_grant_teleport_energy(ctx: &ReducerContext, player_entity_id: u64, amount: f32) -> Result<(), String> {
-    if !can_run_cheat(ctx, &ctx.sender, CheatType::CheatGrantTeleportEnergy) {
+    if !can_run_cheat(ctx, &ctx.sender(), CheatType::CheatGrantTeleportEnergy) {
         return Err("Unauthorized.".into());
     }
 

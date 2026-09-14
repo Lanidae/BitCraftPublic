@@ -9,8 +9,8 @@ use crate::messages::game_util::ItemStack;
 use crate::messages::util::SmallHexTileMessage;
 use crate::{parameters_desc, ItemListDesc};
 
-#[spacetimedb::table(name = dropped_inventory_ownership_timer, public, scheduled(dropped_inventory_lose_ownership, at = scheduled_at), 
-    index(name = entity_id, btree(columns = [entity_id])))]
+#[spacetimedb::table(accessor = dropped_inventory_ownership_timer, public, scheduled(dropped_inventory_lose_ownership, at = scheduled_at), 
+    index(accessor = entity_id, btree(columns = [entity_id])))]
 pub struct DroppedInventoryOwnershipTimer {
     #[primary_key]
     #[auto_inc]
@@ -47,8 +47,8 @@ pub fn dropped_inventory_lose_ownership(ctx: &ReducerContext, timer: DroppedInve
     }
 }
 
-#[spacetimedb::table(name = dropped_inventory_despawn_timer, public, scheduled(dropped_inventory_despawn, at = scheduled_at),
-    index(name = entity_id, btree(columns = [entity_id])))]
+#[spacetimedb::table(accessor = dropped_inventory_despawn_timer, public, scheduled(dropped_inventory_despawn, at = scheduled_at),
+    index(accessor = entity_id, btree(columns = [entity_id])))]
 pub struct DroppedInventoryDespawnTimer {
     #[primary_key]
     #[auto_inc]

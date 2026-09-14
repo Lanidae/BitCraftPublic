@@ -4,7 +4,7 @@ use crate::{game::handlers::authentication::has_role, messages::authentication::
 
 #[spacetimedb::reducer]
 pub fn admin_reset_onboarding_completely(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -23,7 +23,7 @@ pub fn admin_reset_onboarding_completely(ctx: &ReducerContext, entity_id: u64) -
 // !!THE REDUCERS FROM HERE DOWN HAVE BEEN MADE FOR ALPHA 3, AS WE CHANGE ONBOARDING THESE MIGHT NO LONGER BE VALID!!
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_first_temple_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -46,7 +46,7 @@ pub fn admin_alpha3_reset_onboarding_to_first_temple_quest(ctx: &ReducerContext,
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_first_expand_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -70,7 +70,7 @@ pub fn admin_alpha3_reset_onboarding_to_first_expand_quest(ctx: &ReducerContext,
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_second_temple_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -94,7 +94,7 @@ pub fn admin_alpha3_reset_onboarding_to_second_temple_quest(ctx: &ReducerContext
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_second_expand_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -118,7 +118,7 @@ pub fn admin_alpha3_reset_onboarding_to_second_expand_quest(ctx: &ReducerContext
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_third_temple_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -142,7 +142,7 @@ pub fn admin_alpha3_reset_onboarding_to_third_temple_quest(ctx: &ReducerContext,
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_third_expand_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -166,7 +166,7 @@ pub fn admin_alpha3_reset_onboarding_to_third_expand_quest(ctx: &ReducerContext,
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_fourth_temple_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -190,7 +190,7 @@ pub fn admin_alpha3_reset_onboarding_to_fourth_temple_quest(ctx: &ReducerContext
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_fourth_expand_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -214,7 +214,7 @@ pub fn admin_alpha3_reset_onboarding_to_fourth_expand_quest(ctx: &ReducerContext
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_reset_onboarding_to_fifth_temple_quest(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 
@@ -238,7 +238,7 @@ pub fn admin_alpha3_reset_onboarding_to_fifth_temple_quest(ctx: &ReducerContext,
 
 #[spacetimedb::reducer]
 pub fn admin_alpha3_complete_onboarding(ctx: &ReducerContext, entity_id: u64) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Invalid permissions".into());
     }
 

@@ -15,7 +15,7 @@ use crate::{
 
 #[spacetimedb::reducer]
 pub fn admin_delete_all_items_of_type(ctx: &ReducerContext, player_username: String, item_id: i32, is_cargo: bool) -> Result<(), String> {
-    if !has_role(ctx, &ctx.sender, Role::Admin) {
+    if !has_role(ctx, &ctx.sender(), Role::Admin) {
         return Err("Unauthorized".into());
     }
     reduce(ctx, player_username, item_id, is_cargo)
